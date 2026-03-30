@@ -281,11 +281,13 @@ const SUPABASE_URL = 'https://goopxqkxuogqhlppsfyv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_P1uFKhOCi6Yr9ie0mokF9A_uxTJk2Bf';
 const ADMIN_PASS = 'Henyeradmin';
 
-const TODOS = ["Abel","Bubble","Caine","Gangle","Gangle Skating","Gummigoo","Jax","Jax Evil","Jax Fight Club","Jax Skating","Kaufmo","Kinger","Kinger Evil","Princesa Loolilalu","Ming","Npc","Pomni","Pomni Evil","Pomni Fight Club","Pomni Ringmaster","Pomni Skating","Queenie","Ragatha","Ragatha Evil","Ragatha Fight Club","Ragatha Skating","Ribbit","Ribbit Skating","Scratch","Zooble","Zooble Evil","Zooble Fight Club","Zooble Skating"];
+const CHICOS = ["Abel","Kinger","Jax Evil","Jax Fight Club","Ming","Caine"];
+const CHICAS = ["Ribbit","Zooble","Gangle","Queenie","Zooble Skating","Bubble","Pomni","Bubble Evil","Pomni Ringmaster","Ragatha","Pomni Skating","Ragatha Skating","Npc"];
+const TODOS = [...CHICOS,...CHICAS];
 
 const CATEGORIAS = [
-  {id:'masc_fav',nombre:'Personaje masculino favorito',emoji:'⭐',votos:2,locked:false,nominados:['Abel','Kinger','Caine','Jax Evil','Jax Fight Club','Ming']},
-  {id:'fem_fav',nombre:'Personaje femenino favorito',emoji:'⭐',votos:5,locked:false,nominados:['Ribbit','Zooble','Gangle','Queenie','Zooble Skating','Bubble','Pomni Ringmaster','Ragatha','Pomni','Pomni Skating','Ragatha Skating','Ribbit Skating']},
+  {id:'masc_fav',nombre:'Personaje masculino favorito',emoji:'⭐',votos:2,locked:false,nominados:[...CHICOS]},
+  {id:'fem_fav',nombre:'Personaje femenino favorito',emoji:'⭐',votos:5,locked:false,nominados:[...CHICAS]},
   {id:'agradable',nombre:'Personaje más agradable',emoji:'⭐',votos:5,locked:false,nominados:[...TODOS]},
   {id:'talentoso',nombre:'Personaje más talentoso',emoji:'⭐',votos:5,locked:false,nominados:[...TODOS]},
   {id:'activo',nombre:'Personaje más activo',emoji:'⭐',votos:4,locked:false,nominados:[...TODOS]},
@@ -362,7 +364,8 @@ function renderCategoria(){
   }
 
   const pips=Array.from({length:cat.votos},(_,i)=>`<div class="votes-pip ${i<votosActuales.length?'filled':''}"></div>`).join('');
-  const nominadosHTML=cat.nominados.map(n=>{
+  const nominadosFiltrados=cat.nominados.filter(n=>n!==personajeActual);
+  const nominadosHTML=nominadosFiltrados.map(n=>{
     const sel=votosActuales.includes(n);
     const maxed=votosActuales.length>=cat.votos&&!sel;
     return `<button class="nominado-btn ${sel?'selected':''} ${maxed?'maxed':''}" onclick="toggleVoto('${n.replace(/'/g,"\\'")}',${cat.votos})">${sel?'⭐ ':''}${n}</button>`;
