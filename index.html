@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GALA TADC — Personaje Favorito de la Semana</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0800;
+  --gold: #f5c842;
+  --gold2: #e0a820;
+  --gold3: #fde68a;
+  --gold-dark: #92650a;
+  --white: #fff8e7;
+  --muted: #a89060;
+  --card: #130f05;
+  --card2: #1e1808;
+  --border: rgba(245,200,66,0.25);
+  --border2: rgba(245,200,66,0.5);
+  --red: #ef4444;
+  --green: #10b981;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Nunito', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Gold particle background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(245,200,66,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 30% at 20% 100%, rgba(245,200,66,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 30% at 80% 100%, rgba(245,200,66,0.05) 0%, transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.particle {
+  position: absolute;
+  font-size: 14px;
+  animation: floatUp var(--d) ease-in var(--delay) infinite;
+  opacity: 0;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) rotate(0deg); opacity:0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-10vh) rotate(360deg); opacity:0; }
+}
+
+.container {
+  position: relative; z-index: 1;
+  max-width: 780px; margin: 0 auto;
+  padding: 20px;
+}
+
+/* ===== SCREENS ===== */
+.screen { display:none; animation: fadeIn 0.5s ease; }
+.screen.active { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+/* ===== HEADER ===== */
+.gala-header {
+  text-align: center;
+  padding: 30px 0 20px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 30px;
+}
+
+.crown { font-size: 3rem; margin-bottom: 8px; animation: pulse-crown 2s ease-in-out infinite; }
+@keyframes pulse-crown { 0%,100%{transform:scale(1) rotate(-5deg)} 50%{transform:scale(1.1) rotate(5deg)} }
+
+.gala-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(1.2rem, 4vw, 2.2rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold3), var(--gold), var(--gold2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  line-height: 1.3;
+  filter: drop-shadow(0 0 20px rgba(245,200,66,0.4));
+  animation: shimmer 4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0%,100%{filter:drop-shadow(0 0 15px rgba(245,200,66,0.3))}
+  50%{filter:drop-shadow(0 0 35px rgba(245,200,66,0.7))}
+}
+
+.gala-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem; letter-spacing: 4px;
+  color: var(--muted); margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 20px 0; color: var(--gold);
+  font-size: 1rem;
+}
+.divider::before, .divider::after {
+  content: ''; flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold2), transparent);
+}
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex; gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 5px;
+  margin-bottom: 28px;
+}
+.tab-btn {
+  flex:1; padding: 12px 8px;
+  border: none; border-radius: 10px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem; letter-spacing: 1px;
+  cursor: pointer; transition: all 0.2s;
+  background: transparent; color: var(--muted);
+}
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold2));
+  color: #0a0800;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(245,200,66,0.3);
+}
+.tab-btn:hover:not(.active) { color: var(--gold); }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 1.1rem; color: var(--gold);
+  letter-spacing: 1px; margin-bottom: 6px;
+}
+
+.card-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.6; }
+
+/* ===== FIELDS ===== */
+.field { margin-bottom: 18px; }
+.field label {
+  display:block; font-family: 'Cinzel', serif;
+  font-size: 0.75rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--gold2);
+  margin-bottom: 8px;
+}
+
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content:'▾'; position:absolute;
+  right:14px; top:50%; transform:translateY(-50%);
+  color:var(--gold); pointer-events:none;
+}
+
+select, input[type="text"] {
+  width: 100%;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 16px;
+  color: var(--white);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  outline: none;
+  transition: border-color 0.3s;
+  appearance: none;
+}
+select:focus, input[type="text"]:focus {
+  border-color: var(--gold2);
+  box-shadow: 0 0 0 3px rgba(245,200,66,0.1);
+}
+select option { background: #1e1808; }
+
+/* ===== WELCOME MESSAGE ===== */
+.welcome-msg {
+  background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(245,200,66,0.03));
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  padding: 20px;
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--white);
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.welcome-msg .decoration {
+  font-style: normal;
+  color: var(--gold);
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+/* ===== TERMS ===== */
+.terms-check {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px; border-radius: 10px;
+  background: var(--card2);
+  border: 1px solid var(--border);
+  cursor: pointer; margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+.terms-check:hover { border-color: var(--gold2); }
+.terms-check input[type="checkbox"] {
+  width: 20px; height: 20px; flex-shrink: 0;
+  accent-color: var(--gold2); cursor: pointer;
+  margin-top: 2px;
+}
+.terms-check span { font-size: 0.88rem; color: var(--muted); line-height: 1.5; }
+.terms-check span b { color: var(--gold3); }
+
+/* ===== BUTTONS ===== */
+.btn {
+  width: 100%; padding: 16px;
+  border: none; border-radius: 12px;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem; letter-spacing: 2px;
+  cursor: pointer; transition: all 0.25s;
+  text-transform: uppercase;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold2), var(--gold));
+  color: #0a0800; font-weight: 700;
+  box-shadow: 0 4px 20px rgba(245,200,66,0.35);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,200,66,0.5); }
+.btn-gold:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--border2);
+  color: var(--gold2);
+}
+.btn-outline:hover { background: rgba(245,200,66,0.08); }
+
+/* ===== PROGRESS ===== */
+.progress-wrap { margin-bottom: 20px; }
+.progress-info {
+  display: flex; justify-content: space-between;
+  font-size: 0.78rem; color: var(--muted);
+  font-family: 'Cinzel', serif; letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.progress-bar {
+  height: 6px; background: var(--card2);
+  border-radius: 10px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+/* ===== CATEGORIA CARD ===== */
+.cat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; border-radius: 20px;
+  background: rgba(245,200,66,0.12);
+  border: 1px solid var(--border2);
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem; letter-spacing: 1px;
+  color: var(--gold3); margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.votes-counter {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px;
+}
+.votes-pip {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  transition: background 0.2s;
+}
+.votes-pip.filled { background: var(--gold); border-color: var(--gold); }
+.votes-label { font-size: 0.8rem; color: var(--muted); font-family: 'Cinzel', serif; }
+
+/* ===== NOMINADOS GRID ===== */
+.nominados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.nominado-btn {
+  padding: 12px 10px;
+  background: var(--card2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  color: var(--white);
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem; font-weight: 700;
+  cursor: pointer; text-align: center;
+  transition: all 0.2s;
+  display: flex; align-items: center;
+  justify-content: center; gap: 6px;
+}
+.nominado-btn:hover:not(.selected):not(.maxed) {
+  border-color: var(--gold2);
+  background: rgba(245,200,66,0.08);
+  color: var(--gold3);
+}
+.nominado-btn.selected {
+  border-color: var(--gold);
+  background: rgba(245,200,66,0.15);
+  color: var(--gold);
+}
+.nominado-btn.maxed:not(.selected) {
+  opacity: 0.4; cursor: not-allowed;
+}
+
+/* ===== LOCKED CATEGORY ===== */
+.locked-cat {
+  text-align: center; padding: 30px 20px;
+}
+.locked-icon { font-size: 3rem; margin-bottom: 14px; }
+.locked-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 1.1rem; color: var(--gold); margin-bottom: 8px;
+}
+.locked-msg { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+/* ===== MSG ===== */
+.msg {
+  padding: 12px 16px; border-radius: 10px;
+  font-size: 0.88rem; font-weight: 700;
+  margin-bottom: 14px; display: none;
+  animation: fadeIn 0.3s ease;
+}
+.msg.error { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+.msg.success { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #6ee7b7; }
+.msg.warn { background: rgba(245,200,66,0.1); border: 1px solid var(--border2); color: var(--gold3); }
+
+/* ===== THANK YOU ===== */
+.thankyou-card {
+  text-align: center; padding: 50px 30px;
+  background: var(--card);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+}
+.thankyou-icon { font-size: 4rem; margin-bottom: 16px; animation: pulse-crown 2s ease-in-out infinite; }
+.thankyou-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 1.5rem; color: var(--gold);
+  margin-bottom: 16px; letter-spacing: 2px;
+}
+.thankyou-msg {
+  color: var(--muted); font-size: 0.95rem;
+  line-height: 1.8; max-width: 450px; margin: 0 auto 24px;
+}
+.thankyou-msg strong { color: var(--gold3); }
+
+/* ===== TABLA HISTORIAL ===== */
+.hist-header-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
+}
+.hist-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 1.3rem; color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.hist-table {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden;
+  margin-bottom: 20px;
+}
+.hist-thead {
+  display: grid;
+  grid-template-columns: 44px 1fr 120px 100px;
+  padding: 12px 18px;
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem; letter-spacing: 1px;
+  color: var(--muted); text-transform: uppercase;
+}
+.hist-row {
+  display: grid;
+  grid-template-columns: 44px 1fr 120px 100px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(245,200,66,0.06);
+  align-items: center;
+  transition: background 0.2s;
+  animation: fadeIn 0.3s ease;
+}
+.hist-row:last-child { border-bottom: none; }
+.hist-row:hover { background: rgba(245,200,66,0.04); }
+.hist-row.top1 { background: rgba(245,200,66,0.08); }
+.hist-row.top2 { background: rgba(245,200,66,0.05); }
+.hist-row.top3 { background: rgba(245,200,66,0.03); }
+
+.h-pos {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem; text-align: center;
+}
+.h-pos.g { color: var(--gold); }
+.h-pos.s { color: #d1d5db; }
+.h-pos.b { color: #f97316; }
+.h-pos.n { color: var(--muted); font-size: 0.85rem; }
+
+.h-name { font-weight: 800; font-size: 0.92rem; }
+
+.h-stars {
+  display: flex; align-items: center; gap: 4px;
+  flex-wrap: wrap;
+}
+.star-display { color: var(--gold); font-size: 0.85rem; }
+.star-count {
+  font-family: 'Cinzel', serif;
+  color: var(--gold3); font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.h-trophies {
+  display: flex; align-items: center; gap: 4px;
+  flex-wrap: wrap;
+}
+.trophy-display { font-size: 0.85rem; }
+.trophy-count {
+  font-family: 'Cinzel', serif;
+  color: var(--gold3); font-size: 0.8rem; font-weight: 700;
+}
+
+/* ===== CONTEOS ADMIN ===== */
+.conteo-section { margin-bottom: 30px; }
+.conteo-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem; letter-spacing: 2px;
+  color: var(--gold2); text-transform: uppercase;
+  margin-bottom: 12px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.conteo-row {
+  display: flex; justify-content: space-between;
+  align-items: center; padding: 8px 0;
+  border-bottom: 1px solid rgba(245,200,66,0.05);
+  font-size: 0.88rem;
+}
+.conteo-name { font-weight: 700; }
+.conteo-val {
+  font-family: 'Cinzel', serif;
+  color: var(--gold); font-size: 1rem; font-weight: 700;
+}
+
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.loading-state { text-align:center; padding:40px; color:var(--muted); }
+
+@media(max-width:500px) {
+  .nominados-grid { grid-template-columns: 1fr 1fr; }
+  .hist-thead, .hist-row { grid-template-columns: 36px 1fr 100px 80px; }
+}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="container">
+
+  <div class="gala-header">
+    <div class="crown">🏆</div>
+    <div class="gala-title">GALA DEL PERSONAJE<br>FAVORITO DE LA SEMANA</div>
+    <div class="gala-sub">The Amazing Digital Circus</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('votar')">⭐ Votar</button>
+    <button class="tab-btn" onclick="switchTab('tabla'); loadHistorial()">🏆 Tabla de Ganadores</button>
+  </div>
+
+  <!-- ===== PANTALLA: SELECCIONAR PERSONAJE ===== -->
+  <div class="screen active" id="screen-select">
+    <div class="card">
+      <div class="card-title">🎭 ¿Con qué personaje ingresas?</div>
+      <div class="card-sub">Selecciona tu personaje para comenzar a votar. Una vez elegido, podrás participar en todas las categorías.</div>
+
+      <div class="field">
+        <label>Tu personaje</label>
+        <div class="select-wrap">
+          <select id="sel-personaje">
+            <option value="">— Cargando personajes... —</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="msg" id="select-msg"></div>
+
+      <button class="btn btn-gold" onclick="confirmarPersonaje()">
+        🎪 INGRESAR A LA GALA
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== PANTALLA: BIENVENIDA + TÉRMINOS ===== -->
+  <div class="screen" id="screen-welcome">
+    <div class="card">
+      <div class="card-title">🌟 Bienvenida a la Gala</div>
+
+      <div class="welcome-msg">
+        <span class="decoration">⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆</span>
+        Holaaaaa a todos y bienvenidos a la <strong>GALA del personaje favorito de la semana!!!</strong>
+        QUIERO RECORDARLE QUE ESTE EVENTO ES PARA ENTRETENER Y QUE ES POR DIVERSIÓN,
+        NO TOMARSE NADA A PECHO Y DIVERTIRSE EN EL PROCESO.
+        COMO ANFITRIÓN SERÉ BASTANTE OBJETIVO EN MI VOTACIÓN DEPENDIENDO LAS CATEGORÍAS DE LOS PREMIOS,
+        sin más que decir ¡sean bienvenidos!
+        <span class="decoration" style="margin-top:10px">⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆⭐🏆</span>
+        <br>
+        Recuerden también que aunque sean muy amigos de ciertos personajes, hay que ser sinceros con sus votos y saber dárselos a quienes se lo merecieron en la semana. 🌟
+      </div>
+
+      <label class="terms-check" for="chk-terms">
+        <input type="checkbox" id="chk-terms" onchange="checkTerms()">
+        <span>He leído el mensaje de bienvenida y <b>acepto participar con respeto y honestidad</b> en esta gala.</span>
+      </label>
+
+      <button class="btn btn-gold" id="btn-start" disabled onclick="iniciarVotacion()">
+        ⭐ COMENZAR A VOTAR
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== PANTALLA: VOTACIÓN ===== -->
+  <div class="screen" id="screen-voting">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="prog-cat">Categoría 1 de 12</span>
+        <span id="prog-name">—</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card" id="voting-card">
+      <!-- contenido dinámico -->
+    </div>
+
+    <div class="msg" id="vote-msg"></div>
+
+    <button class="btn btn-gold" id="btn-next" onclick="nextCategoria()">
+      SIGUIENTE ➜
+    </button>
+  </div>
+
+  <!-- ===== PANTALLA: GRACIAS ===== -->
+  <div class="screen" id="screen-thanks">
+    <div class="thankyou-card">
+      <div class="thankyou-icon">🏆</div>
+      <div class="thankyou-title">¡Gracias por votar!</div>
+      <div class="thankyou-msg">
+        Gracias por votar en nuestra maravillosa gala de nuestro Circo Digital.<br><br>
+        <strong>Espera los resultados pacientemente</strong> por el anfitrión de la gala,<br>
+        <strong>Abel</strong> 🌟
+      </div>
+      <button class="btn btn-outline" style="max-width:280px;margin:0 auto;display:block" onclick="volverInicio()">
+        ← VOLVER AL INICIO
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== PANTALLA: TABLA ===== -->
+  <div class="screen" id="screen-tabla">
+    <div class="hist-header-row">
+      <div class="hist-title">🏆 Tabla de Campeones</div>
+    </div>
+
+    <div class="hist-table">
+      <div class="hist-thead">
+        <div style="text-align:center">#</div>
+        <div>Personaje</div>
+        <div>Estrellas</div>
+        <div>Trofeos</div>
+      </div>
+      <div id="hist-body">
+        <div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div>
+      </div>
+    </div>
+
+    <!-- CONTEOS POR CATEGORÍA -->
+    <div class="card" id="conteos-wrap" style="display:none">
+      <div class="card-title">📊 Conteo de votos por categoría</div>
+      <div class="card-sub">Resultados acumulados de todas las votaciones.</div>
+      <div id="conteos-body"></div>
+    </div>
+    <button class="btn btn-outline" style="max-width:280px;margin:0 auto 20px;display:block" onclick="toggleConteos()">
+      📊 Ver / Ocultar Conteos
+    </button>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://goopxqkxuogqhlppsfyv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_P1uFKhOCi6Yr9ie0mokF9A_uxTJk2Bf';
+
+// ===== TODOS LOS PERSONAJES =====
+const TODOS = [
+  "Abel","Bubble","Caine","Gangle","Gangle Skating","Gummigoo",
+  "Jax","Jax Evil","Jax Fight Club","Jax Skating","Kaufmo",
+  "Kinger","Kinger Evil","Princesa Loolilalu","Ming","Npc",
+  "Pomni","Pomni Evil","Pomni Fight Club","Pomni Ringmaster",
+  "Pomni Skating","Queenie","Ragatha","Ragatha Evil",
+  "Ragatha Fight Club","Ragatha Skating","Ribbit","Ribbit Skating",
+  "Scratch","Zooble","Zooble Evil","Zooble Fight Club","Zooble Skating"
+];
+
+// ===== CATEGORÍAS =====
+const CATEGORIAS = [
+  {
+    id: 'masc_fav', nombre: 'Personaje masculino favorito',
+    emoji: '⭐', votos: 2, locked: false,
+    nominados: ['Abel','Kinger','Caine','Jax Evil','Jax Fight Club','Ming']
+  },
+  {
+    id: 'fem_fav', nombre: 'Personaje femenino favorito',
+    emoji: '⭐', votos: 5, locked: false,
+    nominados: ['Ribbit','Zooble','Gangle','Queenie','Zooble Skating','Bubble','Pomni Ringmaster','Ragatha','Pomni','Pomni Skating','Ragatha Skating','Ribbit Skating']
+  },
+  {
+    id: 'agradable', nombre: 'Personaje más agradable',
+    emoji: '⭐', votos: 5, locked: false,
+    nominados: [...TODOS]
+  },
+  {
+    id: 'talentoso', nombre: 'Personaje más talentoso',
+    emoji: '⭐', votos: 5, locked: false,
+    nominados: [...TODOS]
+  },
+  {
+    id: 'activo', nombre: 'Personaje más activo',
+    emoji: '⭐', votos: 4, locked: false,
+    nominados: [...TODOS]
+  },
+  {
+    id: 'nuevo', nombre: 'Personaje nuevo destacado',
+    emoji: '⭐', votos: 1, locked: false,
+    nominados: ['Kinger','Caine','Zooble Skating']
+  },
+  {
+    id: 'participativo', nombre: 'Personaje más participativo',
+    emoji: '⭐', votos: 4, locked: false,
+    nominados: [...TODOS]
+  },
+  {
+    id: 'divertido', nombre: 'Personaje más divertido',
+    emoji: '⭐', votos: 5, locked: false,
+    nominados: [...TODOS]
+  },
+  {
+    id: 'mejor_jax', nombre: 'Mejor JAX',
+    emoji: '⭐', votos: 1, locked: true,
+    nominados: []
+  },
+  {
+    id: 'mejor_pomni', nombre: 'Mejor POMNI',
+    emoji: '⭐', votos: 1, locked: false,
+    nominados: ['Pomni','Pomni Ringmaster','Pomni Skating']
+  },
+  {
+    id: 'interactivo', nombre: 'Personaje más interactivo',
+    emoji: '⭐', votos: 4, locked: false,
+    nominados: [...TODOS]
+  },
+  {
+    id: 'mejor_semana', nombre: 'El MEJOR personaje de toda la semana',
+    emoji: '🏆', votos: 3, locked: false,
+    nominados: [...TODOS]
+  }
+];
+
+let personajeActual = '';
+let catIndex = 0;
+let votosActuales = []; // seleccionados en la categoría actual
+let todosLosVotos = {}; // { cat_id: [nominados] }
+let conteosVisible = false;
+
+// ===== PARTICLES =====
+function createParticles() {
+  const c = document.getElementById('particles');
+  const items = ['⭐','🏆','✨'];
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = items[Math.floor(Math.random()*items.length)];
+    p.style.cssText = `left:${Math.random()*100}%;--d:${8+Math.random()*12}s;--delay:${Math.random()*10}s`;
+    c.appendChild(p);
+  }
+}
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active',(i===0&&tab==='votar')||(i===1&&tab==='tabla'));
+  });
+  if (tab==='votar') {
+    showScreen(personajeActual ? 'screen-select' : 'screen-select');
+    volverInicio();
+  } else {
+    showScreen('screen-tabla');
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ===== CARGAR PERSONAJES =====
+async function cargarPersonajes() {
+  const sel = document.getElementById('sel-personaje');
+  sel.innerHTML = '<option value="">— Cargando... —</option>';
+  try {
+    // No bloqueamos personajes esta semana (reutilizable cada semana)
+    sel.innerHTML = '<option value="">— Selecciona tu personaje —</option>';
+    TODOS.forEach(p => {
+      const o = document.createElement('option');
+      o.value = p; o.textContent = p;
+      sel.appendChild(o);
+    });
+  } catch(e) {
+    sel.innerHTML = '<option value="">— Error al cargar —</option>';
+  }
+}
+
+// ===== CONFIRMAR PERSONAJE =====
+function confirmarPersonaje() {
+  const sel = document.getElementById('sel-personaje');
+  const msg = document.getElementById('select-msg');
+  if (!sel.value) {
+    showMsg('select-msg','Debes seleccionar tu personaje para continuar.','error');
+    return;
+  }
+  personajeActual = sel.value;
+  msg.style.display = 'none';
+  showScreen('screen-welcome');
+}
+
+// ===== TERMS =====
+function checkTerms() {
+  const chk = document.getElementById('chk-terms');
+  document.getElementById('btn-start').disabled = !chk.checked;
+}
+
+function iniciarVotacion() {
+  catIndex = 0;
+  todosLosVotos = {};
+  votosActuales = [];
+  showScreen('screen-voting');
+  renderCategoria();
+}
+
+// ===== RENDER CATEGORÍA =====
+function renderCategoria() {
+  const cat = CATEGORIAS[catIndex];
+  const card = document.getElementById('voting-card');
+  const btnNext = document.getElementById('btn-next');
+  document.getElementById('vote-msg').style.display = 'none';
+
+  // Progreso
+  document.getElementById('prog-cat').textContent = `Categoría ${catIndex+1} de ${CATEGORIAS.length}`;
+  document.getElementById('prog-name').textContent = cat.nombre;
+  document.getElementById('prog-fill').style.width = `${((catIndex)/CATEGORIAS.length)*100}%`;
+
+  votosActuales = todosLosVotos[cat.id] || [];
+
+  if (cat.locked) {
+    card.innerHTML = `
+      <div class="locked-cat">
+        <div class="locked-icon">🔒</div>
+        <div class="locked-title">${cat.nombre}</div>
+        <div class="locked-msg">
+          Esta categoría <strong>no está disponible</strong> por el momento<br>
+          debido a la falta de personajes suficientes.<br><br>
+          Pronto estará habilitada. ¡Sigue participando!
+        </div>
+      </div>
+    `;
+    btnNext.textContent = 'AVANZAR ➜';
+    return;
+  }
+
+  // Render normal
+  const pips = Array.from({length: cat.votos}, (_,i) =>
+    `<div class="votes-pip ${i < votosActuales.length ? 'filled' : ''}"></div>`
+  ).join('');
+
+  let nominadosHTML = cat.nominados.map(n => {
+    const sel = votosActuales.includes(n);
+    const maxed = votosActuales.length >= cat.votos && !sel;
+    return `<button class="nominado-btn ${sel?'selected':''} ${maxed?'maxed':''}"
+      onclick="toggleVoto('${n.replace(/'/g,"\\'")}',${cat.votos})">${sel?'⭐':''} ${n}</button>`;
+  }).join('');
+
+  card.innerHTML = `
+    <div class="cat-badge">${cat.emoji} ${cat.nombre}</div>
+    <div class="card-sub">Puedes votar por exactamente <strong style="color:var(--gold3)">${cat.votos} personaje${cat.votos>1?'s':''}</strong>.</div>
+    <div class="votes-counter">
+      ${pips}
+      <span class="votes-label">${votosActuales.length}/${cat.votos} seleccionados</span>
+    </div>
+    <div class="nominados-grid" id="nominados-grid">${nominadosHTML}</div>
+  `;
+
+  btnNext.textContent = catIndex < CATEGORIAS.length - 1 ? 'SIGUIENTE ➜' : '✅ FINALIZAR Y ENVIAR';
+}
+
+// ===== TOGGLE VOTO =====
+function toggleVoto(nombre, maxVotos) {
+  const idx = votosActuales.indexOf(nombre);
+  if (idx > -1) {
+    votosActuales.splice(idx, 1);
+  } else {
+    if (votosActuales.length >= maxVotos) return;
+    votosActuales.push(nombre);
+  }
+  todosLosVotos[CATEGORIAS[catIndex].id] = [...votosActuales];
+  renderCategoria();
+}
+
+// ===== SIGUIENTE CATEGORÍA =====
+async function nextCategoria() {
+  const cat = CATEGORIAS[catIndex];
+
+  if (!cat.locked) {
+    const exactos = votosActuales.length;
+    if (exactos !== cat.votos) {
+      showMsg('vote-msg',
+        `Debes votar por exactamente ${cat.votos} personaje${cat.votos>1?'s':''}.
+         Llevas ${exactos} seleccionado${exactos!==1?'s':''}.`,
+        'error'
+      );
+      return;
+    }
+  }
+
+  document.getElementById('vote-msg').style.display = 'none';
+
+  if (catIndex < CATEGORIAS.length - 1) {
+    catIndex++;
+    votosActuales = todosLosVotos[CATEGORIAS[catIndex].id] || [];
+    renderCategoria();
+  } else {
+    // Enviar todos los votos
+    await enviarVotos();
+  }
+}
+
+// ===== ENVIAR VOTOS =====
+async function enviarVotos() {
+  const btn = document.getElementById('btn-next');
+  btn.disabled = true;
+  btn.textContent = 'Enviando votos...';
+
+  try {
+    for (const cat of CATEGORIAS) {
+      if (cat.locked) continue;
+      const nominados = todosLosVotos[cat.id] || [];
+      if (!nominados.length) continue;
+
+      await fetch(`${SUPABASE_URL}/rest/v1/gala_votos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+          personaje_votante: personajeActual,
+          categoria: cat.id,
+          nominados_votados: nominados
+        })
+      });
+    }
+
+    // Actualizar historial automáticamente
+    await actualizarHistorial();
+
+    showScreen('screen-thanks');
+  } catch(e) {
+    showMsg('vote-msg','Error al enviar los votos. Intenta de nuevo.','error');
+    btn.disabled = false;
+    btn.textContent = '✅ FINALIZAR Y ENVIAR';
+  }
+}
+
+// ===== ACTUALIZAR HISTORIAL =====
+async function actualizarHistorial() {
+  try {
+    // Cargar todos los votos
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const votos = await res.json();
+
+    // Contar votos por personaje por categoría
+    const conteos = {}; // { cat_id: { personaje: count } }
+    for (const v of votos) {
+      if (!conteos[v.categoria]) conteos[v.categoria] = {};
+      for (const nom of v.nominados_votados) {
+        conteos[v.categoria][nom] = (conteos[v.categoria][nom] || 0) + 1;
+      }
+    }
+
+    // Determinar ganadores por categoría
+    const estrellasDelta = {}; // personaje -> +N estrellas
+    const trofeosDelta = {};   // personaje -> +N trofeos
+
+    for (const cat of CATEGORIAS) {
+      if (cat.locked) continue;
+      const c = conteos[cat.id];
+      if (!c) continue;
+      const ganador = Object.entries(c).sort((a,b)=>b[1]-a[1])[0];
+      if (!ganador) continue;
+      const [nombre] = ganador;
+      if (cat.id === 'mejor_semana') {
+        trofeosDelta[nombre] = (trofeosDelta[nombre]||0) + 1;
+      } else {
+        estrellasDelta[nombre] = (estrellasDelta[nombre]||0) + 1;
+      }
+    }
+
+    // Cargar historial actual
+    const hr = await fetch(
+      `${SUPABASE_URL}/rest/v1/gala_historial?select=*`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const historial = await hr.json();
+    const histMap = {};
+    for (const h of historial) histMap[h.personaje] = h;
+
+    // Actualizar cada personaje
+    for (const [pers, delta] of Object.entries(estrellasDelta)) {
+      if (histMap[pers]) {
+        await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(pers)}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ estrellas: histMap[pers].estrellas + delta })
+        });
+      } else {
+        await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ personaje: pers, estrellas: delta, trofeos: 0 })
+        });
+      }
+    }
+
+    for (const [pers, delta] of Object.entries(trofeosDelta)) {
+      if (histMap[pers]) {
+        await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(pers)}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': `Bearer ${SUPABASE_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ trofeos: histMap[pers].trofeos + delta })
+        });
+      }
+    }
+  } catch(e) {
+    console.error('Error actualizando historial:', e);
+  }
+}
+
+// ===== CARGAR HISTORIAL =====
+async function loadHistorial() {
+  const body = document.getElementById('hist-body');
+  body.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div>';
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/gala_historial?select=*`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const data = await res.json();
+
+    // Ordenar: primero por trofeos desc, luego por estrellas desc
+    data.sort((a,b) => b.trofeos - a.trofeos || b.estrellas - a.estrellas);
+
+    if (!data.length) {
+      body.innerHTML = '<div class="loading-state"><p>🏆 La tabla está vacía.</p></div>';
+      return;
+    }
+
+    body.innerHTML = '';
+    data.forEach((row, i) => {
+      const pos = i+1;
+      let posClass='n', posText=pos;
+      if(pos===1){posClass='g';posText='🥇';}
+      else if(pos===2){posClass='s';posText='🥈';}
+      else if(pos===3){posClass='b';posText='🥉';}
+
+      // Estrellas display
+      let starsHTML = '';
+      if (row.estrellas <= 5) {
+        starsHTML = '⭐'.repeat(row.estrellas);
+      } else {
+        starsHTML = `<span class="star-display">⭐</span><span class="star-count">${row.estrellas}</span>`;
+      }
+
+      // Trofeos display
+      let trophHTML = '';
+      if (row.trofeos === 0) {
+        trophHTML = '<span style="color:var(--muted);font-size:0.8rem">—</span>';
+      } else if (row.trofeos <= 5) {
+        trophHTML = '🏆'.repeat(row.trofeos);
+      } else {
+        trophHTML = `<span class="trophy-display">🏆</span><span class="trophy-count">${row.trofeos}</span>`;
+      }
+
+      let rowClass = '';
+      if(pos===1) rowClass='top1';
+      else if(pos===2) rowClass='top2';
+      else if(pos===3) rowClass='top3';
+
+      const div = document.createElement('div');
+      div.className = `hist-row ${rowClass}`;
+      div.innerHTML = `
+        <div class="h-pos ${posClass}">${posText}</div>
+        <div class="h-name">${esc(row.personaje)}</div>
+        <div class="h-stars">${starsHTML}</div>
+        <div class="h-trophies">${trophHTML}</div>
+      `;
+      body.appendChild(div);
+    });
+
+    // Cargar conteos también
+    await loadConteos();
+  } catch(e) {
+    body.innerHTML = '<div class="loading-state"><p>⚠️ Error al cargar.</p></div>';
+  }
+}
+
+// ===== CONTEOS =====
+async function loadConteos() {
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const votos = await res.json();
+
+    const conteos = {};
+    for (const v of votos) {
+      if (!conteos[v.categoria]) conteos[v.categoria] = {};
+      for (const nom of v.nominados_votados) {
+        conteos[v.categoria][nom] = (conteos[v.categoria][nom]||0) + 1;
+      }
+    }
+
+    const wrap = document.getElementById('conteos-body');
+    wrap.innerHTML = '';
+
+    for (const cat of CATEGORIAS) {
+      if (cat.locked) continue;
+      const c = conteos[cat.id];
+      if (!c) continue;
+
+      const sorted = Object.entries(c).sort((a,b)=>b[1]-a[1]);
+      const section = document.createElement('div');
+      section.className = 'conteo-section';
+      section.innerHTML = `<div class="conteo-title">${cat.emoji} ${cat.nombre}</div>` +
+        sorted.map(([n,v]) =>
+          `<div class="conteo-row"><span class="conteo-name">${esc(n)}</span><span class="conteo-val">${v} voto${v!==1?'s':''}</span></div>`
+        ).join('');
+      wrap.appendChild(section);
+    }
+  } catch(e) { console.error(e); }
+}
+
+function toggleConteos() {
+  conteosVisible = !conteosVisible;
+  document.getElementById('conteos-wrap').style.display = conteosVisible ? 'block' : 'none';
+}
+
+// ===== UTILS =====
+function showMsg(id, txt, type) {
+  const el = document.getElementById(id);
+  el.textContent = txt; el.className = `msg ${type}`; el.style.display = 'block';
+}
+
+function volverInicio() {
+  personajeActual = '';
+  catIndex = 0; todosLosVotos = {}; votosActuales = [];
+  document.getElementById('chk-terms').checked = false;
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('sel-personaje').value = '';
+  showScreen('screen-select');
+  // re-activar tab votar
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', i===0);
+  });
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ===== INIT =====
+createParticles();
+cargarPersonajes();
+</script>
+</body>
+</html>
