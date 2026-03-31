@@ -134,7 +134,23 @@ select option{background:#1e1808;}
 .conteo-name{font-weight:700;}
 .conteo-val{font-family:'Cinzel',serif;color:var(--gold);font-size:1rem;font-weight:700;}
 
-/* ADMIN */
+/* DESEMPATE */
+.desemp-card{background:var(--card);border:1.5px solid rgba(239,100,60,.3);border-radius:18px;padding:24px;margin-bottom:18px;animation:fadeIn .4s ease;}
+.desemp-card.cerrado{border-color:rgba(16,185,129,.3);opacity:.7;}
+.desemp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px;}
+.desemp-cat{font-family:'Cinzel Decorative',cursive;font-size:.95rem;color:var(--gold);letter-spacing:1px;}
+.desemp-estado{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:2px;padding:4px 12px;border-radius:20px;text-transform:uppercase;}
+.desemp-estado.abierto{background:rgba(239,100,60,.15);color:#fca5a5;border:1px solid rgba(239,100,60,.3);}
+.desemp-estado.cerrado{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.3);}
+.desemp-nominados{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:14px 0;}
+.desemp-btn{padding:11px 10px;background:var(--card2);border:1.5px solid var(--border);border-radius:10px;color:var(--white);font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;}
+.desemp-btn:hover:not(.sel-desemp):not(:disabled){border-color:var(--gold2);background:rgba(245,200,66,.08);color:var(--gold3);}
+.desemp-btn.sel-desemp{border-color:var(--gold);background:rgba(245,200,66,.15);color:var(--gold);}
+.desemp-btn:disabled{opacity:.5;cursor:not-allowed;}
+.desemp-votos-info{font-size:.8rem;color:var(--muted);margin-bottom:10px;}
+.desemp-ganador{text-align:center;padding:14px;background:rgba(245,200,66,.1);border:1px solid var(--border2);border-radius:10px;margin-top:10px;font-weight:700;color:var(--gold3);}
+
+
 .admin-panel{background:rgba(245,200,66,.05);border:1px solid var(--border2);border-radius:16px;padding:24px;margin-bottom:20px;}
 .admin-title{font-family:'Cinzel Decorative',cursive;font-size:1rem;color:var(--gold);margin-bottom:16px;}
 .admin-input-row{display:flex;gap:10px;margin-bottom:14px;}
@@ -168,6 +184,7 @@ select option{background:#1e1808;}
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('votar')">⭐ Votar</button>
     <button class="tab-btn" onclick="switchTab('tabla');loadHistorial()">🏆 Tabla de Ganadores</button>
+    <button class="tab-btn" onclick="switchTab('desempate');loadDesempates()">⚔️ Desempate</button>
   </div>
 
   <!-- SELECCIONAR PERSONAJE -->
@@ -275,6 +292,72 @@ select option{background:#1e1808;}
     </div>
   </div>
 
+  <!-- DESEMPATE -->
+  <div class="screen" id="screen-desempate">
+
+    <div class="card">
+      <div class="card-title">⚔️ Zona de Desempate</div>
+      <div class="card-sub">Cuando hay empate en una categoría, el admin publica los personajes empatados aquí. Vota por <strong style="color:var(--gold3)">uno</strong> para desempatar. No necesitas seleccionar tu personaje.</div>
+    </div>
+
+    <!-- DESEMPATES ACTIVOS -->
+    <div id="desempate-activos-wrap">
+      <div class="loading-state"><div class="spinner"></div><p>Cargando desempates...</p></div>
+    </div>
+
+    <!-- PANEL ADMIN DESEMPATE -->
+    <div class="admin-panel" style="margin-top:24px">
+      <div class="admin-title">🔐 Admin — Gestión de Desempates</div>
+      <div id="adm-desemp-locked">
+        <div class="admin-input-row">
+          <input type="password" id="adm-desemp-pass" placeholder="Clave de administrador..." onkeydown="if(event.key==='Enter')verificarAdminDesempate()">
+          <button class="btn btn-gold admin-btn-sm" onclick="verificarAdminDesempate()">ENTRAR</button>
+        </div>
+        <div class="msg" id="adm-desemp-msg"></div>
+      </div>
+      <div id="adm-desemp-content" style="display:none">
+        <div class="card-sub" style="margin-bottom:18px">Aquí puedes publicar desempates, cerrarlos y limpiar la tabla.</div>
+
+        <!-- Crear desempate -->
+        <div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px">
+          <div style="font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:var(--gold2);margin-bottom:12px;text-transform:uppercase">📌 Publicar nuevo desempate</div>
+          <div class="field">
+            <label>Categoría en empate</label>
+            <div class="select-wrap">
+              <select id="adm-cat-select">
+                <option value="">— Selecciona categoría —</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Personajes empatados (separados por coma)</label>
+            <input type="text" id="adm-personajes-input" placeholder="ej: Pomni, Ragatha">
+          </div>
+          <button class="btn btn-gold" onclick="publicarDesempate()" style="margin-top:4px">📌 PUBLICAR DESEMPATE</button>
+        </div>
+
+        <!-- Cerrar desempates -->
+        <div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px">
+          <div style="font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:var(--gold2);margin-bottom:12px;text-transform:uppercase">🏆 Cerrar desempate</div>
+          <div class="field">
+            <label>Seleccionar desempate activo</label>
+            <div class="select-wrap">
+              <select id="adm-cerrar-select">
+                <option value="">— Selecciona desempate —</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-gold" onclick="cerrarDesempate()" style="margin-top:4px">⚖️ CERRAR Y PROCLAMAR GANADOR</button>
+        </div>
+
+        <div class="admin-result-box" id="adm-desemp-result" style="display:none;margin-bottom:12px"></div>
+
+        <!-- Limpiar -->
+        <button class="btn btn-red" onclick="limpiarDesempates()">🗑️ BORRAR TODAS LAS TABLAS DE DESEMPATE</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script>
@@ -396,9 +479,10 @@ function createParticles(){
 
 // ─── TABS ──────────────────────────────────────────────────────────────────
 function switchTab(tab){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='votar')||(i===1&&tab==='tabla')));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='votar')||(i===1&&tab==='tabla')||(i===2&&tab==='desempate')));
   if(tab==='votar') volverInicio();
-  else showScreen('screen-tabla');
+  else if(tab==='tabla') showScreen('screen-tabla');
+  else if(tab==='desempate') showScreen('screen-desempate');
 }
 
 function showScreen(id){
@@ -711,7 +795,270 @@ function toggleConteos(){
   if(conteosVisible) loadConteos();
 }
 
-// ─── HELPERS ──────────────────────────────────────────────────────────────
+// ─── DESEMPATE ────────────────────────────────────────────────────────────
+
+// Poblar select de categorías en el panel admin desempate
+function poblarCatSelect(){
+  const sel=document.getElementById('adm-cat-select');
+  if(!sel||sel.options.length>1) return;
+  CATEGORIAS.filter(c=>!c.locked).forEach(c=>{
+    const o=document.createElement('option');
+    o.value=c.id; o.textContent=c.nombre;
+    sel.appendChild(o);
+  });
+}
+
+function verificarAdminDesempate(){
+  if(document.getElementById('adm-desemp-pass').value===ADMIN_PASS){
+    document.getElementById('adm-desemp-locked').style.display='none';
+    document.getElementById('adm-desemp-content').style.display='block';
+    poblarCatSelect();
+    cargarSelectCerrar();
+  }else{
+    showMsg('adm-desemp-msg','Clave incorrecta.','error');
+  }
+}
+
+async function loadDesempates(){
+  const wrap=document.getElementById('desempate-activos-wrap');
+  if(!wrap) return;
+  wrap.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando desempates...</p></div>';
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?select=*&order=id.desc`,{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length){
+      wrap.innerHTML='<div class="empty-state"><p>⚔️ No hay desempates activos por ahora.</p></div>';
+      return;
+    }
+    wrap.innerHTML='';
+    for(const d of data){
+      wrap.appendChild(renderDesempateCard(d));
+    }
+  }catch(e){
+    wrap.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar desempates.</p></div>';
+  }
+}
+
+function renderDesempateCard(d){
+  const cerrado=d.estado==='cerrado';
+  const div=document.createElement('div');
+  div.className=`desemp-card ${cerrado?'cerrado':''}`;
+  div.id=`dcard-${d.id}`;
+
+  const personajes=Array.isArray(d.personajes)?d.personajes:(typeof d.personajes==='string'?JSON.parse(d.personajes):[]);
+  const votos=d.votos?JSON.parse(typeof d.votos==='string'?d.votos:JSON.stringify(d.votos)):{};
+  const totalVotos=Object.values(votos).reduce((a,b)=>a+b,0);
+
+  const catNombre=CATEGORIAS.find(c=>c.id===d.categoria_id)?.nombre||d.categoria_id;
+
+  let nominadosHTML='';
+  if(cerrado){
+    nominadosHTML=personajes.map(p=>{
+      const v=votos[p]||0;
+      const isGanador=p===d.ganador;
+      return `<div class="desemp-btn ${isGanador?'sel-desemp':''}" style="cursor:default;${isGanador?'':''}">
+        ${isGanador?'🏆 ':''}${p} <span style="font-size:.75rem;opacity:.7">(${v} voto${v!==1?'s':''})</span>
+      </div>`;
+    }).join('');
+  }else{
+    nominadosHTML=personajes.map(p=>{
+      const v=votos[p]||0;
+      return `<button class="desemp-btn" id="dbtn-${d.id}-${p.replace(/\s/g,'_')}" onclick="votarDesempate(${d.id},'${p.replace(/'/g,"\\'")}',${JSON.stringify(personajes).replace(/"/g,"'")})">
+        ${p}
+      </button>`;
+    }).join('');
+  }
+
+  div.innerHTML=`
+    <div class="desemp-header">
+      <div class="desemp-cat">⚔️ ${esc(catNombre)}</div>
+      <span class="desemp-estado ${cerrado?'cerrado':'abierto'}">${cerrado?'✅ Cerrado':'🔴 En votación'}</span>
+    </div>
+    <div class="desemp-votos-info">${totalVotos} voto${totalVotos!==1?'s':''} registrado${totalVotos!==1?'s':''}</div>
+    <div class="desemp-nominados">${nominadosHTML}</div>
+    ${cerrado&&d.ganador?`<div class="desemp-ganador">🏆 Ganador: ${esc(d.ganador)}${d.azar?' <span style="font-size:.75rem;color:var(--muted)">(elegido al azar por segundo empate)</span>':''}</div>`:''}
+  `;
+  return div;
+}
+
+async function votarDesempate(id, personaje, personajes){
+  // Guardar voto del desempate en Supabase
+  try{
+    // Obtener votos actuales
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=votos`,{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    const data=await res.json();
+    if(!data||!data[0]) return;
+    const votos=data[0].votos?JSON.parse(typeof data[0].votos==='string'?data[0].votos:JSON.stringify(data[0].votos)):{};
+
+    // Marcar botón seleccionado visualmente y bloquear
+    personajes.forEach(p=>{
+      const btn=document.getElementById(`dbtn-${id}-${p.replace(/\s/g,'_')}`);
+      if(btn){btn.disabled=true; btn.classList.remove('sel-desemp');}
+    });
+    const btnSel=document.getElementById(`dbtn-${id}-${personaje.replace(/\s/g,'_')}`);
+    if(btnSel){btnSel.classList.add('sel-desemp'); btnSel.textContent='⭐ '+personaje;}
+
+    votos[personaje]=(votos[personaje]||0)+1;
+
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body:JSON.stringify({votos:JSON.stringify(votos)})
+    });
+
+    // Actualizar contador
+    const card=document.getElementById(`dcard-${id}`);
+    if(card){
+      const total=Object.values(votos).reduce((a,b)=>a+b,0);
+      const info=card.querySelector('.desemp-votos-info');
+      if(info) info.textContent=`${total} voto${total!==1?'s':''} registrado${total!==1?'s':''}`;
+    }
+  }catch(e){console.error('Error al votar desempate:',e);}
+}
+
+async function publicarDesempate(){
+  const catId=document.getElementById('adm-cat-select').value;
+  const personajesRaw=document.getElementById('adm-personajes-input').value;
+  const rb=document.getElementById('adm-desemp-result');
+  if(!catId){rb.innerHTML='⚠️ Selecciona una categoría.';rb.style.display='block';return;}
+  const personajes=personajesRaw.split(',').map(p=>p.trim()).filter(Boolean);
+  if(personajes.length<2){rb.innerHTML='⚠️ Ingresa al menos 2 personajes separados por coma.';rb.style.display='block';return;}
+
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body:JSON.stringify({categoria_id:catId,personajes:JSON.stringify(personajes),votos:'{}',estado:'abierto',ganador:null,azar:false})
+    });
+    rb.innerHTML='✅ Desempate publicado correctamente.';
+    rb.style.display='block';
+    document.getElementById('adm-cat-select').value='';
+    document.getElementById('adm-personajes-input').value='';
+    await loadDesempates();
+    await cargarSelectCerrar();
+  }catch(e){
+    rb.innerHTML='❌ Error al publicar el desempate.';
+    rb.style.display='block';
+  }
+}
+
+async function cargarSelectCerrar(){
+  const sel=document.getElementById('adm-cerrar-select');
+  if(!sel) return;
+  sel.innerHTML='<option value="">— Selecciona desempate —</option>';
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?estado=eq.abierto&select=*`,{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    const data=await res.json();
+    if(!Array.isArray(data)) return;
+    data.forEach(d=>{
+      const catNombre=CATEGORIAS.find(c=>c.id===d.categoria_id)?.nombre||d.categoria_id;
+      const o=document.createElement('option');
+      o.value=d.id; o.textContent=catNombre;
+      sel.appendChild(o);
+    });
+  }catch(e){}
+}
+
+async function cerrarDesempate(){
+  const id=document.getElementById('adm-cerrar-select').value;
+  const rb=document.getElementById('adm-desemp-result');
+  if(!id){rb.innerHTML='⚠️ Selecciona un desempate activo.';rb.style.display='block';return;}
+
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=*`,{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    const data=await res.json();
+    if(!data||!data[0]) return;
+    const d=data[0];
+    const personajes=JSON.parse(typeof d.personajes==='string'?d.personajes:JSON.stringify(d.personajes));
+    const votos=d.votos?JSON.parse(typeof d.votos==='string'?d.votos:JSON.stringify(d.votos)):{};
+
+    // Calcular ganador
+    let maxV=0;
+    personajes.forEach(p=>{if((votos[p]||0)>maxV) maxV=votos[p]||0;});
+    const empatados=personajes.filter(p=>(votos[p]||0)===maxV);
+
+    let ganador; let azar=false;
+    if(empatados.length===1){
+      ganador=empatados[0];
+    }else{
+      // Segundo empate → azar
+      ganador=empatados[Math.floor(Math.random()*empatados.length)];
+      azar=true;
+    }
+
+    // Marcar cerrado en Supabase
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body:JSON.stringify({estado:'cerrado',ganador,azar})
+    });
+
+    // Actualizar historial con estrella o trofeo según la categoría
+    const cat=CATEGORIAS.find(c=>c.id===d.categoria_id);
+    const esTrofeo=d.categoria_id==='mejor_semana';
+
+    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    const historial=await hr.json();
+    const histMap={};
+    for(const h of historial) histMap[h.personaje]=h;
+
+    if(histMap[ganador]){
+      const upd=esTrofeo?{trofeos:histMap[ganador].trofeos+1}:{estrellas:histMap[ganador].estrellas+1};
+      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`,{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+        body:JSON.stringify(upd)
+      });
+    }else{
+      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+        body:JSON.stringify({personaje:ganador,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})
+      });
+    }
+
+    rb.innerHTML=`✅ Desempate cerrado. Ganador: <strong>${esc(ganador)}</strong>${azar?' (elegido al azar por segundo empate)':''}<br>${esTrofeo?'🏆 Trofeo':'⭐ Estrella'} sumado al historial.`;
+    rb.style.display='block';
+    await loadDesempates();
+    await cargarSelectCerrar();
+    await loadHistorial();
+  }catch(e){
+    console.error(e);
+    const rb2=document.getElementById('adm-desemp-result');
+    rb2.innerHTML='❌ Error al cerrar el desempate.';
+    rb2.style.display='block';
+  }
+}
+
+async function limpiarDesempates(){
+  if(!confirm('¿Borrar TODAS las tablas de desempate? Esta acción no se puede deshacer.')) return;
+  const rb=document.getElementById('adm-desemp-result');
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=gte.0`,{
+      method:'DELETE',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    rb.innerHTML='✅ Todas las tablas de desempate fueron borradas.';
+    rb.style.display='block';
+    await loadDesempates();
+    await cargarSelectCerrar();
+  }catch(e){
+    rb.innerHTML='❌ Error al limpiar los desempates.';
+    rb.style.display='block';
+  }
+}
+
+
 function showMsg(id,txt,type){
   const el=document.getElementById(id);
   el.textContent=txt; el.className=`msg ${type}`; el.style.display='block';
