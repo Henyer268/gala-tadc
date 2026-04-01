@@ -191,6 +191,11 @@ select option{background:#1e1808;}
 .loading-state{text-align:center;padding:40px;color:var(--muted);}
 .empty-state{text-align:center;padding:40px;color:var(--muted);}
 
+/* LOADING OVERLAY */
+#init-overlay{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
+#init-overlay .crown-big{font-size:4rem;animation:pulse-crown 2s ease-in-out infinite;}
+#init-overlay p{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:3px;color:var(--gold2);text-transform:uppercase;}
+
 /* SEPARADOR */
 .sep{border:none;border-top:1px solid var(--border);margin:16px 0;}
 
@@ -202,6 +207,13 @@ select option{background:#1e1808;}
 </style>
 </head>
 <body>
+
+<!-- OVERLAY DE CARGA INICIAL -->
+<div id="init-overlay">
+  <div class="crown-big">🏆</div>
+  <div class="spinner"></div>
+  <p>Cargando la gala...</p>
+</div>
 
 <div class="particles" id="particles"></div>
 <div class="container">
@@ -461,17 +473,15 @@ const SUPABASE_KEY = 'sb_publishable_P1uFKhOCi6Yr9ie0mokF9A_uxTJk2Bf';
 const ADMIN_PASS = 'Henyeradmin';
 
 // ─── ESTADO DINÁMICO DE PERSONAJES ────────────────────────────────────────
-// Estas listas se pueden modificar en runtime al agregar/eliminar personajes
-let CHICOS = ["Abel","Kinger","Jax Evil","Jax Fight Club","Ming","Caine","Zooble Masculino"];
-let CHICAS = ["Ribbit","Zooble","Gangle","Queenie","Zooble Skating","Bubble","Pomni Ringmaster","Ragatha","Pomni","Pomni Skating","Npc","Bubble Evil"];
+// Estas listas se cargan desde Supabase al iniciar. Ya no son hardcodeadas.
+let CHICOS = [];
+let CHICAS = [];
 
-// Personajes a excluir del ranking al limpiar
 const EXCLUIR_RANKING = ["Kinger","Jax","Ribbit Skating","Ragatha Skating"];
 
 // ─── HELPERS DINÁMICOS ────────────────────────────────────────────────────
 function getTodos() { return [...CHICOS, ...CHICAS]; }
 
-// Cuenta versiones de un "grupo" (Pomni, Zooble, Jax)
 function contarVersiones(grupo) {
   const todos = getTodos();
   if (grupo === 'pomni') return todos.filter(p => p.toLowerCase().includes('pomni')).length;
@@ -480,12 +490,7 @@ function contarVersiones(grupo) {
   return 0;
 }
 
-// ─── CATEGORÍAS BASE (sin "nuevo destacado" que es dinámica) ──────────────
-// Ganadores por categoría: [posición → cuántos ganadores reciben premio]
-// Orden: masc_fav(2), fem_fav(3), agradable(4), talentoso(4), activo(3),
-//        participativo(4), divertido(4), mejor_jax(bloqueado),
-//        mejor_pomni(1), mejor_zooble(1), mejor_admin(1), interactivo(4), mejor_semana(1)
-
+// ─── CATEGORÍAS ───────────────────────────────────────────────────────────
 function getCategorias() {
   const todos = getTodos();
   const nPomni = contarVersiones('pomni');
@@ -559,9 +564,7 @@ function getCategorias() {
     }
   ];
 
-  // Agregar categoría "nuevo destacado" si está activa en configuración
   if (catNuevoDestacado && catNuevoDestacado.activa) {
-    // Insertar en posición 5 (índice 5, entre activo y participativo)
     const catNuevo = {
       id:'nuevo_destacado', nombre:'Personaje nuevo destacado', emoji:'🆕',
       votos: catNuevoDestacado.votos || 2,
@@ -575,12 +578,51 @@ function getCategorias() {
   return cats;
 }
 
-// Estado de la categoría nuevo destacado
 let catNuevoDestacado = { activa: false, nominados: [], votos: 2 };
-
-// ─── ESTADO VOTACIÓN ──────────────────────────────────────────────────────
 let personajeActual = '', catIndex = 0, votosActuales = [], todosLosVotos = {}, conteosVisible = false;
 let generoSeleccionado = '';
+
+// ─── INIT — CARGA DESDE SUPABASE ──────────────────────────────────────────
+async function inicializarApp() {
+  try {
+    // Cargar personajes desde Supabase
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?select=nombre,genero&order=nombre.asc`, {
+      headers: {'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`}
+    });
+    const data = await res.json();
+
+    if (Array.isArray(data) && data.length > 0) {
+      CHICOS = data.filter(p => p.genero === 'M').map(p => p.nombre);
+      CHICAS = data.filter(p => p.genero === 'F').map(p => p.nombre);
+    } else {
+      // Fallback si la tabla está vacía o no existe
+      CHICOS = ["Abel","Kinger","Jax Evil","Jax Fight Club","Ming","Caine","Zooble Masculino"];
+      CHICAS = ["Ribbit","Zooble","Gangle","Queenie","Zooble Skating","Bubble","Pomni Ringmaster","Ragatha","Pomni","Pomni Skating","Npc","Bubble Evil","Ragatha Skating"];
+    }
+
+    // Cargar config de nuevo destacado
+    const cfgRes = await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado&select=valor`, {
+      headers: {'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`}
+    });
+    const cfgData = await cfgRes.json();
+    if (cfgData && cfgData[0]) {
+      catNuevoDestacado = JSON.parse(cfgData[0].valor);
+    }
+  } catch(e) {
+    // Fallback total si Supabase falla
+    CHICOS = ["Abel","Kinger","Jax Evil","Jax Fight Club","Ming","Caine","Zooble Masculino"];
+    CHICAS = ["Ribbit","Zooble","Gangle","Queenie","Zooble Skating","Bubble","Pomni Ringmaster","Ragatha","Pomni","Pomni Skating","Npc","Bubble Evil","Ragatha Skating"];
+  }
+
+  cargarPersonajesSelect();
+  createParticles();
+
+  // Ocultar overlay de carga
+  const overlay = document.getElementById('init-overlay');
+  overlay.style.transition = 'opacity .4s ease';
+  overlay.style.opacity = '0';
+  setTimeout(() => overlay.remove(), 400);
+}
 
 // ─── PARTÍCULAS ────────────────────────────────────────────────────────────
 function createParticles() {
@@ -605,7 +647,7 @@ function switchTab(tab) {
   if (tab==='votar') volverInicio();
   else if (tab==='tabla') showScreen('screen-tabla');
   else if (tab==='desempate') showScreen('screen-desempate');
-  else if (tab==='admin-personajes') { showScreen('screen-admin-personajes'); }
+  else if (tab==='admin-personajes') showScreen('screen-admin-personajes');
 }
 
 function showScreen(id) {
@@ -614,10 +656,9 @@ function showScreen(id) {
   window.scrollTo(0,0);
 }
 
-// ─── CARGAR PERSONAJES EN SELECT ──────────────────────────────────────────
+// ─── CARGAR SELECT ────────────────────────────────────────────────────────
 function cargarPersonajesSelect() {
   const sel = document.getElementById('sel-personaje');
-  // Limpiar excepto placeholder
   while (sel.options.length > 1) sel.remove(1);
   getTodos().forEach(p => {
     const o = document.createElement('option');
@@ -626,7 +667,7 @@ function cargarPersonajesSelect() {
   });
 }
 
-// ─── FLUJO DE VOTACIÓN ────────────────────────────────────────────────────
+// ─── FLUJO VOTACIÓN ───────────────────────────────────────────────────────
 function confirmarPersonaje() {
   const sel = document.getElementById('sel-personaje');
   if (!sel.value) { showMsg('select-msg','Debes seleccionar tu personaje.','error'); return; }
@@ -808,7 +849,6 @@ async function cerrarGala() {
       return;
     }
 
-    // Contar votos por categoría
     const conteos = {};
     for (const v of votos) {
       if (!conteos[v.categoria]) conteos[v.categoria] = {};
@@ -816,7 +856,6 @@ async function cerrarGala() {
         conteos[v.categoria][nom] = (conteos[v.categoria][nom]||0) + 1;
     }
 
-    // Cargar historial actual
     const hr = await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`, {
       headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
@@ -830,7 +869,6 @@ async function cerrarGala() {
       const c = conteos[cat.id];
       if (!c || !Object.keys(c).length) continue;
 
-      // Ordenar y tomar los top N ganadores
       const sorted = Object.entries(c).sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0]));
       const topN = sorted.slice(0, cat.ganadores);
       const esTrofeo = cat.id === 'mejor_semana';
@@ -838,7 +876,6 @@ async function cerrarGala() {
       const ganadoresNombres = [];
       for (const [ganador, votsG] of topN) {
         ganadoresNombres.push(`${ganador} (${votsG} voto${votsG!==1?'s':''})`);
-        // Actualizar historial
         if (histMap[ganador]) {
           const upd = esTrofeo ? {trofeos:histMap[ganador].trofeos+1} : {estrellas:histMap[ganador].estrellas+1};
           await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`, {
@@ -1188,31 +1225,29 @@ async function agregarPersonaje() {
   if (!generoSeleccionado) { showMsg('nuevo-pj-msg','Selecciona el género del personaje.','error'); return; }
   if (getTodos().includes(nombre)) { showMsg('nuevo-pj-msg','Este personaje ya existe en la lista.','error'); return; }
 
-  // Agregar a la lista local
-  if (generoSeleccionado === 'M') CHICOS.push(nombre);
-  else CHICAS.push(nombre);
-
-  // Guardar en Supabase para persistencia (tabla gala_personajes si existe)
   try {
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes`, {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes`, {
       method: 'POST',
       headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
       body: JSON.stringify({nombre, genero: generoSeleccionado})
     });
-  } catch(e) { /* Si la tabla no existe, solo se guarda en sesión */ }
+    if (!res.ok) throw new Error('Error Supabase');
+  } catch(e) {
+    showMsg('nuevo-pj-msg','Error al guardar en la base de datos.','error'); return;
+  }
 
-  rb.innerHTML = `✅ "${esc(nombre)}" agregado como personaje ${generoSeleccionado==='M'?'masculino':'femenino'}.<br>Ahora aparece en todas las categorías correspondientes.`;
+  if (generoSeleccionado === 'M') CHICOS.push(nombre);
+  else CHICAS.push(nombre);
+
+  rb.innerHTML = `✅ "${esc(nombre)}" agregado como personaje ${generoSeleccionado==='M'?'masculino':'femenino'} y guardado permanentemente.`;
   rb.style.display = 'block';
 
-  // Actualizar UI
   document.getElementById('nuevo-pj-nombre').value = '';
   generoSeleccionado = '';
   document.getElementById('radio-masc').classList.remove('sel');
   document.getElementById('radio-fem').classList.remove('sel');
   renderListaPersonajes();
   cargarPersonajesSelect();
-
-  // Verificar si se desbloquearon categorías especiales
   verificarCambiosCategorias();
 }
 
@@ -1224,13 +1259,11 @@ async function confirmarEliminarPersonaje(nombre) {
 async function eliminarPersonaje(nombre) {
   const rb = document.getElementById('pj-result-box');
 
-  // Quitar de las listas locales
   const iChico = CHICOS.indexOf(nombre);
   const iChica = CHICAS.indexOf(nombre);
   if (iChico > -1) CHICOS.splice(iChico, 1);
   if (iChica > -1) CHICAS.splice(iChica, 1);
 
-  // Eliminar del ranking en Supabase
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`, {
       method: 'DELETE',
@@ -1238,7 +1271,6 @@ async function eliminarPersonaje(nombre) {
     });
   } catch(e) {}
 
-  // Eliminar de tabla gala_personajes si existe
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?nombre=eq.${encodeURIComponent(nombre)}`, {
       method: 'DELETE',
@@ -1246,10 +1278,8 @@ async function eliminarPersonaje(nombre) {
     });
   } catch(e) {}
 
-  // Revisar categorías especiales bloqueadas
   const cambios = verificarCambiosCategorias();
-
-  let msg = `✅ "${esc(nombre)}" ha sido eliminado de la gala y del ranking.`;
+  let msg = `✅ "${esc(nombre)}" ha sido eliminado de la gala, del ranking y de la base de datos.`;
   if (cambios.length) msg += `<br><br>⚠️ Cambios automáticos:<br>` + cambios.map(c => `• ${c}`).join('<br>');
 
   rb.innerHTML = msg;
@@ -1268,10 +1298,8 @@ function verificarCambiosCategorias() {
 
   if (nPomni < 3) cambios.push(`Categoría "Mejor POMNI" bloqueada (solo ${nPomni} versión${nPomni!==1?'es':''})`);
   else cambios.push(`Categoría "Mejor POMNI" activa (${nPomni} versiones ✅)`);
-
   if (nZooble < 3) cambios.push(`Categoría "Mejor ZOOBLE" bloqueada (solo ${nZooble} versión${nZooble!==1?'es':''})`);
   else cambios.push(`Categoría "Mejor ZOOBLE" activa (${nZooble} versiones ✅)`);
-
   if (nJax < 3) cambios.push(`Categoría "Mejor JAX" bloqueada (solo ${nJax} versión${nJax!==1?'es':''})`);
   else cambios.push(`Categoría "Mejor JAX" activa (${nJax} versiones ✅)`);
 
@@ -1317,7 +1345,6 @@ async function activarCatNuevo(activar) {
   catNuevoDestacado = { activa: activar, nominados: activar ? nominados : [], votos: votosN };
   actualizarUIEstadoNuevo();
 
-  // Guardar en Supabase
   try {
     await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado`, {
       method: 'DELETE',
@@ -1355,22 +1382,8 @@ function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────
-createParticles();
-cargarPersonajesSelect();
-
-// Cargar config de nuevo destacado al iniciar
-(async () => {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado&select=valor`, {
-      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
-    });
-    const data = await res.json();
-    if (data && data[0]) {
-      catNuevoDestacado = JSON.parse(data[0].valor);
-    }
-  } catch(e) {}
-})();
+// ─── ARRANCAR ─────────────────────────────────────────────────────────────
+inicializarApp();
 </script>
 </body>
 </html>
