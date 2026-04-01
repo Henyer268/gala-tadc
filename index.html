@@ -33,8 +33,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .gala-sub{font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:4px;color:var(--muted);margin-top:8px;text-transform:uppercase;}
 
 /* TABS */
-.tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:28px;}
-.tab-btn{flex:1;padding:12px 8px;border:none;border-radius:10px;font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:1px;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted);}
+.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:28px;flex-wrap:wrap;}
+.tab-btn{flex:1;min-width:80px;padding:10px 6px;border:none;border-radius:10px;font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:1px;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted);}
 .tab-btn.active{background:linear-gradient(135deg,var(--gold-dark),var(--gold2));color:#0a0800;font-weight:700;box-shadow:0 4px 15px rgba(245,200,66,.3);}
 .tab-btn:hover:not(.active){color:var(--gold);}
 
@@ -51,6 +51,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 select,input[type="text"],input[type="password"]{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--white);font-family:'Nunito',sans-serif;font-size:.95rem;font-weight:700;outline:none;transition:border-color .3s;appearance:none;}
 select:focus,input:focus{border-color:var(--gold2);box-shadow:0 0 0 3px rgba(245,200,66,.1);}
 select option{background:#1e1808;}
+
+/* RADIO GRUPO GÉNERO */
+.radio-group{display:flex;gap:10px;}
+.radio-opt{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:var(--card2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;font-weight:700;font-size:.9rem;}
+.radio-opt:hover{border-color:var(--gold2);}
+.radio-opt input{display:none;}
+.radio-opt.sel{border-color:var(--gold);background:rgba(245,200,66,.12);color:var(--gold);}
 
 /* WELCOME */
 .welcome-msg{background:linear-gradient(135deg,rgba(245,200,66,.08),rgba(245,200,66,.03));border:1px solid var(--border2);border-radius:14px;padding:20px;font-size:.92rem;line-height:1.8;color:var(--white);margin-bottom:20px;font-style:italic;}
@@ -72,6 +79,8 @@ select option{background:#1e1808;}
 .btn-outline:hover{background:rgba(245,200,66,.08);}
 .btn-red{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
 .btn-red:hover{background:rgba(239,68,68,.25);}
+.btn-green{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;}
+.btn-green:hover{background:rgba(16,185,129,.25);}
 
 /* PROGRESS */
 .progress-wrap{margin-bottom:20px;}
@@ -150,13 +159,31 @@ select option{background:#1e1808;}
 .desemp-votos-info{font-size:.8rem;color:var(--muted);margin-bottom:10px;}
 .desemp-ganador{text-align:center;padding:14px;background:rgba(245,200,66,.1);border:1px solid var(--border2);border-radius:10px;margin-top:10px;font-weight:700;color:var(--gold3);}
 
-
+/* ADMIN */
 .admin-panel{background:rgba(245,200,66,.05);border:1px solid var(--border2);border-radius:16px;padding:24px;margin-bottom:20px;}
 .admin-title{font-family:'Cinzel Decorative',cursive;font-size:1rem;color:var(--gold);margin-bottom:16px;}
 .admin-input-row{display:flex;gap:10px;margin-bottom:14px;}
 .admin-input-row input{flex:1;}
 .admin-btn-sm{width:auto;padding:13px 20px;font-size:.85rem;}
 .admin-result-box{padding:16px;border-radius:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#6ee7b7;font-size:.88rem;line-height:1.9;display:none;margin-top:12px;}
+.admin-section{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;}
+.admin-section-title{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:var(--gold2);margin-bottom:12px;text-transform:uppercase;}
+
+/* TABLA PERSONAJES */
+.personajes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px;}
+.personaje-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;gap:8px;}
+.personaje-item .pj-name{font-weight:700;font-size:.85rem;flex:1;}
+.personaje-item .pj-genero{font-size:.7rem;color:var(--muted);font-family:'Cinzel',serif;}
+.personaje-item .pj-del{background:none;border:none;cursor:pointer;color:rgba(239,68,68,.6);font-size:1rem;padding:2px 6px;border-radius:6px;transition:all .2s;flex-shrink:0;}
+.personaje-item .pj-del:hover{color:#fca5a5;background:rgba(239,68,68,.15);}
+.genero-tag{font-size:.65rem;padding:2px 8px;border-radius:10px;font-family:'Cinzel',serif;letter-spacing:1px;}
+.genero-tag.m{background:rgba(59,130,246,.15);color:#93c5fd;border:1px solid rgba(59,130,246,.3);}
+.genero-tag.f{background:rgba(236,72,153,.15);color:#f9a8d4;border:1px solid rgba(236,72,153,.3);}
+
+/* NUEVO CAT DESTACADO */
+.cat-nueva-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:1px;text-transform:uppercase;}
+.cat-nueva-badge.activa{background:rgba(16,185,129,.15);color:#6ee7b7;border:1px solid rgba(16,185,129,.3);}
+.cat-nueva-badge.inactiva{background:rgba(239,68,68,.1);color:#fca5a5;border:1px solid rgba(239,68,68,.2);}
 
 /* SPINNER */
 .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
@@ -164,9 +191,13 @@ select option{background:#1e1808;}
 .loading-state{text-align:center;padding:40px;color:var(--muted);}
 .empty-state{text-align:center;padding:40px;color:var(--muted);}
 
+/* SEPARADOR */
+.sep{border:none;border-top:1px solid var(--border);margin:16px 0;}
+
 @media(max-width:500px){
   .nominados-grid{grid-template-columns:1fr 1fr;}
   .hist-thead,.hist-row{grid-template-columns:36px 1fr 100px 80px;}
+  .personajes-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
@@ -183,8 +214,9 @@ select option{background:#1e1808;}
 
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('votar')">⭐ Votar</button>
-    <button class="tab-btn" onclick="switchTab('tabla');loadHistorial()">🏆 Tabla de Ganadores</button>
+    <button class="tab-btn" onclick="switchTab('tabla');loadHistorial()">🏆 Campeones</button>
     <button class="tab-btn" onclick="switchTab('desempate');loadDesempates()">⚔️ Desempate</button>
+    <button class="tab-btn" onclick="switchTab('admin-personajes')">👤 Personajes</button>
   </div>
 
   <!-- SELECCIONAR PERSONAJE -->
@@ -230,7 +262,7 @@ select option{background:#1e1808;}
   <div class="screen" id="screen-voting">
     <div class="progress-wrap">
       <div class="progress-info">
-        <span id="prog-cat">Categoría 1 de 14</span>
+        <span id="prog-cat">Categoría 1</span>
         <span id="prog-name">—</span>
       </div>
       <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
@@ -254,7 +286,7 @@ select option{background:#1e1808;}
     </div>
   </div>
 
-  <!-- TABLA -->
+  <!-- TABLA CAMPEONES -->
   <div class="screen" id="screen-tabla">
     <div class="hist-title">🏆 Tabla de Campeones</div>
     <div class="hist-table">
@@ -267,9 +299,8 @@ select option{background:#1e1808;}
       <div id="hist-body"><div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div></div>
     </div>
 
-    <!-- PANEL ADMIN -->
     <div class="admin-panel">
-      <div class="admin-title">🔐 Panel de Administración</div>
+      <div class="admin-title">🔐 Panel de Administración — Gala</div>
       <div id="admin-locked">
         <div class="admin-input-row">
           <input type="password" id="admin-pass" placeholder="Clave de administrador..." onkeydown="if(event.key==='Enter')verificarAdmin()">
@@ -278,34 +309,29 @@ select option{background:#1e1808;}
         <div class="msg" id="admin-msg"></div>
       </div>
       <div id="admin-content" style="display:none">
-        <div class="card-sub">Cuando todos hayan votado, cierra la gala para proclamar los ganadores y actualizar la tabla. Los votos se cuentan entre <strong style="color:var(--gold3)">todos los participantes</strong>.</div>
+        <div class="card-sub">Cierra la gala para proclamar los ganadores. Los N mejores de cada categoría reciben su premio.</div>
         <div class="admin-result-box" id="admin-result-box"></div>
         <button class="btn btn-gold" onclick="cerrarGala()" id="btn-cerrar-gala" style="margin-bottom:12px">🏆 CERRAR GALA Y PROCLAMAR GANADORES</button>
-        <button class="btn btn-red" onclick="resetearVotos()" id="btn-reset">🗑️ BORRAR VOTOS (iniciar nueva gala)</button>
-        <button class="btn btn-outline" style="margin-top:14px;margin-bottom:0" onclick="limpiarRanking()">🧹 LIMPIAR ENTRADAS DEL RANKING</button>
+        <button class="btn btn-red" onclick="resetearVotos()" id="btn-reset" style="margin-bottom:12px">🗑️ BORRAR VOTOS (iniciar nueva gala)</button>
+        <button class="btn btn-outline" style="margin-bottom:14px" onclick="limpiarRanking()">🧹 LIMPIAR ENTRADAS DEL RANKING</button>
         <div id="conteos-wrap" style="margin-top:24px;display:none">
           <div class="card-title" style="margin-bottom:14px">📊 Conteo actual de votos</div>
           <div id="conteos-body"></div>
         </div>
-        <button class="btn btn-outline" style="margin-top:14px" onclick="toggleConteos()">📊 Ver / Ocultar Conteos</button>
+        <button class="btn btn-outline" onclick="toggleConteos()">📊 Ver / Ocultar Conteos</button>
       </div>
     </div>
   </div>
 
   <!-- DESEMPATE -->
   <div class="screen" id="screen-desempate">
-
     <div class="card">
       <div class="card-title">⚔️ Zona de Desempate</div>
-      <div class="card-sub">Cuando hay empate en una categoría, el admin publica los personajes empatados aquí. Vota por <strong style="color:var(--gold3)">uno</strong> para desempatar. No necesitas seleccionar tu personaje.</div>
+      <div class="card-sub">Cuando hay empate en una categoría, el admin publica los personajes empatados aquí. Vota por <strong style="color:var(--gold3)">uno</strong> para desempatar.</div>
     </div>
-
-    <!-- DESEMPATES ACTIVOS -->
     <div id="desempate-activos-wrap">
       <div class="loading-state"><div class="spinner"></div><p>Cargando desempates...</p></div>
     </div>
-
-    <!-- PANEL ADMIN DESEMPATE -->
     <div class="admin-panel" style="margin-top:24px">
       <div class="admin-title">🔐 Admin — Gestión de Desempates</div>
       <div id="adm-desemp-locked">
@@ -316,48 +342,117 @@ select option{background:#1e1808;}
         <div class="msg" id="adm-desemp-msg"></div>
       </div>
       <div id="adm-desemp-content" style="display:none">
-        <div class="card-sub" style="margin-bottom:18px">Aquí puedes publicar desempates, cerrarlos y limpiar la tabla.</div>
-
-        <!-- Crear desempate -->
-        <div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px">
-          <div style="font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:var(--gold2);margin-bottom:12px;text-transform:uppercase">📌 Publicar nuevo desempate</div>
+        <div class="card-sub" style="margin-bottom:18px">Publica desempates, ciérralos y limpia la tabla.</div>
+        <div class="admin-section">
+          <div class="admin-section-title">📌 Publicar nuevo desempate</div>
           <div class="field">
             <label>Categoría en empate</label>
-            <div class="select-wrap">
-              <select id="adm-cat-select">
-                <option value="">— Selecciona categoría —</option>
-              </select>
-            </div>
+            <div class="select-wrap"><select id="adm-cat-select"><option value="">— Selecciona categoría —</option></select></div>
           </div>
           <div class="field">
             <label>Personajes empatados (separados por coma)</label>
             <input type="text" id="adm-personajes-input" placeholder="ej: Pomni, Ragatha">
           </div>
-          <button class="btn btn-gold" onclick="publicarDesempate()" style="margin-top:4px">📌 PUBLICAR DESEMPATE</button>
+          <button class="btn btn-gold" onclick="publicarDesempate()">📌 PUBLICAR DESEMPATE</button>
         </div>
-
-        <!-- Cerrar desempates -->
-        <div style="background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px">
-          <div style="font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:var(--gold2);margin-bottom:12px;text-transform:uppercase">🏆 Cerrar desempate</div>
+        <div class="admin-section">
+          <div class="admin-section-title">🏆 Cerrar desempate</div>
           <div class="field">
             <label>Seleccionar desempate activo</label>
-            <div class="select-wrap">
-              <select id="adm-cerrar-select">
-                <option value="">— Selecciona desempate —</option>
-              </select>
-            </div>
+            <div class="select-wrap"><select id="adm-cerrar-select"><option value="">— Selecciona desempate —</option></select></div>
           </div>
-          <button class="btn btn-gold" onclick="cerrarDesempate()" style="margin-top:4px">⚖️ CERRAR Y PROCLAMAR GANADOR</button>
+          <button class="btn btn-gold" onclick="cerrarDesempate()">⚖️ CERRAR Y PROCLAMAR GANADOR</button>
         </div>
-
         <div class="admin-result-box" id="adm-desemp-result" style="display:none;margin-bottom:12px"></div>
-
-        <!-- Limpiar -->
         <button class="btn btn-red" onclick="limpiarDesempates()">🗑️ BORRAR TODAS LAS TABLAS DE DESEMPATE</button>
       </div>
     </div>
-
   </div>
+
+  <!-- GESTIÓN DE PERSONAJES -->
+  <div class="screen" id="screen-admin-personajes">
+    <div class="card">
+      <div class="card-title">👤 Gestión de Personajes</div>
+      <div class="card-sub">Administra los personajes que participan en la gala. Requiere clave de administrador.</div>
+      <div id="pj-admin-locked">
+        <div class="admin-input-row">
+          <input type="password" id="pj-admin-pass" placeholder="Clave de administrador..." onkeydown="if(event.key==='Enter')verificarAdminPJ()">
+          <button class="btn btn-gold admin-btn-sm" onclick="verificarAdminPJ()">ENTRAR</button>
+        </div>
+        <div class="msg" id="pj-admin-msg"></div>
+      </div>
+      <div id="pj-admin-content" style="display:none">
+
+        <!-- Agregar personaje -->
+        <div class="admin-section" style="margin-top:16px">
+          <div class="admin-section-title">➕ Agregar nuevo personaje</div>
+          <div class="field">
+            <label>Nombre del personaje</label>
+            <input type="text" id="nuevo-pj-nombre" placeholder="ej: Kaufmo">
+          </div>
+          <div class="field">
+            <label>Género</label>
+            <div class="radio-group">
+              <label class="radio-opt" id="radio-masc" onclick="selGenero('M')">
+                <input type="radio" name="genero" value="M"> 💙 Masculino
+              </label>
+              <label class="radio-opt" id="radio-fem" onclick="selGenero('F')">
+                <input type="radio" name="genero" value="F"> 💖 Femenino
+              </label>
+            </div>
+          </div>
+          <div class="msg" id="nuevo-pj-msg"></div>
+          <button class="btn btn-gold" onclick="agregarPersonaje()">➕ AGREGAR PERSONAJE</button>
+        </div>
+
+        <!-- Lista actual -->
+        <div style="margin-top:20px">
+          <div class="admin-section-title" style="font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:2px;color:var(--gold2);text-transform:uppercase;margin-bottom:14px">
+            📋 Personajes actuales
+          </div>
+
+          <div style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">
+            💙 Masculinos
+          </div>
+          <div class="personajes-grid" id="lista-chicos"></div>
+
+          <hr class="sep">
+
+          <div style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:8px">
+            💖 Femeninas
+          </div>
+          <div class="personajes-grid" id="lista-chicas"></div>
+        </div>
+
+        <div class="admin-result-box" id="pj-result-box"></div>
+
+        <!-- Categoría nuevo destacado -->
+        <hr class="sep">
+        <div class="admin-section" style="margin-top:4px">
+          <div class="admin-section-title">🆕 Categoría "Personaje Nuevo Destacado" (opcional)</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+            <span id="nuevo-dest-estado" class="cat-nueva-badge inactiva">⛔ Inactiva</span>
+            <span style="font-size:.82rem;color:var(--muted)">Esta categoría es opcional. Actívala cuando haya personajes nuevos que destacar.</span>
+          </div>
+          <div class="field">
+            <label>Personajes nominados (separados por coma)</label>
+            <input type="text" id="nuevo-dest-nominados" placeholder="ej: Kinger, Caine, Zooble Skating">
+          </div>
+          <div class="field">
+            <label>Votos por persona</label>
+            <input type="text" id="nuevo-dest-votos" placeholder="2" value="2">
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-green" style="flex:1;min-width:140px;padding:13px" onclick="activarCatNuevo(true)">✅ ACTIVAR Y GUARDAR</button>
+            <button class="btn btn-red" style="flex:1;min-width:140px;padding:13px" onclick="activarCatNuevo(false)">⛔ DESACTIVAR</button>
+          </div>
+          <div class="admin-result-box" id="nuevo-dest-result"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -365,721 +460,917 @@ const SUPABASE_URL = 'https://goopxqkxuogqhlppsfyv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_P1uFKhOCi6Yr9ie0mokF9A_uxTJk2Bf';
 const ADMIN_PASS = 'Henyeradmin';
 
-// ─── PERSONAJES ACTUALES ───────────────────────────────────────────────────
-const CHICOS = ["Abel","Kinger","Jax Evil","Jax Fight Club","Ming","Caine","Zooble Masculino"];
-const CHICAS = ["Ribbit","Zooble","Gangle","Queenie","Zooble Skating","Bubble","Pomni Ringmaster","Ragatha","Pomni","Pomni Skating","Npc","Bubble Evil"];
-const TODOS  = [...CHICOS, ...CHICAS];
+// ─── ESTADO DINÁMICO DE PERSONAJES ────────────────────────────────────────
+// Estas listas se pueden modificar en runtime al agregar/eliminar personajes
+let CHICOS = ["Abel","Kinger","Jax Evil","Jax Fight Club","Ming","Caine","Zooble Masculino"];
+let CHICAS = ["Ribbit","Zooble","Gangle","Queenie","Zooble Skating","Bubble","Pomni Ringmaster","Ragatha","Pomni","Pomni Skating","Npc","Bubble Evil"];
 
-// Personajes que YA NO deben aparecer en el ranking (se limpian al entrar admin)
+// Personajes a excluir del ranking al limpiar
 const EXCLUIR_RANKING = ["Kinger","Jax","Ribbit Skating","Ragatha Skating"];
 
-// ─── CATEGORÍAS ───────────────────────────────────────────────────────────
-const CATEGORIAS = [
-  {
-    id:'masc_fav',
-    nombre:'Personaje masculino favorito',
-    emoji:'⭐',votos:2,locked:false,
-    nominados:[...CHICOS]
-  },
-  {
-    id:'fem_fav',
-    nombre:'Personaje femenino favorito',
-    emoji:'⭐',votos:5,locked:false,
-    nominados:[...CHICAS]
-  },
-  {
-    id:'agradable',
-    nombre:'Personaje más agradable',
-    emoji:'⭐',votos:5,locked:false,
-    nominados:[...TODOS]
-  },
-  {
-    id:'talentoso',
-    nombre:'Personaje más talentoso',
-    emoji:'⭐',votos:5,locked:false,
-    nominados:[...TODOS]
-  },
-  {
-    id:'activo',
-    nombre:'Personaje más activo',
-    emoji:'⭐',votos:4,locked:false,
-    nominados:[...TODOS]
-  },
-  {
-    id:'nuevo',
-    nombre:'Personaje nuevo destacado',
-    emoji:'⭐',votos:2,locked:false,
-    nominados:['Kinger','Caine','Zooble Skating','Bubble Evil','Npc','Zooble Masculino']
-  },
-  {
-    id:'participativo',
-    nombre:'Personaje más participativo',
-    emoji:'⭐',votos:4,locked:false,
-    nominados:[...TODOS]
-  },
-  {
-    id:'divertido',
-    nombre:'Personaje más divertido',
-    emoji:'⭐',votos:5,locked:false,
-    nominados:[...TODOS]
-  },
-  {
-    id:'mejor_jax',
-    nombre:'Mejor JAX',
-    emoji:'⭐',votos:1,locked:true,
-    lockedMsg:'Esta categoría <strong>no está disponible</strong> en este momento debido a que no hay personajes suficientes de JAX activos.<br><br>¡Pronto estará habilitada cuando se incorporen más versiones de JAX!',
-    nominados:['Jax Evil','Jax Fight Club']
-  },
-  {
-    id:'mejor_pomni',
-    nombre:'Mejor POMNI',
-    emoji:'⭐',votos:1,locked:false,
-    nominados:['Pomni','Pomni Ringmaster','Pomni Skating']
-  },
-  {
-    id:'mejor_zooble',
-    nombre:'Mejor ZOOBLE',
-    emoji:'⭐',votos:1,locked:false,
-    nominados:['Zooble','Zooble Skating','Zooble Masculino']
-  },
-  {
-    id:'mejor_admin',
-    nombre:'Mejor ADMIN',
-    emoji:'⭐',votos:1,locked:false,
-    nominados:['Pomni Ringmaster','Abel','Pomni','Ribbit','Queenie']
-  },
-  {
-    id:'interactivo',
-    nombre:'Personaje más interactivo',
-    emoji:'⭐',votos:4,locked:false,
-    nominados:[...TODOS]
-  },
-  {
-    id:'mejor_semana',
-    nombre:'El MEJOR personaje de toda la semana',
-    emoji:'🏆',votos:3,locked:false,
-    nominados:[...TODOS]
-  }
-];
+// ─── HELPERS DINÁMICOS ────────────────────────────────────────────────────
+function getTodos() { return [...CHICOS, ...CHICAS]; }
 
-let personajeActual='', catIndex=0, votosActuales=[], todosLosVotos={}, conteosVisible=false;
+// Cuenta versiones de un "grupo" (Pomni, Zooble, Jax)
+function contarVersiones(grupo) {
+  const todos = getTodos();
+  if (grupo === 'pomni') return todos.filter(p => p.toLowerCase().includes('pomni')).length;
+  if (grupo === 'zooble') return todos.filter(p => p.toLowerCase().includes('zooble')).length;
+  if (grupo === 'jax') return todos.filter(p => p.toLowerCase().includes('jax')).length;
+  return 0;
+}
+
+// ─── CATEGORÍAS BASE (sin "nuevo destacado" que es dinámica) ──────────────
+// Ganadores por categoría: [posición → cuántos ganadores reciben premio]
+// Orden: masc_fav(2), fem_fav(3), agradable(4), talentoso(4), activo(3),
+//        participativo(4), divertido(4), mejor_jax(bloqueado),
+//        mejor_pomni(1), mejor_zooble(1), mejor_admin(1), interactivo(4), mejor_semana(1)
+
+function getCategorias() {
+  const todos = getTodos();
+  const nPomni = contarVersiones('pomni');
+  const nZooble = contarVersiones('zooble');
+  const nJax = contarVersiones('jax');
+
+  const cats = [
+    {
+      id:'masc_fav', nombre:'Personaje masculino favorito', emoji:'⭐', votos:2, ganadores:2, locked:false,
+      nominados:[...CHICOS]
+    },
+    {
+      id:'fem_fav', nombre:'Personaje femenino favorito', emoji:'⭐', votos:5, ganadores:3, locked:false,
+      nominados:[...CHICAS]
+    },
+    {
+      id:'agradable', nombre:'Personaje más agradable', emoji:'⭐', votos:5, ganadores:4, locked:false,
+      nominados:[...todos]
+    },
+    {
+      id:'talentoso', nombre:'Personaje más talentoso', emoji:'⭐', votos:5, ganadores:4, locked:false,
+      nominados:[...todos]
+    },
+    {
+      id:'activo', nombre:'Personaje más activo', emoji:'⭐', votos:4, ganadores:3, locked:false,
+      nominados:[...todos]
+    },
+    {
+      id:'participativo', nombre:'Personaje más participativo', emoji:'⭐', votos:4, ganadores:4, locked:false,
+      nominados:[...todos]
+    },
+    {
+      id:'divertido', nombre:'Personaje más divertido', emoji:'⭐', votos:5, ganadores:4, locked:false,
+      nominados:[...todos]
+    },
+    {
+      id:'mejor_jax', nombre:'Mejor JAX', emoji:'⭐', votos:1, ganadores:1,
+      locked: nJax < 3,
+      lockedMsg: nJax < 3
+        ? `Esta categoría requiere al menos <strong>3 versiones de JAX</strong> activas. Actualmente hay <strong>${nJax}</strong>.<br><br>Se habilitará automáticamente cuando se agreguen más versiones de JAX.`
+        : null,
+      nominados: todos.filter(p => p.toLowerCase().includes('jax'))
+    },
+    {
+      id:'mejor_pomni', nombre:'Mejor POMNI', emoji:'⭐', votos:1, ganadores:1,
+      locked: nPomni < 3,
+      lockedMsg: nPomni < 3
+        ? `Esta categoría requiere al menos <strong>3 versiones de POMNI</strong> activas. Actualmente hay <strong>${nPomni}</strong>.<br><br>Se habilitará automáticamente cuando se incorporen más versiones.`
+        : null,
+      nominados: todos.filter(p => p.toLowerCase().includes('pomni'))
+    },
+    {
+      id:'mejor_zooble', nombre:'Mejor ZOOBLE', emoji:'⭐', votos:1, ganadores:1,
+      locked: nZooble < 3,
+      lockedMsg: nZooble < 3
+        ? `Esta categoría requiere al menos <strong>3 versiones de ZOOBLE</strong> activas. Actualmente hay <strong>${nZooble}</strong>.<br><br>Se habilitará automáticamente cuando se incorporen más versiones.`
+        : null,
+      nominados: todos.filter(p => p.toLowerCase().includes('zooble'))
+    },
+    {
+      id:'mejor_admin', nombre:'Mejor ADMIN', emoji:'⭐', votos:1, ganadores:1, locked:false,
+      nominados:['Pomni Ringmaster','Abel','Pomni','Ribbit','Queenie'].filter(p => todos.includes(p))
+    },
+    {
+      id:'interactivo', nombre:'Personaje más interactivo', emoji:'⭐', votos:4, ganadores:4, locked:false,
+      nominados:[...todos]
+    },
+    {
+      id:'mejor_semana', nombre:'El MEJOR personaje de toda la semana', emoji:'🏆', votos:3, ganadores:1, locked:false,
+      nominados:[...todos]
+    }
+  ];
+
+  // Agregar categoría "nuevo destacado" si está activa en configuración
+  if (catNuevoDestacado && catNuevoDestacado.activa) {
+    // Insertar en posición 5 (índice 5, entre activo y participativo)
+    const catNuevo = {
+      id:'nuevo_destacado', nombre:'Personaje nuevo destacado', emoji:'🆕',
+      votos: catNuevoDestacado.votos || 2,
+      ganadores: catNuevoDestacado.votos || 2,
+      locked: false,
+      nominados: catNuevoDestacado.nominados.filter(n => todos.includes(n))
+    };
+    cats.splice(5, 0, catNuevo);
+  }
+
+  return cats;
+}
+
+// Estado de la categoría nuevo destacado
+let catNuevoDestacado = { activa: false, nominados: [], votos: 2 };
+
+// ─── ESTADO VOTACIÓN ──────────────────────────────────────────────────────
+let personajeActual = '', catIndex = 0, votosActuales = [], todosLosVotos = {}, conteosVisible = false;
+let generoSeleccionado = '';
 
 // ─── PARTÍCULAS ────────────────────────────────────────────────────────────
-function createParticles(){
-  const c=document.getElementById('particles');
-  ['⭐','🏆','✨'].forEach(item=>{
-    for(let i=0;i<8;i++){
-      const p=document.createElement('div');
-      p.className='particle'; p.textContent=item;
-      p.style.cssText=`left:${Math.random()*100}%;--d:${8+Math.random()*12}s;--delay:${Math.random()*10}s`;
+function createParticles() {
+  const c = document.getElementById('particles');
+  ['⭐','🏆','✨'].forEach(item => {
+    for (let i = 0; i < 8; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle'; p.textContent = item;
+      p.style.cssText = `left:${Math.random()*100}%;--d:${8+Math.random()*12}s;--delay:${Math.random()*10}s`;
       c.appendChild(p);
     }
   });
 }
 
 // ─── TABS ──────────────────────────────────────────────────────────────────
-function switchTab(tab){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&tab==='votar')||(i===1&&tab==='tabla')||(i===2&&tab==='desempate')));
-  if(tab==='votar') volverInicio();
-  else if(tab==='tabla') showScreen('screen-tabla');
-  else if(tab==='desempate') showScreen('screen-desempate');
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach((b,i) =>
+    b.classList.toggle('active',
+      (i===0&&tab==='votar')||(i===1&&tab==='tabla')||(i===2&&tab==='desempate')||(i===3&&tab==='admin-personajes')
+    )
+  );
+  if (tab==='votar') volverInicio();
+  else if (tab==='tabla') showScreen('screen-tabla');
+  else if (tab==='desempate') showScreen('screen-desempate');
+  else if (tab==='admin-personajes') { showScreen('screen-admin-personajes'); }
 }
 
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
 
 // ─── CARGAR PERSONAJES EN SELECT ──────────────────────────────────────────
-function cargarPersonajes(){
-  const sel=document.getElementById('sel-personaje');
-  TODOS.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o);});
+function cargarPersonajesSelect() {
+  const sel = document.getElementById('sel-personaje');
+  // Limpiar excepto placeholder
+  while (sel.options.length > 1) sel.remove(1);
+  getTodos().forEach(p => {
+    const o = document.createElement('option');
+    o.value = p; o.textContent = p;
+    sel.appendChild(o);
+  });
 }
 
 // ─── FLUJO DE VOTACIÓN ────────────────────────────────────────────────────
-function confirmarPersonaje(){
-  const sel=document.getElementById('sel-personaje');
-  if(!sel.value){showMsg('select-msg','Debes seleccionar tu personaje.','error');return;}
-  personajeActual=sel.value;
-  document.getElementById('select-msg').style.display='none';
+function confirmarPersonaje() {
+  const sel = document.getElementById('sel-personaje');
+  if (!sel.value) { showMsg('select-msg','Debes seleccionar tu personaje.','error'); return; }
+  personajeActual = sel.value;
+  document.getElementById('select-msg').style.display = 'none';
   showScreen('screen-welcome');
 }
 
-function checkTerms(){
-  document.getElementById('btn-start').disabled=!document.getElementById('chk-terms').checked;
+function checkTerms() {
+  document.getElementById('btn-start').disabled = !document.getElementById('chk-terms').checked;
 }
 
-function iniciarVotacion(){
-  catIndex=0; todosLosVotos={}; votosActuales=[];
+function iniciarVotacion() {
+  catIndex = 0; todosLosVotos = {}; votosActuales = [];
   showScreen('screen-voting'); renderCategoria();
 }
 
-function renderCategoria(){
-  const cat=CATEGORIAS[catIndex];
-  const card=document.getElementById('voting-card');
-  document.getElementById('vote-msg').style.display='none';
-  document.getElementById('prog-cat').textContent=`Categoría ${catIndex+1} de ${CATEGORIAS.length}`;
-  document.getElementById('prog-name').textContent=cat.nombre;
-  document.getElementById('prog-fill').style.width=`${(catIndex/CATEGORIAS.length)*100}%`;
-  votosActuales=todosLosVotos[cat.id]||[];
+function renderCategoria() {
+  const CATEGORIAS = getCategorias();
+  const cat = CATEGORIAS[catIndex];
+  const card = document.getElementById('voting-card');
+  document.getElementById('vote-msg').style.display = 'none';
+  document.getElementById('prog-cat').textContent = `Categoría ${catIndex+1} de ${CATEGORIAS.length}`;
+  document.getElementById('prog-name').textContent = cat.nombre;
+  document.getElementById('prog-fill').style.width = `${(catIndex/CATEGORIAS.length)*100}%`;
+  votosActuales = todosLosVotos[cat.id] || [];
 
   const esUltima = catIndex === CATEGORIAS.length - 1;
 
-  if(cat.locked){
-    const msgLocked = cat.lockedMsg || 'Esta categoría <strong>no está disponible</strong> por el momento.<br><br>¡Pronto estará habilitada!';
-    card.innerHTML=`
+  if (cat.locked) {
+    const msgLocked = cat.lockedMsg || 'Esta categoría <strong>no está disponible</strong> por el momento.';
+    card.innerHTML = `
       <div class="locked-cat">
         <div class="locked-icon">🔒</div>
         <div class="locked-title">${cat.nombre}</div>
         <div class="locked-msg">${msgLocked}</div>
       </div>`;
-    document.getElementById('btn-next').textContent= esUltima ? '✅ FINALIZAR Y ENVIAR' : 'AVANZAR ➜';
+    document.getElementById('btn-next').textContent = esUltima ? '✅ FINALIZAR Y ENVIAR' : 'AVANZAR ➜';
     return;
   }
 
-  const pips=Array.from({length:cat.votos},(_,i)=>`<div class="votes-pip ${i<votosActuales.length?'filled':''}"></div>`).join('');
-  const nominadosFiltrados=cat.nominados.filter(n=>n!==personajeActual);
-  const nominadosHTML=nominadosFiltrados.map(n=>{
-    const sel=votosActuales.includes(n);
-    const maxed=votosActuales.length>=cat.votos&&!sel;
+  const pips = Array.from({length:cat.votos}, (_,i) =>
+    `<div class="votes-pip ${i<votosActuales.length?'filled':''}"></div>`
+  ).join('');
+
+  const nominadosFiltrados = cat.nominados.filter(n => n !== personajeActual);
+  const nominadosHTML = nominadosFiltrados.map(n => {
+    const sel = votosActuales.includes(n);
+    const maxed = votosActuales.length >= cat.votos && !sel;
     return `<button class="nominado-btn ${sel?'selected':''} ${maxed?'maxed':''}" onclick="toggleVoto('${n.replace(/'/g,"\\'")}',${cat.votos})">${sel?'⭐ ':''}${n}</button>`;
   }).join('');
 
-  card.innerHTML=`
+  card.innerHTML = `
     <div class="cat-badge">${cat.emoji} ${cat.nombre}</div>
-    <div class="card-sub">Vota por exactamente <strong style="color:var(--gold3)">${cat.votos} personaje${cat.votos>1?'s':''}</strong>.</div>
+    <div class="card-sub">Vota por exactamente <strong style="color:var(--gold3)">${cat.votos} personaje${cat.votos>1?'s':''}</strong>. 
+    <span style="color:var(--muted);font-size:.8rem">(Top ${cat.ganadores} recibirán premio)</span></div>
     <div class="votes-counter">${pips}<span class="votes-label">${votosActuales.length}/${cat.votos} seleccionados</span></div>
     <div class="nominados-grid">${nominadosHTML}</div>`;
 
   document.getElementById('btn-next').textContent = esUltima ? '✅ FINALIZAR Y ENVIAR' : 'SIGUIENTE ➜';
 }
 
-function toggleVoto(nombre,maxVotos){
-  const idx=votosActuales.indexOf(nombre);
-  if(idx>-1) votosActuales.splice(idx,1);
-  else{ if(votosActuales.length>=maxVotos)return; votosActuales.push(nombre); }
-  todosLosVotos[CATEGORIAS[catIndex].id]=[...votosActuales];
+function toggleVoto(nombre, maxVotos) {
+  const idx = votosActuales.indexOf(nombre);
+  if (idx > -1) votosActuales.splice(idx, 1);
+  else { if (votosActuales.length >= maxVotos) return; votosActuales.push(nombre); }
+  todosLosVotos[getCategorias()[catIndex].id] = [...votosActuales];
   renderCategoria();
 }
 
-async function nextCategoria(){
-  const cat=CATEGORIAS[catIndex];
-  if(!cat.locked){
-    const n=votosActuales.length;
-    if(n!==cat.votos){
-      showMsg('vote-msg',`Debes votar por exactamente ${cat.votos} personaje${cat.votos>1?'s':''}. Llevas ${n} seleccionado${n!==1?'s':''}.`,'error');
+async function nextCategoria() {
+  const CATEGORIAS = getCategorias();
+  const cat = CATEGORIAS[catIndex];
+  if (!cat.locked) {
+    const n = votosActuales.length;
+    if (n !== cat.votos) {
+      showMsg('vote-msg', `Debes votar por exactamente ${cat.votos} personaje${cat.votos>1?'s':''}. Llevas ${n} seleccionado${n!==1?'s':''}.`, 'error');
       return;
     }
   }
-  document.getElementById('vote-msg').style.display='none';
-  if(catIndex<CATEGORIAS.length-1){
+  document.getElementById('vote-msg').style.display = 'none';
+  if (catIndex < CATEGORIAS.length - 1) {
     catIndex++;
-    votosActuales=todosLosVotos[CATEGORIAS[catIndex].id]||[];
+    votosActuales = todosLosVotos[getCategorias()[catIndex].id] || [];
     renderCategoria();
   } else {
     await enviarVotos();
   }
 }
 
-async function enviarVotos(){
-  const btn=document.getElementById('btn-next');
-  btn.disabled=true; btn.textContent='Enviando votos...';
-  try{
-    for(const cat of CATEGORIAS){
-      if(cat.locked) continue;
-      const nominados=todosLosVotos[cat.id]||[];
-      if(!nominados.length) continue;
-      await fetch(`${SUPABASE_URL}/rest/v1/gala_votos`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-        body:JSON.stringify({personaje_votante:personajeActual,categoria:cat.id,nominados_votados:nominados})
+async function enviarVotos() {
+  const btn = document.getElementById('btn-next');
+  btn.disabled = true; btn.textContent = 'Enviando votos...';
+  try {
+    for (const cat of getCategorias()) {
+      if (cat.locked) continue;
+      const nominados = todosLosVotos[cat.id] || [];
+      if (!nominados.length) continue;
+      await fetch(`${SUPABASE_URL}/rest/v1/gala_votos`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+        body: JSON.stringify({personaje_votante:personajeActual, categoria:cat.id, nominados_votados:nominados})
       });
     }
     showScreen('screen-thanks');
-  }catch(e){
-    showMsg('vote-msg','Error al enviar los votos. Intenta de nuevo.','error');
-    btn.disabled=false; btn.textContent='✅ FINALIZAR Y ENVIAR';
+  } catch(e) {
+    showMsg('vote-msg', 'Error al enviar los votos. Intenta de nuevo.', 'error');
+    btn.disabled = false; btn.textContent = '✅ FINALIZAR Y ENVIAR';
   }
 }
 
 // ─── HISTORIAL ────────────────────────────────────────────────────────────
-async function loadHistorial(){
-  const body=document.getElementById('hist-body');
-  body.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div>';
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function loadHistorial() {
+  const body = document.getElementById('hist-body');
+  body.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div>';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    let data=await res.json();
-
-    // Filtrar personajes excluidos del ranking
+    let data = await res.json();
     data = data.filter(row => !EXCLUIR_RANKING.includes(row.personaje));
-
-    data.sort((a,b)=>b.trofeos-a.trofeos||b.estrellas-a.estrellas);
-    if(!data.length){body.innerHTML='<div class="empty-state"><p>🏆 La tabla está vacía.</p></div>';return;}
-    body.innerHTML='';
-    data.forEach((row,i)=>{
-      const pos=i+1;
-      let pc='n',pt=pos;
-      if(pos===1){pc='g';pt='🥇';}else if(pos===2){pc='s';pt='🥈';}else if(pos===3){pc='b';pt='🥉';}
-      const starsHTML=row.estrellas===0?'<span style="color:var(--muted);font-size:.8rem">—</span>':row.estrellas<=5?'⭐'.repeat(row.estrellas):`⭐<span class="num-badge">${row.estrellas}</span>`;
-      const trphHTML=row.trofeos===0?'<span style="color:var(--muted);font-size:.8rem">—</span>':row.trofeos<=5?'🏆'.repeat(row.trofeos):`🏆<span class="num-badge">${row.trofeos}</span>`;
-      const rc=pos===1?'top1':pos===2?'top2':pos===3?'top3':'';
-      const div=document.createElement('div');
-      div.className=`hist-row ${rc}`;
-      div.innerHTML=`<div class="h-pos ${pc}">${pt}</div><div class="h-name">${esc(row.personaje)}</div><div class="h-stars">${starsHTML}</div><div class="h-trophies">${trphHTML}</div>`;
+    data.sort((a,b) => b.trofeos - a.trofeos || b.estrellas - a.estrellas);
+    if (!data.length) { body.innerHTML = '<div class="empty-state"><p>🏆 La tabla está vacía.</p></div>'; return; }
+    body.innerHTML = '';
+    data.forEach((row,i) => {
+      const pos = i+1;
+      let pc = 'n', pt = pos;
+      if (pos===1){pc='g';pt='🥇';}else if(pos===2){pc='s';pt='🥈';}else if(pos===3){pc='b';pt='🥉';}
+      const starsHTML = row.estrellas===0 ? '<span style="color:var(--muted);font-size:.8rem">—</span>' : row.estrellas<=5 ? '⭐'.repeat(row.estrellas) : `⭐<span class="num-badge">${row.estrellas}</span>`;
+      const trphHTML = row.trofeos===0 ? '<span style="color:var(--muted);font-size:.8rem">—</span>' : row.trofeos<=5 ? '🏆'.repeat(row.trofeos) : `🏆<span class="num-badge">${row.trofeos}</span>`;
+      const rc = pos===1?'top1':pos===2?'top2':pos===3?'top3':'';
+      const div = document.createElement('div');
+      div.className = `hist-row ${rc}`;
+      div.innerHTML = `<div class="h-pos ${pc}">${pt}</div><div class="h-name">${esc(row.personaje)}</div><div class="h-stars">${starsHTML}</div><div class="h-trophies">${trphHTML}</div>`;
       body.appendChild(div);
     });
-  }catch(e){body.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar.</p></div>';}
+  } catch(e) { body.innerHTML = '<div class="empty-state"><p>⚠️ Error al cargar.</p></div>'; }
 }
 
-// ─── ADMIN ────────────────────────────────────────────────────────────────
-function verificarAdmin(){
-  if(document.getElementById('admin-pass').value===ADMIN_PASS){
-    document.getElementById('admin-locked').style.display='none';
-    document.getElementById('admin-content').style.display='block';
-  }else{
-    showMsg('admin-msg','Clave incorrecta.','error');
-  }
+// ─── ADMIN GALA ───────────────────────────────────────────────────────────
+function verificarAdmin() {
+  if (document.getElementById('admin-pass').value === ADMIN_PASS) {
+    document.getElementById('admin-locked').style.display = 'none';
+    document.getElementById('admin-content').style.display = 'block';
+  } else { showMsg('admin-msg','Clave incorrecta.','error'); }
 }
 
-async function limpiarRanking(){
-  if(!confirm('¿Eliminar del ranking a: '+EXCLUIR_RANKING.join(', ')+'?')) return;
-  const rb=document.getElementById('admin-result-box');
-  try{
-    for(const nombre of EXCLUIR_RANKING){
-      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`,{
-        method:'DELETE',
-        headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function limpiarRanking() {
+  if (!confirm('¿Eliminar del ranking a: '+EXCLUIR_RANKING.join(', ')+'?')) return;
+  const rb = document.getElementById('admin-result-box');
+  try {
+    for (const nombre of EXCLUIR_RANKING) {
+      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`, {
+        method: 'DELETE',
+        headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
       });
     }
-    rb.innerHTML='✅ Entradas eliminadas del ranking: '+EXCLUIR_RANKING.join(', ');
-    rb.style.display='block';
+    rb.innerHTML = '✅ Entradas eliminadas del ranking: '+EXCLUIR_RANKING.join(', ');
+    rb.style.display = 'block';
     await loadHistorial();
-  }catch(e){
-    rb.innerHTML='❌ Error al limpiar el ranking.';
-    rb.style.display='block';
-  }
+  } catch(e) { rb.innerHTML = '❌ Error al limpiar el ranking.'; rb.style.display = 'block'; }
 }
 
-async function cerrarGala(){
-  const btn=document.getElementById('btn-cerrar-gala');
-  btn.disabled=true; btn.textContent='Procesando...';
-  const resBox=document.getElementById('admin-result-box');
-  resBox.style.display='none';
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function cerrarGala() {
+  const btn = document.getElementById('btn-cerrar-gala');
+  btn.disabled = true; btn.textContent = 'Procesando...';
+  const resBox = document.getElementById('admin-result-box');
+  resBox.style.display = 'none';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const votos=await res.json();
-    if(!votos.length){
-      resBox.innerHTML='⚠️ No hay votos registrados aún.';
-      resBox.style.background='rgba(245,200,66,.1)';
-      resBox.style.borderColor='rgba(245,200,66,.3)';
-      resBox.style.color='var(--gold3)';
-      resBox.style.display='block';
-      btn.disabled=false; btn.textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
+    const votos = await res.json();
+    if (!votos.length) {
+      resBox.innerHTML = '⚠️ No hay votos registrados aún.';
+      resBox.style.background = 'rgba(245,200,66,.1)'; resBox.style.borderColor = 'rgba(245,200,66,.3)'; resBox.style.color = 'var(--gold3)';
+      resBox.style.display = 'block';
+      btn.disabled = false; btn.textContent = '🏆 CERRAR GALA Y PROCLAMAR GANADORES';
       return;
     }
 
-    const conteos={};
-    for(const v of votos){
-      if(!conteos[v.categoria]) conteos[v.categoria]={};
-      for(const nom of v.nominados_votados)
-        conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;
+    // Contar votos por categoría
+    const conteos = {};
+    for (const v of votos) {
+      if (!conteos[v.categoria]) conteos[v.categoria] = {};
+      for (const nom of v.nominados_votados)
+        conteos[v.categoria][nom] = (conteos[v.categoria][nom]||0) + 1;
     }
 
-    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    // Cargar historial actual
+    const hr = await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const historial=await hr.json();
-    const histMap={};
-    for(const h of historial) histMap[h.personaje]=h;
+    const historial = await hr.json();
+    const histMap = {};
+    for (const h of historial) histMap[h.personaje] = h;
 
-    const ganadores=[];
-    for(const cat of CATEGORIAS){
-      if(cat.locked) continue;
-      const c=conteos[cat.id];
-      if(!c||!Object.keys(c).length) continue;
-      const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
-      const [ganador,votsG]=sorted[0];
-      const esTrofeo=cat.id==='mejor_semana';
-      ganadores.push({cat:cat.nombre,ganador,votos:votsG,tipo:esTrofeo?'🏆':'⭐'});
+    const resultados = [];
+    for (const cat of getCategorias()) {
+      if (cat.locked) continue;
+      const c = conteos[cat.id];
+      if (!c || !Object.keys(c).length) continue;
 
-      if(histMap[ganador]){
-        const upd=esTrofeo?{trofeos:histMap[ganador].trofeos+1}:{estrellas:histMap[ganador].estrellas+1};
-        await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`,{
-          method:'PATCH',
-          headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-          body:JSON.stringify(upd)
-        });
-      }else{
-        await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{
-          method:'POST',
-          headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-          body:JSON.stringify({personaje:ganador,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})
-        });
+      // Ordenar y tomar los top N ganadores
+      const sorted = Object.entries(c).sort((a,b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+      const topN = sorted.slice(0, cat.ganadores);
+      const esTrofeo = cat.id === 'mejor_semana';
+
+      const ganadoresNombres = [];
+      for (const [ganador, votsG] of topN) {
+        ganadoresNombres.push(`${ganador} (${votsG} voto${votsG!==1?'s':''})`);
+        // Actualizar historial
+        if (histMap[ganador]) {
+          const upd = esTrofeo ? {trofeos:histMap[ganador].trofeos+1} : {estrellas:histMap[ganador].estrellas+1};
+          await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`, {
+            method: 'PATCH',
+            headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+            body: JSON.stringify(upd)
+          });
+        } else {
+          await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+            body: JSON.stringify({personaje:ganador, estrellas:esTrofeo?0:1, trofeos:esTrofeo?1:0})
+          });
+        }
       }
+      resultados.push(`${esTrofeo?'🏆':'⭐'} <strong>${cat.nombre}:</strong> ${ganadoresNombres.join(' | ')}`);
     }
 
-    const resHTML=ganadores.map(g=>`${g.tipo} <strong>${g.cat}:</strong> ${g.ganador} (${g.votos} voto${g.votos!==1?'s':''})`).join('<br>');
-    resBox.innerHTML='✅ ¡Gala cerrada! Ganadores:<br><br>'+resHTML;
-    resBox.style.display='block';
-    btn.textContent='✅ GALA CERRADA';
+    resBox.innerHTML = '✅ ¡Gala cerrada! Ganadores:<br><br>' + resultados.join('<br>');
+    resBox.style.background = 'rgba(16,185,129,.1)'; resBox.style.borderColor = 'rgba(16,185,129,.2)'; resBox.style.color = '#6ee7b7';
+    resBox.style.display = 'block';
+    btn.textContent = '✅ GALA CERRADA';
     await loadHistorial();
     await loadConteos();
-  }catch(e){
-    resBox.innerHTML='❌ Error al cerrar la gala.';
-    resBox.style.background='rgba(239,68,68,.12)'; resBox.style.color='#fca5a5';
-    resBox.style.display='block';
-    btn.disabled=false; btn.textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
+  } catch(e) {
+    resBox.innerHTML = '❌ Error al cerrar la gala.';
+    resBox.style.background = 'rgba(239,68,68,.12)'; resBox.style.color = '#fca5a5';
+    resBox.style.display = 'block';
+    btn.disabled = false; btn.textContent = '🏆 CERRAR GALA Y PROCLAMAR GANADORES';
   }
 }
 
-async function resetearVotos(){
-  if(!confirm('¿Borrar TODOS los votos para iniciar nueva gala?')) return;
-  const btn=document.getElementById('btn-reset');
-  btn.disabled=true; btn.textContent='Borrando...';
-  try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?id=gte.0`,{
-      method:'DELETE',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function resetearVotos() {
+  if (!confirm('¿Borrar TODOS los votos para iniciar nueva gala?')) return;
+  const btn = document.getElementById('btn-reset');
+  btn.disabled = true; btn.textContent = 'Borrando...';
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?id=gte.0`, {
+      method: 'DELETE',
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    document.getElementById('btn-cerrar-gala').disabled=false;
-    document.getElementById('btn-cerrar-gala').textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
-    const rb=document.getElementById('admin-result-box');
-    rb.innerHTML='✅ Votos borrados. ¡Nueva gala lista!';
-    rb.style.display='block';
+    document.getElementById('btn-cerrar-gala').disabled = false;
+    document.getElementById('btn-cerrar-gala').textContent = '🏆 CERRAR GALA Y PROCLAMAR GANADORES';
+    const rb = document.getElementById('admin-result-box');
+    rb.innerHTML = '✅ Votos borrados. ¡Nueva gala lista!'; rb.style.display = 'block';
     await loadConteos();
-  }catch(e){
-    const rb=document.getElementById('admin-result-box');
-    rb.innerHTML='❌ Error al borrar votos. Agrega la política DELETE en Supabase.';
-    rb.style.display='block';
+  } catch(e) {
+    const rb = document.getElementById('admin-result-box');
+    rb.innerHTML = '❌ Error al borrar votos. Agrega la política DELETE en Supabase.'; rb.style.display = 'block';
   }
-  btn.disabled=false; btn.textContent='🗑️ BORRAR VOTOS (iniciar nueva gala)';
+  btn.disabled = false; btn.textContent = '🗑️ BORRAR VOTOS (iniciar nueva gala)';
 }
 
-async function loadConteos(){
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function loadConteos() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const votos=await res.json();
-    const conteos={};
-    for(const v of votos){
-      if(!conteos[v.categoria]) conteos[v.categoria]={};
-      for(const nom of v.nominados_votados)
-        conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;
+    const votos = await res.json();
+    const conteos = {};
+    for (const v of votos) {
+      if (!conteos[v.categoria]) conteos[v.categoria] = {};
+      for (const nom of v.nominados_votados)
+        conteos[v.categoria][nom] = (conteos[v.categoria][nom]||0) + 1;
     }
-    const wrap=document.getElementById('conteos-body');
-    wrap.innerHTML='';
-    for(const cat of CATEGORIAS){
-      if(cat.locked) continue;
-      const c=conteos[cat.id];
-      if(!c) continue;
-      const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);
-      const maxV=sorted[0]?.[1]||0;
-      const sec=document.createElement('div');
-      sec.className='conteo-section';
-      sec.innerHTML=`<div class="conteo-title">${cat.emoji} ${cat.nombre}</div>`+
-        sorted.map(([n,v])=>`<div class="conteo-row ${v===maxV?'winner':''}"><span class="conteo-name">${esc(n)}${v===maxV?' 👑':''}</span><span class="conteo-val">${v}</span></div>`).join('');
+    const wrap = document.getElementById('conteos-body');
+    wrap.innerHTML = '';
+    for (const cat of getCategorias()) {
+      if (cat.locked) continue;
+      const c = conteos[cat.id];
+      if (!c) continue;
+      const sorted = Object.entries(c).sort((a,b) => b[1]-a[1]);
+      const maxV = sorted[0]?.[1] || 0;
+      const sec = document.createElement('div');
+      sec.className = 'conteo-section';
+      sec.innerHTML = `<div class="conteo-title">${cat.emoji} ${cat.nombre} <span style="color:var(--muted);font-size:.7rem">(top ${cat.ganadores} ganan)</span></div>` +
+        sorted.map(([n,v]) => `<div class="conteo-row ${v===maxV?'winner':''}"><span class="conteo-name">${esc(n)}${v===maxV?' 👑':''}</span><span class="conteo-val">${v}</span></div>`).join('');
       wrap.appendChild(sec);
     }
-  }catch(e){console.error(e);}
+  } catch(e) { console.error(e); }
 }
 
-function toggleConteos(){
-  conteosVisible=!conteosVisible;
-  document.getElementById('conteos-wrap').style.display=conteosVisible?'block':'none';
-  if(conteosVisible) loadConteos();
+function toggleConteos() {
+  conteosVisible = !conteosVisible;
+  document.getElementById('conteos-wrap').style.display = conteosVisible ? 'block' : 'none';
+  if (conteosVisible) loadConteos();
 }
 
 // ─── DESEMPATE ────────────────────────────────────────────────────────────
-
-// Poblar select de categorías en el panel admin desempate
-function poblarCatSelect(){
-  const sel=document.getElementById('adm-cat-select');
-  if(!sel||sel.options.length>1) return;
-  CATEGORIAS.filter(c=>!c.locked).forEach(c=>{
-    const o=document.createElement('option');
-    o.value=c.id; o.textContent=c.nombre;
+function poblarCatSelect() {
+  const sel = document.getElementById('adm-cat-select');
+  if (!sel || sel.options.length > 1) return;
+  getCategorias().filter(c => !c.locked).forEach(c => {
+    const o = document.createElement('option');
+    o.value = c.id; o.textContent = c.nombre;
     sel.appendChild(o);
   });
 }
 
-function verificarAdminDesempate(){
-  if(document.getElementById('adm-desemp-pass').value===ADMIN_PASS){
-    document.getElementById('adm-desemp-locked').style.display='none';
-    document.getElementById('adm-desemp-content').style.display='block';
+function verificarAdminDesempate() {
+  if (document.getElementById('adm-desemp-pass').value === ADMIN_PASS) {
+    document.getElementById('adm-desemp-locked').style.display = 'none';
+    document.getElementById('adm-desemp-content').style.display = 'block';
     poblarCatSelect();
     cargarSelectCerrar();
-  }else{
-    showMsg('adm-desemp-msg','Clave incorrecta.','error');
-  }
+  } else { showMsg('adm-desemp-msg','Clave incorrecta.','error'); }
 }
 
-async function loadDesempates(){
-  const wrap=document.getElementById('desempate-activos-wrap');
-  if(!wrap) return;
-  wrap.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando desempates...</p></div>';
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?select=*&order=id.desc`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function loadDesempates() {
+  const wrap = document.getElementById('desempate-activos-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Cargando desempates...</p></div>';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?select=*&order=id.desc`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const data=await res.json();
-    if(!Array.isArray(data)||!data.length){
-      wrap.innerHTML='<div class="empty-state"><p>⚔️ No hay desempates activos por ahora.</p></div>';
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) {
+      wrap.innerHTML = '<div class="empty-state"><p>⚔️ No hay desempates activos por ahora.</p></div>';
       return;
     }
-    wrap.innerHTML='';
-    for(const d of data){
-      wrap.appendChild(renderDesempateCard(d));
-    }
-  }catch(e){
-    wrap.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar desempates.</p></div>';
-  }
+    wrap.innerHTML = '';
+    for (const d of data) wrap.appendChild(renderDesempateCard(d));
+  } catch(e) { wrap.innerHTML = '<div class="empty-state"><p>⚠️ Error al cargar desempates.</p></div>'; }
 }
 
-function renderDesempateCard(d){
-  const cerrado=d.estado==='cerrado';
-  const div=document.createElement('div');
-  div.className=`desemp-card ${cerrado?'cerrado':''}`;
-  div.id=`dcard-${d.id}`;
+function renderDesempateCard(d) {
+  const cerrado = d.estado === 'cerrado';
+  const div = document.createElement('div');
+  div.className = `desemp-card ${cerrado?'cerrado':''}`;
+  div.id = `dcard-${d.id}`;
+  const personajes = Array.isArray(d.personajes) ? d.personajes : (typeof d.personajes==='string' ? JSON.parse(d.personajes) : []);
+  const votos = d.votos ? JSON.parse(typeof d.votos==='string' ? d.votos : JSON.stringify(d.votos)) : {};
+  const totalVotos = Object.values(votos).reduce((a,b) => a+b, 0);
+  const catNombre = getCategorias().find(c => c.id===d.categoria_id)?.nombre || d.categoria_id;
 
-  const personajes=Array.isArray(d.personajes)?d.personajes:(typeof d.personajes==='string'?JSON.parse(d.personajes):[]);
-  const votos=d.votos?JSON.parse(typeof d.votos==='string'?d.votos:JSON.stringify(d.votos)):{};
-  const totalVotos=Object.values(votos).reduce((a,b)=>a+b,0);
-
-  const catNombre=CATEGORIAS.find(c=>c.id===d.categoria_id)?.nombre||d.categoria_id;
-
-  let nominadosHTML='';
-  if(cerrado){
-    nominadosHTML=personajes.map(p=>{
-      const v=votos[p]||0;
-      const isGanador=p===d.ganador;
-      return `<div class="desemp-btn ${isGanador?'sel-desemp':''}" style="cursor:default;${isGanador?'':''}">
-        ${isGanador?'🏆 ':''}${p} <span style="font-size:.75rem;opacity:.7">(${v} voto${v!==1?'s':''})</span>
-      </div>`;
+  let nominadosHTML = '';
+  if (cerrado) {
+    nominadosHTML = personajes.map(p => {
+      const v = votos[p]||0;
+      const isGanador = p === d.ganador;
+      return `<div class="desemp-btn ${isGanador?'sel-desemp':''}" style="cursor:default">${isGanador?'🏆 ':''}${p} <span style="font-size:.75rem;opacity:.7">(${v} voto${v!==1?'s':''})</span></div>`;
     }).join('');
-  }else{
-    nominadosHTML=personajes.map(p=>{
-      const v=votos[p]||0;
-      return `<button class="desemp-btn" id="dbtn-${d.id}-${p.replace(/\s/g,'_')}" onclick="votarDesempate(${d.id},'${p.replace(/'/g,"\\'")}',${JSON.stringify(personajes).replace(/"/g,"'")})">
-        ${p}
-      </button>`;
-    }).join('');
+  } else {
+    nominadosHTML = personajes.map(p =>
+      `<button class="desemp-btn" id="dbtn-${d.id}-${p.replace(/\s/g,'_')}" onclick="votarDesempate(${d.id},'${p.replace(/'/g,"\\'")}',${JSON.stringify(personajes).replace(/"/g,"'")})">${p}</button>`
+    ).join('');
   }
 
-  div.innerHTML=`
+  div.innerHTML = `
     <div class="desemp-header">
       <div class="desemp-cat">⚔️ ${esc(catNombre)}</div>
       <span class="desemp-estado ${cerrado?'cerrado':'abierto'}">${cerrado?'✅ Cerrado':'🔴 En votación'}</span>
     </div>
     <div class="desemp-votos-info">${totalVotos} voto${totalVotos!==1?'s':''} registrado${totalVotos!==1?'s':''}</div>
     <div class="desemp-nominados">${nominadosHTML}</div>
-    ${cerrado&&d.ganador?`<div class="desemp-ganador">🏆 Ganador: ${esc(d.ganador)}${d.azar?' <span style="font-size:.75rem;color:var(--muted)">(elegido al azar por segundo empate)</span>':''}</div>`:''}
-  `;
+    ${cerrado&&d.ganador?`<div class="desemp-ganador">🏆 Ganador: ${esc(d.ganador)}${d.azar?' <span style="font-size:.75rem;color:var(--muted)">(elegido al azar por segundo empate)</span>':''}</div>`:''}`;
   return div;
 }
 
-async function votarDesempate(id, personaje, personajes){
-  // Guardar voto del desempate en Supabase
-  try{
-    // Obtener votos actuales
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=votos`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function votarDesempate(id, personaje, personajes) {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=votos`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const data=await res.json();
-    if(!data||!data[0]) return;
-    const votos=data[0].votos?JSON.parse(typeof data[0].votos==='string'?data[0].votos:JSON.stringify(data[0].votos)):{};
-
-    // Marcar botón seleccionado visualmente y bloquear
-    personajes.forEach(p=>{
-      const btn=document.getElementById(`dbtn-${id}-${p.replace(/\s/g,'_')}`);
-      if(btn){btn.disabled=true; btn.classList.remove('sel-desemp');}
+    const data = await res.json();
+    if (!data||!data[0]) return;
+    const votos = data[0].votos ? JSON.parse(typeof data[0].votos==='string' ? data[0].votos : JSON.stringify(data[0].votos)) : {};
+    personajes.forEach(p => {
+      const btn = document.getElementById(`dbtn-${id}-${p.replace(/\s/g,'_')}`);
+      if (btn) { btn.disabled = true; btn.classList.remove('sel-desemp'); }
     });
-    const btnSel=document.getElementById(`dbtn-${id}-${personaje.replace(/\s/g,'_')}`);
-    if(btnSel){btnSel.classList.add('sel-desemp'); btnSel.textContent='⭐ '+personaje;}
-
-    votos[personaje]=(votos[personaje]||0)+1;
-
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({votos:JSON.stringify(votos)})
+    const btnSel = document.getElementById(`dbtn-${id}-${personaje.replace(/\s/g,'_')}`);
+    if (btnSel) { btnSel.classList.add('sel-desemp'); btnSel.textContent = '⭐ '+personaje; }
+    votos[personaje] = (votos[personaje]||0) + 1;
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body: JSON.stringify({votos:JSON.stringify(votos)})
     });
-
-    // Actualizar contador
-    const card=document.getElementById(`dcard-${id}`);
-    if(card){
-      const total=Object.values(votos).reduce((a,b)=>a+b,0);
-      const info=card.querySelector('.desemp-votos-info');
-      if(info) info.textContent=`${total} voto${total!==1?'s':''} registrado${total!==1?'s':''}`;
+    const card = document.getElementById(`dcard-${id}`);
+    if (card) {
+      const total = Object.values(votos).reduce((a,b) => a+b, 0);
+      const info = card.querySelector('.desemp-votos-info');
+      if (info) info.textContent = `${total} voto${total!==1?'s':''} registrado${total!==1?'s':''}`;
     }
-  }catch(e){console.error('Error al votar desempate:',e);}
+  } catch(e) { console.error('Error al votar desempate:',e); }
 }
 
-async function publicarDesempate(){
-  const catId=document.getElementById('adm-cat-select').value;
-  const personajesRaw=document.getElementById('adm-personajes-input').value;
-  const rb=document.getElementById('adm-desemp-result');
-  if(!catId){rb.innerHTML='⚠️ Selecciona una categoría.';rb.style.display='block';return;}
-  const personajes=personajesRaw.split(',').map(p=>p.trim()).filter(Boolean);
-  if(personajes.length<2){rb.innerHTML='⚠️ Ingresa al menos 2 personajes separados por coma.';rb.style.display='block';return;}
-
-  try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({categoria_id:catId,personajes:JSON.stringify(personajes),votos:'{}',estado:'abierto',ganador:null,azar:false})
+async function publicarDesempate() {
+  const catId = document.getElementById('adm-cat-select').value;
+  const personajesRaw = document.getElementById('adm-personajes-input').value;
+  const rb = document.getElementById('adm-desemp-result');
+  if (!catId) { rb.innerHTML = '⚠️ Selecciona una categoría.'; rb.style.display = 'block'; return; }
+  const personajes = personajesRaw.split(',').map(p => p.trim()).filter(Boolean);
+  if (personajes.length < 2) { rb.innerHTML = '⚠️ Ingresa al menos 2 personajes separados por coma.'; rb.style.display = 'block'; return; }
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body: JSON.stringify({categoria_id:catId, personajes:JSON.stringify(personajes), votos:'{}', estado:'abierto', ganador:null, azar:false})
     });
-    rb.innerHTML='✅ Desempate publicado correctamente.';
-    rb.style.display='block';
-    document.getElementById('adm-cat-select').value='';
-    document.getElementById('adm-personajes-input').value='';
+    rb.innerHTML = '✅ Desempate publicado correctamente.'; rb.style.display = 'block';
+    document.getElementById('adm-cat-select').value = '';
+    document.getElementById('adm-personajes-input').value = '';
     await loadDesempates();
     await cargarSelectCerrar();
-  }catch(e){
-    rb.innerHTML='❌ Error al publicar el desempate.';
-    rb.style.display='block';
-  }
+  } catch(e) { rb.innerHTML = '❌ Error al publicar el desempate.'; rb.style.display = 'block'; }
 }
 
-async function cargarSelectCerrar(){
-  const sel=document.getElementById('adm-cerrar-select');
-  if(!sel) return;
-  sel.innerHTML='<option value="">— Selecciona desempate —</option>';
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?estado=eq.abierto&select=*`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function cargarSelectCerrar() {
+  const sel = document.getElementById('adm-cerrar-select');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">— Selecciona desempate —</option>';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?estado=eq.abierto&select=*`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const data=await res.json();
-    if(!Array.isArray(data)) return;
-    data.forEach(d=>{
-      const catNombre=CATEGORIAS.find(c=>c.id===d.categoria_id)?.nombre||d.categoria_id;
-      const o=document.createElement('option');
-      o.value=d.id; o.textContent=catNombre;
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    data.forEach(d => {
+      const catNombre = getCategorias().find(c => c.id===d.categoria_id)?.nombre || d.categoria_id;
+      const o = document.createElement('option');
+      o.value = d.id; o.textContent = catNombre;
       sel.appendChild(o);
     });
-  }catch(e){}
+  } catch(e) {}
 }
 
-async function cerrarDesempate(){
-  const id=document.getElementById('adm-cerrar-select').value;
-  const rb=document.getElementById('adm-desemp-result');
-  if(!id){rb.innerHTML='⚠️ Selecciona un desempate activo.';rb.style.display='block';return;}
-
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=*`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function cerrarDesempate() {
+  const id = document.getElementById('adm-cerrar-select').value;
+  const rb = document.getElementById('adm-desemp-result');
+  if (!id) { rb.innerHTML = '⚠️ Selecciona un desempate activo.'; rb.style.display = 'block'; return; }
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=*`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const data=await res.json();
-    if(!data||!data[0]) return;
-    const d=data[0];
-    const personajes=JSON.parse(typeof d.personajes==='string'?d.personajes:JSON.stringify(d.personajes));
-    const votos=d.votos?JSON.parse(typeof d.votos==='string'?d.votos:JSON.stringify(d.votos)):{};
+    const data = await res.json();
+    if (!data||!data[0]) return;
+    const d = data[0];
+    const personajes = JSON.parse(typeof d.personajes==='string' ? d.personajes : JSON.stringify(d.personajes));
+    const votos = d.votos ? JSON.parse(typeof d.votos==='string' ? d.votos : JSON.stringify(d.votos)) : {};
+    let maxV = 0;
+    personajes.forEach(p => { if ((votos[p]||0) > maxV) maxV = votos[p]||0; });
+    const empatados = personajes.filter(p => (votos[p]||0) === maxV);
+    let ganador, azar = false;
+    if (empatados.length === 1) ganador = empatados[0];
+    else { ganador = empatados[Math.floor(Math.random()*empatados.length)]; azar = true; }
 
-    // Calcular ganador
-    let maxV=0;
-    personajes.forEach(p=>{if((votos[p]||0)>maxV) maxV=votos[p]||0;});
-    const empatados=personajes.filter(p=>(votos[p]||0)===maxV);
-
-    let ganador; let azar=false;
-    if(empatados.length===1){
-      ganador=empatados[0];
-    }else{
-      // Segundo empate → azar
-      ganador=empatados[Math.floor(Math.random()*empatados.length)];
-      azar=true;
-    }
-
-    // Marcar cerrado en Supabase
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({estado:'cerrado',ganador,azar})
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body: JSON.stringify({estado:'cerrado', ganador, azar})
     });
 
-    // Actualizar historial con estrella o trofeo según la categoría
-    const cat=CATEGORIAS.find(c=>c.id===d.categoria_id);
-    const esTrofeo=d.categoria_id==='mejor_semana';
-
-    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    const esTrofeo = d.categoria_id === 'mejor_semana';
+    const hr = await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    const historial=await hr.json();
-    const histMap={};
-    for(const h of historial) histMap[h.personaje]=h;
+    const historial = await hr.json();
+    const histMap = {};
+    for (const h of historial) histMap[h.personaje] = h;
 
-    if(histMap[ganador]){
-      const upd=esTrofeo?{trofeos:histMap[ganador].trofeos+1}:{estrellas:histMap[ganador].estrellas+1};
-      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`,{
-        method:'PATCH',
-        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-        body:JSON.stringify(upd)
+    if (histMap[ganador]) {
+      const upd = esTrofeo ? {trofeos:histMap[ganador].trofeos+1} : {estrellas:histMap[ganador].estrellas+1};
+      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`, {
+        method: 'PATCH',
+        headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+        body: JSON.stringify(upd)
       });
-    }else{
-      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{
-        method:'POST',
-        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-        body:JSON.stringify({personaje:ganador,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})
+    } else {
+      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+        body: JSON.stringify({personaje:ganador, estrellas:esTrofeo?0:1, trofeos:esTrofeo?1:0})
       });
     }
 
-    rb.innerHTML=`✅ Desempate cerrado. Ganador: <strong>${esc(ganador)}</strong>${azar?' (elegido al azar por segundo empate)':''}<br>${esTrofeo?'🏆 Trofeo':'⭐ Estrella'} sumado al historial.`;
-    rb.style.display='block';
+    rb.innerHTML = `✅ Desempate cerrado. Ganador: <strong>${esc(ganador)}</strong>${azar?' (elegido al azar por segundo empate)':''}<br>${esTrofeo?'🏆 Trofeo':'⭐ Estrella'} sumado al historial.`;
+    rb.style.display = 'block';
     await loadDesempates();
     await cargarSelectCerrar();
     await loadHistorial();
-  }catch(e){
-    console.error(e);
-    const rb2=document.getElementById('adm-desemp-result');
-    rb2.innerHTML='❌ Error al cerrar el desempate.';
-    rb2.style.display='block';
+  } catch(e) {
+    const rb2 = document.getElementById('adm-desemp-result');
+    rb2.innerHTML = '❌ Error al cerrar el desempate.'; rb2.style.display = 'block';
   }
 }
 
-async function limpiarDesempates(){
-  if(!confirm('¿Borrar TODAS las tablas de desempate? Esta acción no se puede deshacer.')) return;
-  const rb=document.getElementById('adm-desemp-result');
-  try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=gte.0`,{
-      method:'DELETE',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+async function limpiarDesempates() {
+  if (!confirm('¿Borrar TODAS las tablas de desempate? Esta acción no se puede deshacer.')) return;
+  const rb = document.getElementById('adm-desemp-result');
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=gte.0`, {
+      method: 'DELETE',
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
     });
-    rb.innerHTML='✅ Todas las tablas de desempate fueron borradas.';
-    rb.style.display='block';
+    rb.innerHTML = '✅ Todas las tablas de desempate fueron borradas.'; rb.style.display = 'block';
     await loadDesempates();
     await cargarSelectCerrar();
-  }catch(e){
-    rb.innerHTML='❌ Error al limpiar los desempates.';
-    rb.style.display='block';
+  } catch(e) { rb.innerHTML = '❌ Error al limpiar los desempates.'; rb.style.display = 'block'; }
+}
+
+// ─── GESTIÓN DE PERSONAJES ────────────────────────────────────────────────
+function verificarAdminPJ() {
+  if (document.getElementById('pj-admin-pass').value === ADMIN_PASS) {
+    document.getElementById('pj-admin-locked').style.display = 'none';
+    document.getElementById('pj-admin-content').style.display = 'block';
+    renderListaPersonajes();
+    cargarEstadoCatNuevo();
+  } else { showMsg('pj-admin-msg','Clave incorrecta.','error'); }
+}
+
+function selGenero(g) {
+  generoSeleccionado = g;
+  document.getElementById('radio-masc').classList.toggle('sel', g==='M');
+  document.getElementById('radio-fem').classList.toggle('sel', g==='F');
+}
+
+function renderListaPersonajes() {
+  renderListaGrupo('lista-chicos', CHICOS, 'M');
+  renderListaGrupo('lista-chicas', CHICAS, 'F');
+}
+
+function renderListaGrupo(containerId, lista, genero) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  if (!lista.length) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:.85rem;padding:8px">Sin personajes</div>';
+    return;
+  }
+  lista.forEach(nombre => {
+    const div = document.createElement('div');
+    div.className = 'personaje-item';
+    div.innerHTML = `
+      <span class="pj-name">${esc(nombre)}</span>
+      <span class="genero-tag ${genero==='M'?'m':'f'}">${genero==='M'?'♂':'♀'}</span>
+      <button class="pj-del" title="Eliminar personaje" onclick="confirmarEliminarPersonaje('${nombre.replace(/'/g,"\\'")}')">✕</button>`;
+    container.appendChild(div);
+  });
+}
+
+async function agregarPersonaje() {
+  const nombre = document.getElementById('nuevo-pj-nombre').value.trim();
+  const rb = document.getElementById('pj-result-box');
+  if (!nombre) { showMsg('nuevo-pj-msg','Escribe el nombre del personaje.','error'); return; }
+  if (!generoSeleccionado) { showMsg('nuevo-pj-msg','Selecciona el género del personaje.','error'); return; }
+  if (getTodos().includes(nombre)) { showMsg('nuevo-pj-msg','Este personaje ya existe en la lista.','error'); return; }
+
+  // Agregar a la lista local
+  if (generoSeleccionado === 'M') CHICOS.push(nombre);
+  else CHICAS.push(nombre);
+
+  // Guardar en Supabase para persistencia (tabla gala_personajes si existe)
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body: JSON.stringify({nombre, genero: generoSeleccionado})
+    });
+  } catch(e) { /* Si la tabla no existe, solo se guarda en sesión */ }
+
+  rb.innerHTML = `✅ "${esc(nombre)}" agregado como personaje ${generoSeleccionado==='M'?'masculino':'femenino'}.<br>Ahora aparece en todas las categorías correspondientes.`;
+  rb.style.display = 'block';
+
+  // Actualizar UI
+  document.getElementById('nuevo-pj-nombre').value = '';
+  generoSeleccionado = '';
+  document.getElementById('radio-masc').classList.remove('sel');
+  document.getElementById('radio-fem').classList.remove('sel');
+  renderListaPersonajes();
+  cargarPersonajesSelect();
+
+  // Verificar si se desbloquearon categorías especiales
+  verificarCambiosCategorias();
+}
+
+async function confirmarEliminarPersonaje(nombre) {
+  if (!confirm(`¿Eliminar a "${nombre}" de la gala?\n\nEsto:\n• Lo quitará de todas las nominaciones\n• Lo eliminará del ranking de ganadores\n• Puede bloquear su categoría especial si corresponde`)) return;
+  await eliminarPersonaje(nombre);
+}
+
+async function eliminarPersonaje(nombre) {
+  const rb = document.getElementById('pj-result-box');
+
+  // Quitar de las listas locales
+  const iChico = CHICOS.indexOf(nombre);
+  const iChica = CHICAS.indexOf(nombre);
+  if (iChico > -1) CHICOS.splice(iChico, 1);
+  if (iChica > -1) CHICAS.splice(iChica, 1);
+
+  // Eliminar del ranking en Supabase
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`, {
+      method: 'DELETE',
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+  } catch(e) {}
+
+  // Eliminar de tabla gala_personajes si existe
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?nombre=eq.${encodeURIComponent(nombre)}`, {
+      method: 'DELETE',
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+  } catch(e) {}
+
+  // Revisar categorías especiales bloqueadas
+  const cambios = verificarCambiosCategorias();
+
+  let msg = `✅ "${esc(nombre)}" ha sido eliminado de la gala y del ranking.`;
+  if (cambios.length) msg += `<br><br>⚠️ Cambios automáticos:<br>` + cambios.map(c => `• ${c}`).join('<br>');
+
+  rb.innerHTML = msg;
+  rb.style.display = 'block';
+
+  renderListaPersonajes();
+  cargarPersonajesSelect();
+  loadHistorial();
+}
+
+function verificarCambiosCategorias() {
+  const cambios = [];
+  const nPomni = contarVersiones('pomni');
+  const nZooble = contarVersiones('zooble');
+  const nJax = contarVersiones('jax');
+
+  if (nPomni < 3) cambios.push(`Categoría "Mejor POMNI" bloqueada (solo ${nPomni} versión${nPomni!==1?'es':''})`);
+  else cambios.push(`Categoría "Mejor POMNI" activa (${nPomni} versiones ✅)`);
+
+  if (nZooble < 3) cambios.push(`Categoría "Mejor ZOOBLE" bloqueada (solo ${nZooble} versión${nZooble!==1?'es':''})`);
+  else cambios.push(`Categoría "Mejor ZOOBLE" activa (${nZooble} versiones ✅)`);
+
+  if (nJax < 3) cambios.push(`Categoría "Mejor JAX" bloqueada (solo ${nJax} versión${nJax!==1?'es':''})`);
+  else cambios.push(`Categoría "Mejor JAX" activa (${nJax} versiones ✅)`);
+
+  return cambios;
+}
+
+// ─── CATEGORÍA NUEVO DESTACADO ────────────────────────────────────────────
+async function cargarEstadoCatNuevo() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado&select=valor`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    const data = await res.json();
+    if (data && data[0]) {
+      const cfg = JSON.parse(data[0].valor);
+      catNuevoDestacado = cfg;
+      actualizarUIEstadoNuevo();
+      if (cfg.nominados) document.getElementById('nuevo-dest-nominados').value = cfg.nominados.join(', ');
+      if (cfg.votos) document.getElementById('nuevo-dest-votos').value = cfg.votos;
+    }
+  } catch(e) {}
+}
+
+function actualizarUIEstadoNuevo() {
+  const badge = document.getElementById('nuevo-dest-estado');
+  if (catNuevoDestacado.activa) {
+    badge.className = 'cat-nueva-badge activa'; badge.textContent = '✅ Activa';
+  } else {
+    badge.className = 'cat-nueva-badge inactiva'; badge.textContent = '⛔ Inactiva';
   }
 }
 
+async function activarCatNuevo(activar) {
+  const rb = document.getElementById('nuevo-dest-result');
+  const nominadosRaw = document.getElementById('nuevo-dest-nominados').value;
+  const votosN = parseInt(document.getElementById('nuevo-dest-votos').value) || 2;
+  const nominados = nominadosRaw.split(',').map(p => p.trim()).filter(Boolean);
 
-function showMsg(id,txt,type){
-  const el=document.getElementById(id);
-  el.textContent=txt; el.className=`msg ${type}`; el.style.display='block';
+  if (activar && nominados.length < 2) {
+    rb.innerHTML = '⚠️ Ingresa al menos 2 personajes nominados.'; rb.style.display = 'block'; return;
+  }
+
+  catNuevoDestacado = { activa: activar, nominados: activar ? nominados : [], votos: votosN };
+  actualizarUIEstadoNuevo();
+
+  // Guardar en Supabase
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado`, {
+      method: 'DELETE',
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_config`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      body: JSON.stringify({clave:'nuevo_destacado', valor: JSON.stringify(catNuevoDestacado)})
+    });
+  } catch(e) {}
+
+  rb.innerHTML = activar
+    ? `✅ Categoría "Personaje Nuevo Destacado" activada con ${nominados.length} nominados.`
+    : '⛔ Categoría "Personaje Nuevo Destacado" desactivada.';
+  rb.style.display = 'block';
 }
 
-function volverInicio(){
-  personajeActual=''; catIndex=0; todosLosVotos={}; votosActuales=[];
-  const chk=document.getElementById('chk-terms'); if(chk) chk.checked=false;
-  const btn=document.getElementById('btn-start'); if(btn) btn.disabled=true;
-  document.getElementById('sel-personaje').value='';
+// ─── UTILS ────────────────────────────────────────────────────────────────
+function showMsg(id, txt, type) {
+  const el = document.getElementById(id);
+  el.textContent = txt; el.className = `msg ${type}`; el.style.display = 'block';
+}
+
+function volverInicio() {
+  personajeActual = ''; catIndex = 0; todosLosVotos = {}; votosActuales = [];
+  const chk = document.getElementById('chk-terms'); if (chk) chk.checked = false;
+  const btn = document.getElementById('btn-start'); if (btn) btn.disabled = true;
+  document.getElementById('sel-personaje').value = '';
   showScreen('screen-select');
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===0));
 }
 
-function esc(s){
+function esc(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 // ─── INIT ─────────────────────────────────────────────────────────────────
 createParticles();
-cargarPersonajes();
+cargarPersonajesSelect();
+
+// Cargar config de nuevo destacado al iniciar
+(async () => {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado&select=valor`, {
+      headers: {'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    const data = await res.json();
+    if (data && data[0]) {
+      catNuevoDestacado = JSON.parse(data[0].valor);
+    }
+  } catch(e) {}
+})();
 </script>
 </body>
 </html>
