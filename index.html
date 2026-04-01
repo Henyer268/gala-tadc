@@ -570,7 +570,7 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 
 <script>
 /* ═══════════════════════════════════════════════════════════════════════════
-   CONFETI — Motor de partículas canvas
+   CONFETI — Solo burst al hacer click en nominado (sin lluvia del techo)
 ═══════════════════════════════════════════════════════════════════════════ */
 (function(){
   const canvas = document.getElementById('confetti-canvas');
@@ -584,16 +584,16 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
   const COLORS = ['#f5c842','#fde68a','#e0a820','#ffffff','#f97316'];
 
   class Flake {
-    constructor(x, y, big){
-      this.x = x ?? Math.random()*W;
-      this.y = y ?? -20;
-      this.size = big ? (Math.random()*16+14) : (Math.random()*10+8);
-      this.speedY = big ? (Math.random()*4+3) : (Math.random()*3+2);
-      this.speedX = (Math.random()-0.5) * (big ? 5 : 3);
+    constructor(x, y){
+      this.x = x;
+      this.y = y;
+      this.size = Math.random()*10+8;
+      this.speedY = -(Math.random()*6+2);
+      this.speedX = (Math.random()-0.5)*10;
       this.rot = Math.random()*360;
       this.rotSpeed = (Math.random()-0.5)*8;
       this.alpha = 1;
-      this.decay = big ? 0.008 : 0.012;
+      this.decay = 0.025;
       this.emoji = Math.random() > 0.4 ? EMOJIS[Math.floor(Math.random()*EMOJIS.length)] : null;
       this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
       this.isRect = !this.emoji;
@@ -636,24 +636,10 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 
   function start(){ if (!animId) animId = requestAnimationFrame(loop); }
 
-  // Lluvia grande (al avanzar/finalizar categoría)
-  window.lanzarConfetiBig = function(){
-    for (let i=0; i<80; i++){
-      setTimeout(()=>{
-        particles.push(new Flake(Math.random()*W, Math.random()*-60, true));
-      }, i*18);
-    }
-    start();
-  };
-
   // Burst puntual al seleccionar nominado (desde posición del click)
   window.lanzarConfetiClick = function(x, y){
     for (let i=0; i<18; i++){
-      const p = new Flake(x, y, false);
-      p.speedX = (Math.random()-0.5)*10;
-      p.speedY = -(Math.random()*6+2);
-      p.decay = 0.025;
-      particles.push(p);
+      particles.push(new Flake(x, y));
     }
     start();
   };
@@ -856,8 +842,6 @@ async function nextCategoria(){
       showMsg('vote-msg',`Debes votar por exactamente ${cat.votos} personaje${cat.votos>1?'s':''}. Llevas ${n} seleccionado${n!==1?'s':''}.`,'error');
       return;
     }
-    // 🎊 Lluvia grande al avanzar
-    lanzarConfetiBig();
   }
   document.getElementById('vote-msg').style.display='none';
   if(catIndex<CATS.length-1){
@@ -879,7 +863,6 @@ async function enviarVotos(){
         body:JSON.stringify({personaje_votante:personajeActual,categoria:cat.id,nominados_votados:noms})
       });
     }
-    lanzarConfetiBig(); // 🎊 Confeti final al terminar
     setTimeout(()=>showScreen('screen-thanks'), 600);
   }catch(e){
     showMsg('vote-msg','Error al enviar los votos. Intenta de nuevo.','error');
@@ -1074,7 +1057,7 @@ function verificarAdmin(){
   if(document.getElementById('admin-pass').value===ADMIN_PASS){
     document.getElementById('admin-locked').style.display='none';
     document.getElementById('admin-content').style.display='block';
-    loadBuzonAdmin(); // Carga mensajes al entrar
+    loadBuzonAdmin();
   } else { showMsg('admin-msg','Clave incorrecta.','error'); }
 }
 
