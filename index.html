@@ -52,7 +52,6 @@ body::before{content:'';position:fixed;inset:0;background:
   transition:all .2s;background:transparent;color:var(--muted);line-height:1.3;}
 .tab-btn.active{background:linear-gradient(135deg,var(--gold-dark),var(--gold2));color:#0a0800;font-weight:700;box-shadow:0 4px 15px rgba(245,200,66,.3);}
 .tab-btn:hover:not(.active){color:var(--gold);}
-/* móvil: ícono arriba, texto abajo */
 .tab-btn .tab-icon{display:block;font-size:1.1rem;margin-bottom:2px;}
 .tab-btn .tab-label{display:block;font-size:.58rem;letter-spacing:.5px;}
 @media(max-width:500px){
@@ -114,7 +113,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 .btn-red:hover{background:rgba(239,68,68,.25);}
 .btn-green{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7;}
 .btn-green:hover{background:rgba(16,185,129,.25);}
-/* spinner dentro del botón */
 .btn .btn-spinner{display:none;width:16px;height:16px;border:2px solid rgba(0,0,0,.3);
   border-top-color:#0a0800;border-radius:50%;animation:spin .7s linear infinite;
   position:absolute;right:16px;top:50%;transform:translateY(-50%);}
@@ -240,7 +238,7 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 .admin-section{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;}
 .admin-section-title{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:2px;color:var(--gold2);margin-bottom:12px;text-transform:uppercase;}
 
-/* ── GESTIÓN PERSONAJES (dentro del admin) ── */
+/* ── GESTIÓN PERSONAJES ── */
 .personajes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px;}
 .personaje-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;gap:8px;}
 .personaje-item .pj-name{font-weight:700;font-size:.85rem;flex:1;}
@@ -335,7 +333,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 .chat-live-text{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:2px;color:#6ee7b7;text-transform:uppercase;}
 .chat-empty{display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:.88rem;font-style:italic;text-align:center;padding:20px;}
 
-/* resultado preview */
 .resultado-preview-box{background:var(--card2);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:14px;font-size:.88rem;line-height:1.9;display:none;}
 
 /* ── SPINNER / LOADING ── */
@@ -352,7 +349,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 
 .sep{border:none;border-top:1px solid var(--border);margin:16px 0;}
 
-/* ── RESET PUNTOS MODAL INLINE ── */
 .reset-pts-wrap{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
 .reset-pts-wrap input{flex:1;}
 
@@ -383,7 +379,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
     <div class="gala-sub">The Amazing Digital Circus</div>
   </div>
 
-  <!-- TABS: orden lógico, ícono + etiqueta -->
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('votar')">
       <span class="tab-icon">⭐</span><span class="tab-label">Votar</span>
@@ -500,7 +495,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
       <div id="hist-body"><div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div></div>
     </div>
 
-    <!-- PANEL ADMIN COMPLETO (tabla + personajes + buzón) -->
     <div class="admin-panel">
       <div class="admin-title">🔐 Panel de Administración — Gala</div>
       <div id="admin-locked">
@@ -513,7 +507,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 
       <div id="admin-content" style="display:none">
 
-        <!-- GALA: cerrar / resetear -->
         <div class="admin-section">
           <div class="admin-section-title">🏆 Control de Gala</div>
           <div class="card-sub">Cierra la gala para proclamar los ganadores.</div>
@@ -530,7 +523,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
           </div>
         </div>
 
-        <!-- RESETEAR PUNTOS de un personaje -->
         <div class="admin-section">
           <div class="admin-section-title">🔄 Resetear puntos de un personaje</div>
           <div style="font-size:.82rem;color:var(--muted);margin-bottom:12px">Pone en 0 las estrellas y/o trofeos sin eliminarlo del ranking ni de la gala.</div>
@@ -543,7 +535,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
           <div class="admin-result-box" id="reset-pts-result"></div>
         </div>
 
-        <!-- GESTIÓN DE PERSONAJES (antes era tab aparte) -->
         <div class="admin-section">
           <div class="admin-section-title">👤 Gestión de Personajes</div>
           <div style="font-size:.82rem;color:var(--muted);margin-bottom:14px">Administra los personajes que participan en la gala y en el chat.</div>
@@ -573,7 +564,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
           <div class="admin-result-box" id="pj-result-box"></div>
         </div>
 
-        <!-- CATEGORÍA NUEVO DESTACADO -->
         <div class="admin-section">
           <div class="admin-section-title">🆕 Categoría "Personaje Nuevo Destacado" (opcional)</div>
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
@@ -595,7 +585,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
           <div class="admin-result-box" id="nuevo-dest-result"></div>
         </div>
 
-        <!-- BUZÓN ADMIN -->
         <div class="admin-section">
           <div class="admin-section-title">✉️ Buzón de Mensajes Anónimos</div>
           <div class="buzon-stats" id="buzon-stats-admin">
@@ -615,8 +604,8 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
           </div>
         </div>
 
-      </div><!-- /admin-content -->
-    </div><!-- /admin-panel -->
+      </div>
+    </div>
   </div>
 
   <!-- ══ ⚔️ DESEMPATE ══ -->
@@ -710,7 +699,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
       </div>
       <div style="text-align:right;font-size:.72rem;color:var(--muted);margin-top:-16px;margin-bottom:18px;font-family:'Cinzel',serif" id="chat-char-count">0/200</div>
 
-      <!-- Panel admin del chat — SOLO VISIBLE PARA ABEL -->
       <div class="admin-panel" id="chat-admin-panel" style="display:none">
         <div class="admin-title">🔐 Admin — Anunciar Resultados en Chat</div>
         <div id="chat-admin-locked-wrap">
@@ -789,7 +777,7 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
     </div>
   </div>
 
-</div><!-- /container -->
+</div>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════════════
@@ -818,79 +806,45 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
    CONSTANTES
 ═══════════════════════════════════════════════════════════════════════ */
 const SUPABASE_URL='https://goopxqkxuogqhlppsfyv.supabase.co';
-const SUPABASE_KEY='sb_publishable_P1uFKhOCi6Yr9ie0mokF9A_uxTJk2Bf';
-// ⚠️ SEGURIDAD: La clave admin no se almacena en el cliente.
-// Se verifica enviándola al servidor via Supabase RLS + función edge.
-// Ver guía de seguridad al final del script.
-const ADMIN_PASS='Henyeradmin'; // TODO: reemplazar con verificación server-side (ver guía)
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvb3B4cWt4dW9ncWhscHBzZnl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MDYyMDgsImV4cCI6MjA5MDI4MjIwOH0.qbLwPNGDYXF920wsGsGIB-91TlI5j1nU51y5cS7udwg';
+const ADMIN_PASS='Henyeradmin';
 
 /* ═══════════════════════════════════════════════════════════════════════
    ESTADO GLOBAL
 ═══════════════════════════════════════════════════════════════════════ */
 let CHICOS=[], CHICAS=[];
 let catNuevoDestacado={activa:false,nominados:[],votos:2};
-let CATS_CACHE=null; // caché de categorías — se genera una vez por votación
+let CATS_CACHE=null;
 
-// Votación
 let personajeActual='', catIndex=0, todosLosVotos={}, conteosVisible=false;
-
-// Personajes admin
 let generoSeleccionado='';
-
-// Buzón
 let buzonFiltroActual='todos', buzonMensajes=[];
-
-// Chat
 let chatPersonaje='', chatUltimoId=0, chatMensajes=[];
 let chatRealtimeChannel=null, chatAdminVerificado=false;
-let chatEnviando=false; // debounce
+let chatEnviando=false;
 
 /* ═══════════════════════════════════════════════════════════════════════
    UTILIDADES
 ═══════════════════════════════════════════════════════════════════════ */
-
-/** Escapa HTML para evitar XSS */
 function esc(s){
   if(s===null||s===undefined)return '';
-  return String(s)
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
-
-/** Muestra un mensaje en un elemento */
 function showMsg(id,txt,type){
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.innerHTML=txt;
-  el.className=`msg ${type}`;
-  el.style.display='block';
+  const el=document.getElementById(id);if(!el)return;
+  el.innerHTML=txt;el.className=`msg ${type}`;el.style.display='block';
 }
-
-/** Activa/desactiva spinner en un botón */
 function btnLoading(id,on){
-  const el=document.getElementById(id);
-  if(!el)return;
-  el.classList.toggle('loading',on);
-  el.disabled=on;
+  const el=document.getElementById(id);if(!el)return;
+  el.classList.toggle('loading',on);el.disabled=on;
 }
-
-/** Normaliza string: minúsculas, sin tildes, sin espacios extra */
-function normalizar(s){
-  return String(s||'').toLowerCase().trim()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-}
-
+function normalizar(s){return String(s||'').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
 function getTodos(){return[...CHICOS,...CHICAS];}
 function contarVersiones(g){return getTodos().filter(p=>normalizar(p).includes(g)).length;}
 
 /* ═══════════════════════════════════════════════════════════════════════
-   CATEGORÍAS (con caché)
+   CATEGORÍAS
 ═══════════════════════════════════════════════════════════════════════ */
-
-/** Genera y retorna el array de categorías. Cachea el resultado. */
 function getCategorias(forzar=false){
   if(CATS_CACHE&&!forzar)return CATS_CACHE;
   const todos=getTodos();
@@ -927,31 +881,39 @@ function getCategorias(forzar=false){
   CATS_CACHE=cats;
   return cats;
 }
-
-/** Invalida el caché de categorías (llamar cuando cambian CHICOS/CHICAS o catNuevoDestacado) */
 function invalidarCatCache(){CATS_CACHE=null;}
 
 /* ═══════════════════════════════════════════════════════════════════════
-   INICIALIZACIÓN
+   INICIALIZACIÓN — BUG FIX: código de finalización SIEMPRE se ejecuta
 ═══════════════════════════════════════════════════════════════════════ */
 async function inicializarApp(){
   let usoFallback=false;
+
+  // ── Intentar cargar datos de Supabase ──
   try{
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),8000); // timeout 8s
     const [pjRes,cfgRes]=await Promise.all([
       fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?select=nombre,genero&order=nombre.asc`,
-        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),
+        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`},signal:controller.signal}),
       fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado&select=valor`,
-        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}})
+        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`},signal:controller.signal})
     ]);
+    clearTimeout(timeout);
     const pjData=await pjRes.json();
     const cfgData=await cfgRes.json();
     if(Array.isArray(pjData)&&pjData.length>0){
       CHICOS=pjData.filter(p=>p.genero==='M').map(p=>p.nombre);
       CHICAS=pjData.filter(p=>p.genero==='F').map(p=>p.nombre);
-    }else{setFallback();usoFallback=true;}
+    }else{
+      setFallback();usoFallback=true;
+    }
     if(cfgData&&cfgData[0])catNuevoDestacado=JSON.parse(cfgData[0].valor);
-  }catch(e){setFallback();usoFallback=true;}
+  }catch(e){
+    setFallback();usoFallback=true;
+  }
 
+  // ── Siempre se ejecuta, sin importar si hubo error ──
   invalidarCatCache();
   cargarPersonajesSelect();
   cargarPersonajesChatSelect();
@@ -960,11 +922,14 @@ async function inicializarApp(){
   const ov=document.getElementById('init-overlay');
   if(usoFallback){
     document.getElementById('init-warn').style.display='block';
-    await new Promise(r=>setTimeout(r,1800));
+    await new Promise(r=>setTimeout(r,1500));
   }
   ov.style.transition='opacity .4s ease';
   ov.style.opacity='0';
-  setTimeout(()=>ov.remove(),400);
+  setTimeout(()=>{
+    ov.style.display='none';
+    ov.remove();
+  },420);
 }
 
 function setFallback(){
@@ -994,33 +959,26 @@ const TAB_IDS=['votar','tabla','desempate','chat','buzon'];
 function switchTab(tab){
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',TAB_IDS[i]===tab));
   if(tab!=='chat')detenerChat();
-  if(tab==='votar')     { /* no resetear, solo mostrar pantalla actual del flujo */ mostrarPantallaVotar(); }
+  if(tab==='votar')     { mostrarPantallaVotar(); }
   else if(tab==='chat') { showScreen('screen-chat');iniciarChat(); }
   else if(tab==='buzon'){ showScreen('screen-buzon');checkBuzonCooldown(); }
   else if(tab==='tabla'){ showScreen('screen-tabla'); }
   else if(tab==='desempate'){ showScreen('screen-desempate'); }
 }
 
-/** Muestra la pantalla correcta del flujo de votación sin reiniciarlo */
 function mostrarPantallaVotar(){
   if(!personajeActual){ showScreen('screen-select'); return; }
-  // Si ya está en votación o resumen, mantener esa pantalla
   const activas=['screen-welcome','screen-voting','screen-resumen','screen-thanks'];
-  const yaActiva=activas.some(id=>{
-    const s=document.getElementById(id);
-    return s&&s.classList.contains('active');
-  });
+  const yaActiva=activas.some(id=>{const s=document.getElementById(id);return s&&s.classList.contains('active');});
   if(!yaActiva)showScreen('screen-select');
 }
 
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const t=document.getElementById(id);
-  if(t)t.classList.add('active');
+  const t=document.getElementById(id);if(t)t.classList.add('active');
   window.scrollTo(0,0);
 }
 
-/* ── Selects de personajes ── */
 function cargarPersonajesSelect(){
   const sel=document.getElementById('sel-personaje');
   while(sel.options.length>1)sel.remove(1);
@@ -1030,10 +988,7 @@ function cargarPersonajesSelect(){
 function cargarPersonajesChatSelect(){
   const sel=document.getElementById('chat-sel-personaje');
   while(sel.options.length>1)sel.remove(1);
-  const adminOpt=document.createElement('option');
-  adminOpt.value='__admin__';
-  adminOpt.textContent='🔐 Abel (Admin) — requiere clave';
-  sel.appendChild(adminOpt);
+  const adminOpt=document.createElement('option');adminOpt.value='__admin__';adminOpt.textContent='🔐 Abel (Admin) — requiere clave';sel.appendChild(adminOpt);
   const sep=document.createElement('option');sep.disabled=true;sep.textContent='──────────────';sel.appendChild(sep);
   getTodos().sort().forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o);});
 }
@@ -1052,21 +1007,15 @@ function confirmarPersonaje(){
 function checkTerms(){document.getElementById('btn-start').disabled=!document.getElementById('chk-terms').checked;}
 
 function iniciarVotacion(){
-  catIndex=0;
-  todosLosVotos={};
-  CATS_CACHE=null; // regenerar categorías frescas al iniciar votación
-  showScreen('screen-voting');
-  renderCategoria();
+  catIndex=0;todosLosVotos={};CATS_CACHE=null;
+  showScreen('screen-voting');renderCategoria();
 }
 
-/* ── BARRA DE PROGRESO SEGMENTADA ── */
 function renderProgreso(){
   const CATS=getCategorias();
-  const bar=document.getElementById('prog-bar');
-  bar.innerHTML='';
+  const bar=document.getElementById('prog-bar');bar.innerHTML='';
   CATS.forEach((cat,i)=>{
-    const seg=document.createElement('div');
-    seg.className='progress-seg';
+    const seg=document.createElement('div');seg.className='progress-seg';
     if(cat.locked)seg.classList.add('locked');
     else if(i<catIndex)seg.classList.add('done');
     else if(i===catIndex)seg.classList.add('current');
@@ -1083,77 +1032,51 @@ function renderCategoria(){
   document.getElementById('prog-cat').textContent=`Categoría ${catIndex+1} de ${CATS.length}`;
   document.getElementById('prog-name').textContent=cat.nombre;
   renderProgreso();
-
   const votosActuales=todosLosVotos[cat.id]||[];
   const esUltima=catIndex===CATS.length-1;
-
   if(cat.locked){
     card.innerHTML=`<div class="locked-cat"><div class="locked-icon">🔒</div><div class="locked-title">${cat.nombre}</div><div class="locked-msg">${cat.lockedMsg||'No disponible.'}</div></div>`;
     document.getElementById('btn-next').textContent=esUltima?'📋 VER RESUMEN':'AVANZAR ➜';
     return;
   }
-
   const pips=Array.from({length:cat.votos},(_,i)=>`<div class="votes-pip ${i<votosActuales.length?'filled':''}"></div>`).join('');
   const nomFiltrados=cat.nominados.filter(n=>n!==personajeActual);
   const nomHTML=nomFiltrados.map(n=>{
-    const sel=votosActuales.includes(n);
-    const maxed=votosActuales.length>=cat.votos&&!sel;
+    const sel=votosActuales.includes(n);const maxed=votosActuales.length>=cat.votos&&!sel;
     return `<button class="nominado-btn ${sel?'selected':''} ${maxed?'maxed':''}" onclick="toggleVoto('${n.replace(/'/g,"\\'")}',${cat.votos},event)">${sel?'⭐ ':''}${esc(n)}</button>`;
   }).join('');
-
   card.innerHTML=`
     <div class="cat-badge">${cat.emoji} ${cat.nombre}</div>
     <div class="card-sub">Vota por exactamente <strong style="color:var(--gold3)">${cat.votos} personaje${cat.votos>1?'s':''}</strong>.
     <span style="color:var(--muted);font-size:.8rem">(Top ${cat.ganadores} recibirán premio)</span></div>
     <div class="votes-counter">${pips}<span class="votes-label">${votosActuales.length}/${cat.votos} seleccionados</span></div>
     <div class="nominados-grid">${nomHTML}</div>`;
-
   document.getElementById('btn-next').textContent=esUltima?'📋 VER RESUMEN':'SIGUIENTE ➜';
 }
 
 function toggleVoto(nombre,maxVotos,event){
-  const CATS=getCategorias();
-  const cat=CATS[catIndex];
+  const CATS=getCategorias();const cat=CATS[catIndex];
   if(!todosLosVotos[cat.id])todosLosVotos[cat.id]=[];
-  const arr=todosLosVotos[cat.id];
-  const idx=arr.indexOf(nombre);
+  const arr=todosLosVotos[cat.id];const idx=arr.indexOf(nombre);
   if(idx>-1){arr.splice(idx,1);}
-  else{
-    if(arr.length>=maxVotos)return;
-    arr.push(nombre);
-    if(event)lanzarConfetiClick(event.clientX,event.clientY);
-  }
+  else{if(arr.length>=maxVotos)return;arr.push(nombre);if(event)lanzarConfetiClick(event.clientX,event.clientY);}
   renderCategoria();
 }
 
 function nextCategoria(){
-  const CATS=getCategorias();
-  const cat=CATS[catIndex];
+  const CATS=getCategorias();const cat=CATS[catIndex];
   if(!cat.locked){
     const n=(todosLosVotos[cat.id]||[]).length;
-    if(n!==cat.votos){
-      showMsg('vote-msg',`Debes votar por exactamente ${cat.votos} personaje${cat.votos>1?'s':''}. Llevas ${n} seleccionado${n!==1?'s':''}.`,'error');
-      return;
-    }
+    if(n!==cat.votos){showMsg('vote-msg',`Debes votar por exactamente ${cat.votos} personaje${cat.votos>1?'s':''}. Llevas ${n} seleccionado${n!==1?'s':''}.`,'error');return;}
   }
   document.getElementById('vote-msg').style.display='none';
-  if(catIndex<CATS.length-1){
-    catIndex++;
-    renderCategoria();
-  }else{
-    mostrarResumen();
-  }
+  if(catIndex<CATS.length-1){catIndex++;renderCategoria();}else{mostrarResumen();}
 }
 
-function volverDesdeResumen(){
-  showScreen('screen-voting');
-  renderCategoria();
-}
+function volverDesdeResumen(){showScreen('screen-voting');renderCategoria();}
 
-/* ── RESUMEN ── */
 function mostrarResumen(){
-  const CATS=getCategorias();
-  const cont=document.getElementById('resumen-contenido');
+  const CATS=getCategorias();const cont=document.getElementById('resumen-contenido');
   let html='<div class="resumen-card"><div class="resumen-title">✅ Tus selecciones</div>';
   CATS.forEach(cat=>{
     const votos=todosLosVotos[cat.id]||[];
@@ -1161,11 +1084,9 @@ function mostrarResumen(){
       <span class="resumen-cat">${cat.emoji} ${esc(cat.nombre)}</span>
       <span class="resumen-votos ${cat.locked||!votos.length?'resumen-skipped':''}">
         ${cat.locked?'🔒 Bloqueada':votos.length?votos.map(v=>esc(v)).join(', '):'⚠️ Sin votos'}
-      </span>
-    </div>`;
+      </span></div>`;
   });
-  html+='</div>';
-  cont.innerHTML=html;
+  html+='</div>';cont.innerHTML=html;
   document.getElementById('resumen-msg').style.display='none';
   showScreen('screen-resumen');
 }
@@ -1175,9 +1096,7 @@ async function enviarVotos(){
   btn.disabled=true;btn.classList.add('loading');
   try{
     for(const cat of getCategorias()){
-      if(cat.locked)continue;
-      const noms=todosLosVotos[cat.id]||[];
-      if(!noms.length)continue;
+      if(cat.locked)continue;const noms=todosLosVotos[cat.id]||[];if(!noms.length)continue;
       await fetch(`${SUPABASE_URL}/rest/v1/gala_votos`,{
         method:'POST',
         headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
@@ -1192,41 +1111,27 @@ async function enviarVotos(){
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   💬 CHAT EN VIVO — Supabase Realtime
+   💬 CHAT EN VIVO
 ═══════════════════════════════════════════════════════════════════════ */
 const CHAT_PAGE_SIZE=80;
-let chatTotalCargados=0;
-let chatHayMas=false;
+let chatTotalCargados=0,chatHayMas=false;
 
 function iniciarChat(){
-  if(chatPersonaje){
-    mostrarChatActivo();
-    cargarChatInicial();
-    suscribirRealtime();
-  }else{
-    document.getElementById('chat-pick-wrap').style.display='block';
-    document.getElementById('chat-activo-wrap').style.display='none';
-  }
+  if(chatPersonaje){mostrarChatActivo();cargarChatInicial();suscribirRealtime();}
+  else{document.getElementById('chat-pick-wrap').style.display='block';document.getElementById('chat-activo-wrap').style.display='none';}
 }
 
 async function confirmarPersonajeChat(){
-  const sel=document.getElementById('chat-sel-personaje');
-  const val=sel.value;
+  const sel=document.getElementById('chat-sel-personaje');const val=sel.value;
   if(!val){showMsg('chat-pick-msg','Selecciona un personaje para continuar.','error');return;}
   if(val==='__admin__'){
     const clave=prompt('🔐 Ingresa la clave de administrador para entrar como Abel:');
     if(!clave)return;
     if(clave!==ADMIN_PASS){showMsg('chat-pick-msg','Clave incorrecta. No puedes entrar como Abel.','error');return;}
-    chatPersonaje='Abel (Admin)';
-    chatAdminVerificado=true;
-  }else{
-    chatPersonaje=val;
-    chatAdminVerificado=false;
-  }
+    chatPersonaje='Abel (Admin)';chatAdminVerificado=true;
+  }else{chatPersonaje=val;chatAdminVerificado=false;}
   document.getElementById('chat-pick-msg').style.display='none';
-  mostrarChatActivo();
-  await cargarChatInicial();
-  suscribirRealtime();
+  mostrarChatActivo();await cargarChatInicial();suscribirRealtime();
   if(chatAdminVerificado){
     document.getElementById('chat-admin-locked-wrap').style.display='none';
     document.getElementById('chat-admin-content-wrap').style.display='block';
@@ -1238,13 +1143,11 @@ function mostrarChatActivo(){
   document.getElementById('chat-pick-wrap').style.display='none';
   document.getElementById('chat-activo-wrap').style.display='block';
   document.getElementById('chat-who-nombre').textContent=chatPersonaje;
-  // Panel admin SOLO visible para Abel
   document.getElementById('chat-admin-panel').style.display=chatAdminVerificado?'block':'none';
 }
 
 function salirChat(){
-  detenerChat();
-  chatPersonaje='';chatAdminVerificado=false;chatUltimoId=0;chatMensajes=[];chatTotalCargados=0;
+  detenerChat();chatPersonaje='';chatAdminVerificado=false;chatUltimoId=0;chatMensajes=[];chatTotalCargados=0;
   document.getElementById('chat-sel-personaje').value='';
   document.getElementById('chat-pick-wrap').style.display='block';
   document.getElementById('chat-activo-wrap').style.display='none';
@@ -1254,97 +1157,56 @@ function salirChat(){
 }
 
 function detenerChat(){
-  if(chatRealtimeChannel){
-    // Desuscribir Supabase Realtime
-    try{
-      fetch(`${SUPABASE_URL}/realtime/v1/channels/${chatRealtimeChannel}`,{
-        method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
-      });
-    }catch(e){}
-    chatRealtimeChannel=null;
-  }
+  if(chatRealtimeChannel){clearInterval(chatRealtimeChannel);chatRealtimeChannel=null;}
 }
 
-/** Carga los últimos CHAT_PAGE_SIZE mensajes */
 async function cargarChatInicial(){
   const box=document.getElementById('chat-box');
   box.innerHTML='<div class="chat-empty">💬 Cargando mensajes...</div>';
   chatTotalCargados=0;chatHayMas=false;
   try{
-    // Primero contar total
     const countRes=await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?select=id`,
       {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'count=exact'}});
     const totalCount=parseInt(countRes.headers.get('content-range')?.split('/')[1]||'0');
-
     const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?select=*&order=id.desc&limit=${CHAT_PAGE_SIZE}`,
       {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const data=await res.json();
-    chatMensajes=data.reverse();
-    chatTotalCargados=chatMensajes.length;
-    chatHayMas=totalCount>CHAT_PAGE_SIZE;
+    chatMensajes=data.reverse();chatTotalCargados=chatMensajes.length;chatHayMas=totalCount>CHAT_PAGE_SIZE;
     box.innerHTML='';
-    if(chatHayMas){
-      const btn=document.createElement('div');btn.className='chat-load-more';
-      btn.textContent='⬆ Cargar mensajes anteriores';
-      btn.onclick=cargarMasMensajes;
-      box.appendChild(btn);
-    }
-    if(!chatMensajes.length){
-      box.innerHTML='<div class="chat-empty">💬 ¡Sé el primero en escribir en el chat!</div>';
-      return;
-    }
+    if(chatHayMas){const btn=document.createElement('div');btn.className='chat-load-more';btn.textContent='⬆ Cargar mensajes anteriores';btn.onclick=cargarMasMensajes;box.appendChild(btn);}
+    if(!chatMensajes.length){box.innerHTML='<div class="chat-empty">💬 ¡Sé el primero en escribir en el chat!</div>';return;}
     chatMensajes.forEach(m=>box.appendChild(crearBurbuja(m)));
     chatUltimoId=chatMensajes[chatMensajes.length-1]?.id||0;
     box.scrollTop=box.scrollHeight;
-  }catch(e){
-    box.innerHTML='<div class="chat-empty">⚠️ Error al cargar el chat.</div>';
-  }
+  }catch(e){box.innerHTML='<div class="chat-empty">⚠️ Error al cargar el chat.</div>';}
 }
 
 async function cargarMasMensajes(){
   if(!chatMensajes.length)return;
-  const primerId=chatMensajes[0].id;
-  const box=document.getElementById('chat-box');
+  const primerId=chatMensajes[0].id;const box=document.getElementById('chat-box');
   try{
     const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?id=lt.${primerId}&order=id.desc&limit=${CHAT_PAGE_SIZE}`,
       {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    const data=await res.json();
-    const anteriores=data.reverse();
+    const data=await res.json();const anteriores=data.reverse();
     chatMensajes=[...anteriores,...chatMensajes];
-    // Quitar botón de cargar más si no hay más
-    const btnViejo=box.querySelector('.chat-load-more');
-    if(btnViejo)btnViejo.remove();
-    // Insertar al principio
+    const btnViejo=box.querySelector('.chat-load-more');if(btnViejo)btnViejo.remove();
     const scrollAntes=box.scrollHeight-box.scrollTop;
-    anteriores.forEach(m=>{
-      const burbuja=crearBurbuja(m);
-      box.insertBefore(burbuja,box.firstChild);
-    });
-    if(data.length===CHAT_PAGE_SIZE){
-      const btn=document.createElement('div');btn.className='chat-load-more';
-      btn.textContent='⬆ Cargar mensajes anteriores';
-      btn.onclick=cargarMasMensajes;
-      box.insertBefore(btn,box.firstChild);
-    }
+    anteriores.forEach(m=>{box.insertBefore(crearBurbuja(m),box.firstChild);});
+    if(data.length===CHAT_PAGE_SIZE){const btn=document.createElement('div');btn.className='chat-load-more';btn.textContent='⬆ Cargar mensajes anteriores';btn.onclick=cargarMasMensajes;box.insertBefore(btn,box.firstChild);}
     box.scrollTop=box.scrollHeight-scrollAntes;
   }catch(e){}
 }
 
-/** Suscribe al canal Realtime de Supabase para mensajes nuevos */
 function suscribirRealtime(){
   if(chatRealtimeChannel)return;
-  // Usamos polling cada 3s como fallback compatible (Supabase Realtime JS SDK requiere importar libería externa)
-  // Si quieres Realtime nativo, importa: https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js
   chatRealtimeChannel=setInterval(async()=>{
     if(!chatPersonaje)return;
     try{
       const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?id=gt.${chatUltimoId}&order=id.asc`,
         {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-      const nuevos=await res.json();
-      if(!nuevos.length)return;
+      const nuevos=await res.json();if(!nuevos.length)return;
       const box=document.getElementById('chat-box');
-      const emptyEl=box.querySelector('.chat-empty');
-      if(emptyEl)box.innerHTML='';
+      const emptyEl=box.querySelector('.chat-empty');if(emptyEl)box.innerHTML='';
       const atBottom=box.scrollHeight-box.scrollTop<=box.clientHeight+80;
       nuevos.forEach(m=>{box.appendChild(crearBurbuja(m));chatMensajes.push(m);});
       chatUltimoId=nuevos[nuevos.length-1].id;
@@ -1370,15 +1232,10 @@ function crearBurbuja(m){
   return wrap;
 }
 
-/** Enviar mensaje con debounce */
 async function enviarMensajeChat(){
   if(!chatPersonaje||chatEnviando)return;
-  const input=document.getElementById('chat-input-texto');
-  const texto=input.value.trim();
-  if(!texto)return;
-  chatEnviando=true;
-  const btn=document.getElementById('chat-send-btn');
-  btn.disabled=true;
+  const input=document.getElementById('chat-input-texto');const texto=input.value.trim();if(!texto)return;
+  chatEnviando=true;const btn=document.getElementById('chat-send-btn');btn.disabled=true;
   const tipo=chatAdminVerificado?'admin':'usuario';
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_chat`,{
@@ -1386,13 +1243,11 @@ async function enviarMensajeChat(){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
       body:JSON.stringify({personaje:chatPersonaje,mensaje:texto,tipo})
     });
-    input.value='';
-    document.getElementById('chat-char-count').textContent='0/200';
+    input.value='';document.getElementById('chat-char-count').textContent='0/200';
   }catch(e){alert('Error al enviar mensaje.');}
   setTimeout(()=>{chatEnviando=false;btn.disabled=false;input.focus();},800);
 }
 
-/* ── ADMIN CHAT ── */
 function verificarAdminChat(){
   if(document.getElementById('chat-admin-pass').value===ADMIN_PASS){
     chatAdminVerificado=true;
@@ -1403,63 +1258,45 @@ function verificarAdminChat(){
 }
 
 function poblarSelectResultadosChat(){
-  const sel=document.getElementById('chat-cat-result-select');
-  if(sel.options.length>1)return;
-  getCategorias().filter(c=>!c.locked).forEach(c=>{
-    const o=document.createElement('option');o.value=c.id;o.textContent=`${c.emoji} ${c.nombre}`;sel.appendChild(o);
-  });
+  const sel=document.getElementById('chat-cat-result-select');if(sel.options.length>1)return;
+  getCategorias().filter(c=>!c.locked).forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=`${c.emoji} ${c.nombre}`;sel.appendChild(o);});
 }
 
 async function previewResultadoChat(){
   const catId=document.getElementById('chat-cat-result-select').value;
-  const preview=document.getElementById('chat-resultado-preview');
-  const btn=document.getElementById('btn-anunciar-chat');
+  const preview=document.getElementById('chat-resultado-preview');const btn=document.getElementById('btn-anunciar-chat');
   if(!catId){preview.style.display='none';btn.disabled=true;return;}
-  preview.style.display='block';
-  preview.innerHTML='<div class="spinner" style="width:20px;height:20px;margin:4px auto"></div>';
-  btn.disabled=true;
+  preview.style.display='block';preview.innerHTML='<div class="spinner" style="width:20px;height:20px;margin:4px auto"></div>';btn.disabled=true;
   try{
     const [votosRes,desempRes]=await Promise.all([
-      fetch(`${SUPABASE_URL}/rest/v1/gala_votos?categoria=eq.${catId}&select=nominados_votados`,
-        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),
-      fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?categoria_id=eq.${catId}&estado=eq.cerrado&select=*&order=id.desc&limit=1`,
-        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}})
+      fetch(`${SUPABASE_URL}/rest/v1/gala_votos?categoria=eq.${catId}&select=nominados_votados`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),
+      fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?categoria_id=eq.${catId}&estado=eq.cerrado&select=*&order=id.desc&limit=1`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}})
     ]);
-    const votos=await votosRes.json();
-    const desempates=await desempRes.json();
-    const cat=getCategorias().find(c=>c.id===catId);
-    const conteo={};
+    const votos=await votosRes.json();const desempates=await desempRes.json();
+    const cat=getCategorias().find(c=>c.id===catId);const conteo={};
     for(const v of votos)for(const n of v.nominados_votados)conteo[n]=(conteo[n]||0)+1;
-    const sorted=Object.entries(conteo).sort((a,b)=>b[1]-a[1]);
-    const top=sorted.slice(0,cat.ganadores);
+    const sorted=Object.entries(conteo).sort((a,b)=>b[1]-a[1]);const top=sorted.slice(0,cat.ganadores);
     const medals=['🥇','🥈','🥉','4°','5°'];
     let html=`<strong style="color:var(--gold)">${cat.emoji} ${esc(cat.nombre)}</strong><br>`;
     if(!top.length)html+='<span style="color:var(--muted)">Sin votos registrados aún.</span>';
     else top.forEach(([n,v],i)=>{html+=`${medals[i]||'·'} <strong>${esc(n)}</strong> — ${v} voto${v!==1?'s':''}<br>`;});
     if(desempates.length){const d=desempates[0];html+=`<br>⚔️ <em style="color:#fca5a5">Empate resuelto — ganó <strong>${esc(d.ganador)}</strong>${d.azar?' (elegido al azar)':' por desempate'}</em>`;}
-    preview.innerHTML=html;
-    btn.disabled=!top.length;
+    preview.innerHTML=html;btn.disabled=!top.length;
   }catch(e){preview.innerHTML='⚠️ Error al cargar los votos.';}
 }
 
 async function anunciarResultadoChat(){
   const catId=document.getElementById('chat-cat-result-select').value;
-  const btn=document.getElementById('btn-anunciar-chat');
-  btn.disabled=true;btn.textContent='Anunciando...';
+  const btn=document.getElementById('btn-anunciar-chat');btn.disabled=true;btn.textContent='Anunciando...';
   try{
     const [votosRes,desempRes]=await Promise.all([
-      fetch(`${SUPABASE_URL}/rest/v1/gala_votos?categoria=eq.${catId}&select=nominados_votados`,
-        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),
-      fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?categoria_id=eq.${catId}&estado=eq.cerrado&select=*&order=id.desc&limit=1`,
-        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}})
+      fetch(`${SUPABASE_URL}/rest/v1/gala_votos?categoria=eq.${catId}&select=nominados_votados`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),
+      fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?categoria_id=eq.${catId}&estado=eq.cerrado&select=*&order=id.desc&limit=1`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}})
     ]);
-    const votos=await votosRes.json();
-    const desempates=await desempRes.json();
-    const cat=getCategorias().find(c=>c.id===catId);
-    const conteo={};
+    const votos=await votosRes.json();const desempates=await desempRes.json();
+    const cat=getCategorias().find(c=>c.id===catId);const conteo={};
     for(const v of votos)for(const n of v.nominados_votados)conteo[n]=(conteo[n]||0)+1;
-    const sorted=Object.entries(conteo).sort((a,b)=>b[1]-a[1]);
-    const top=sorted.slice(0,cat.ganadores);
+    const sorted=Object.entries(conteo).sort((a,b)=>b[1]-a[1]);const top=sorted.slice(0,cat.ganadores);
     const medals=['🥇','🥈','🥉','4°','5°'];
     let msg=`🏆 RESULTADO — ${cat.nombre}: `;
     msg+=top.map(([n,v],i)=>`${medals[i]} ${n} (${v} voto${v!==1?'s':''})`).join(' · ');
@@ -1469,23 +1306,18 @@ async function anunciarResultadoChat(){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
       body:JSON.stringify({personaje:'Sistema',mensaje:msg,tipo:'sistema'})
     });
-    const rb=document.getElementById('chat-admin-result-box');
-    rb.innerHTML='✅ Resultado anunciado en el chat.';rb.style.display='block';
-    document.getElementById('chat-cat-result-select').value='';
-    document.getElementById('chat-resultado-preview').style.display='none';
+    const rb=document.getElementById('chat-admin-result-box');rb.innerHTML='✅ Resultado anunciado en el chat.';rb.style.display='block';
+    document.getElementById('chat-cat-result-select').value='';document.getElementById('chat-resultado-preview').style.display='none';
     btn.textContent='📢 ANUNCIAR EN EL CHAT';btn.disabled=true;
-    const box=document.getElementById('chat-box');box.scrollTop=box.scrollHeight;
+    document.getElementById('chat-box').scrollTop=document.getElementById('chat-box').scrollHeight;
   }catch(e){
-    const rb=document.getElementById('chat-admin-result-box');
-    rb.innerHTML='❌ Error al anunciar el resultado.';rb.style.display='block';
+    const rb=document.getElementById('chat-admin-result-box');rb.innerHTML='❌ Error al anunciar el resultado.';rb.style.display='block';
     btn.disabled=false;btn.textContent='📢 ANUNCIAR EN EL CHAT';
   }
 }
 
 async function enviarMensajeAdmin(){
-  const input=document.getElementById('chat-admin-texto-libre');
-  const texto=input.value.trim();
-  if(!texto)return;
+  const input=document.getElementById('chat-admin-texto-libre');const texto=input.value.trim();if(!texto)return;
   input.disabled=true;
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_chat`,{
@@ -1493,39 +1325,31 @@ async function enviarMensajeAdmin(){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
       body:JSON.stringify({personaje:'Abel (Admin)',mensaje:texto,tipo:'admin'})
     });
-    input.value='';
-    const box=document.getElementById('chat-box');box.scrollTop=box.scrollHeight;
+    input.value='';document.getElementById('chat-box').scrollTop=document.getElementById('chat-box').scrollHeight;
   }catch(e){alert('Error al enviar.');}
   input.disabled=false;
 }
 
 async function vaciarChat(){
-  if(!confirm('¿Borrar TODOS los mensajes del chat? Esta acción no se puede deshacer.'))return;
+  if(!confirm('¿Borrar TODOS los mensajes del chat?'))return;
   const rb=document.getElementById('chat-admin-result-box');
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?id=gte.0`,
-      {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    chatMensajes=[];chatUltimoId=0;
-    document.getElementById('chat-box').innerHTML='<div class="chat-empty">💬 El chat ha sido vaciado.</div>';
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?id=gte.0`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    chatMensajes=[];chatUltimoId=0;document.getElementById('chat-box').innerHTML='<div class="chat-empty">💬 El chat ha sido vaciado.</div>';
     rb.innerHTML='✅ Chat vaciado correctamente.';rb.style.display='block';
   }catch(e){rb.innerHTML='❌ Error al vaciar el chat.';rb.style.display='block';}
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   ✉️ BUZÓN — con rate limiting (5 min)
+   ✉️ BUZÓN
 ═══════════════════════════════════════════════════════════════════════ */
-const BUZON_COOLDOWN_MS=5*60*1000; // 5 minutos
+const BUZON_COOLDOWN_MS=5*60*1000;
 let buzonCdInterval=null;
 
 function checkBuzonCooldown(){
   const ultimo=parseInt(localStorage.getItem('gala_buzon_ts')||'0');
-  const ahora=Date.now();
-  const restante=BUZON_COOLDOWN_MS-(ahora-ultimo);
-  if(restante>0){
-    mostrarBuzonCooldown(restante);
-  }else{
-    ocultarBuzonCooldown();
-  }
+  const restante=BUZON_COOLDOWN_MS-(Date.now()-ultimo);
+  if(restante>0)mostrarBuzonCooldown(restante);else ocultarBuzonCooldown();
 }
 
 function mostrarBuzonCooldown(msRestantes){
@@ -1534,16 +1358,13 @@ function mostrarBuzonCooldown(msRestantes){
   actualizarTimerBuzon(msRestantes);
   if(buzonCdInterval)clearInterval(buzonCdInterval);
   buzonCdInterval=setInterval(()=>{
-    const ultimo=parseInt(localStorage.getItem('gala_buzon_ts')||'0');
-    const restante=BUZON_COOLDOWN_MS-(Date.now()-ultimo);
-    if(restante<=0){ocultarBuzonCooldown();}
-    else{actualizarTimerBuzon(restante);}
+    const restante=BUZON_COOLDOWN_MS-(Date.now()-parseInt(localStorage.getItem('gala_buzon_ts')||'0'));
+    if(restante<=0)ocultarBuzonCooldown();else actualizarTimerBuzon(restante);
   },1000);
 }
 
 function actualizarTimerBuzon(ms){
-  const min=Math.floor(ms/60000);
-  const seg=Math.floor((ms%60000)/1000);
+  const min=Math.floor(ms/60000);const seg=Math.floor((ms%60000)/1000);
   document.getElementById('buzon-cd-timer').textContent=`${min}:${String(seg).padStart(2,'0')}`;
 }
 
@@ -1554,19 +1375,15 @@ function ocultarBuzonCooldown(){
 }
 
 function updateCharCount(){
-  const ta=document.getElementById('buzon-mensaje');
-  const cc=document.getElementById('char-counter');
-  const len=ta.value.length;
-  cc.textContent=`${len} / 500`;
-  cc.className='char-counter'+(len>450?' warn':'')+(len>=500?' over':'');
+  const ta=document.getElementById('buzon-mensaje');const cc=document.getElementById('char-counter');const len=ta.value.length;
+  cc.textContent=`${len} / 500`;cc.className='char-counter'+(len>450?' warn':'')+(len>=500?' over':'');
 }
 
 async function enviarMensajeBuzon(){
   const msg=document.getElementById('buzon-mensaje').value.trim();
   if(!msg){showMsg('buzon-msg','Escribe tu mensaje antes de enviarlo.','error');return;}
   if(msg.length<5){showMsg('buzon-msg','El mensaje es muy corto.','error');return;}
-  const btn=document.querySelector('#buzon-form-wrap .btn-gold');
-  btn.disabled=true;btn.classList.add('loading');
+  const btn=document.querySelector('#buzon-form-wrap .btn-gold');btn.disabled=true;btn.classList.add('loading');
   try{
     const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon`,{
       method:'POST',
@@ -1584,45 +1401,34 @@ async function enviarMensajeBuzon(){
 }
 
 function resetBuzon(){
-  document.getElementById('buzon-mensaje').value='';
-  document.getElementById('char-counter').textContent='0 / 500';
-  document.getElementById('buzon-msg').style.display='none';
-  document.getElementById('buzon-ok-wrap').style.display='none';
-  checkBuzonCooldown(); // respeta el cooldown
+  document.getElementById('buzon-mensaje').value='';document.getElementById('char-counter').textContent='0 / 500';
+  document.getElementById('buzon-msg').style.display='none';document.getElementById('buzon-ok-wrap').style.display='none';
+  checkBuzonCooldown();
 }
 
-/* ── BUZÓN ADMIN ── */
 async function loadBuzonAdmin(){
   const list=document.getElementById('buzon-admin-list');
   list.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando mensajes...</p></div>';
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?select=*&order=created_at.desc`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    buzonMensajes=await res.json();
-    actualizarStatsBuzon();renderBuzonAdmin();
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?select=*&order=created_at.desc`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    buzonMensajes=await res.json();actualizarStatsBuzon();renderBuzonAdmin();
   }catch(e){list.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar mensajes.</p></div>';}
 }
 
 function actualizarStatsBuzon(){
   const total=buzonMensajes.length,nuevos=buzonMensajes.filter(m=>!m.leido).length;
-  document.getElementById('stat-total').textContent=total;
-  document.getElementById('stat-nuevos').textContent=nuevos;
-  document.getElementById('stat-leidos').textContent=total-nuevos;
+  document.getElementById('stat-total').textContent=total;document.getElementById('stat-nuevos').textContent=nuevos;document.getElementById('stat-leidos').textContent=total-nuevos;
 }
 
 function filtrarBuzon(filtro,btn){
-  buzonFiltroActual=filtro;
-  document.querySelectorAll('.filtro-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  renderBuzonAdmin();
+  buzonFiltroActual=filtro;document.querySelectorAll('.filtro-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');renderBuzonAdmin();
 }
 
 function renderBuzonAdmin(){
   const list=document.getElementById('buzon-admin-list');
   const filtrados=buzonFiltroActual==='todos'?buzonMensajes:buzonMensajes.filter(m=>buzonFiltroActual==='nuevo'?!m.leido:m.leido);
   if(!filtrados.length){list.innerHTML=`<div class="empty-state"><p>${buzonFiltroActual==='nuevo'?'✅ Sin mensajes nuevos':'📭 Sin mensajes en esta sección'}</p></div>`;return;}
-  list.innerHTML='';
-  const ul=document.createElement('div');ul.className='msg-buzon-list';
+  list.innerHTML='';const ul=document.createElement('div');ul.className='msg-buzon-list';
   filtrados.forEach(m=>{
     const fecha=new Date(m.created_at).toLocaleString('es-CO',{dateStyle:'medium',timeStyle:'short'});
     const div=document.createElement('div');div.className=`msg-buzon-item ${m.leido?'leido':''}`;div.id=`bm-${m.id}`;
@@ -1641,8 +1447,7 @@ function renderBuzonAdmin(){
 async function marcarLeido(id){
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?id=eq.${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({leido:true})});
-    const m=buzonMensajes.find(x=>x.id===id);if(m)m.leido=true;
-    actualizarStatsBuzon();renderBuzonAdmin();
+    const m=buzonMensajes.find(x=>x.id===id);if(m)m.leido=true;actualizarStatsBuzon();renderBuzonAdmin();
   }catch(e){alert('Error al marcar como leído.');}
 }
 
@@ -1655,8 +1460,7 @@ async function eliminarMensaje(id){
 }
 
 async function borrarTodosBuzon(){
-  const leidos=buzonMensajes.filter(m=>m.leido);
-  if(!leidos.length){alert('No hay mensajes leídos para borrar.');return;}
+  const leidos=buzonMensajes.filter(m=>m.leido);if(!leidos.length){alert('No hay mensajes leídos para borrar.');return;}
   if(!confirm(`¿Borrar los ${leidos.length} mensajes marcados como leídos?`))return;
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?leido=eq.true`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
@@ -1671,10 +1475,8 @@ async function loadHistorial(){
   const body=document.getElementById('hist-body');
   body.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div>';
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     let data=await res.json();
-    // Sin filtro de exclusión — todos aparecen en el ranking
     data.sort((a,b)=>b.trofeos-a.trofeos||b.estrellas-a.estrellas);
     if(!data.length){body.innerHTML='<div class="empty-state"><p>🏆 La tabla está vacía.</p></div>';return;}
     body.innerHTML='';
@@ -1688,34 +1490,27 @@ async function loadHistorial(){
       div.innerHTML=`<div class="h-pos ${pc}">${pt}</div><div class="h-name">${esc(row.personaje)}</div><div class="h-stars">${stH}</div><div class="h-trophies">${trH}</div>`;
       body.appendChild(div);
     });
-    // Actualizar select de resetear puntos
     poblarSelectResetPts(data);
   }catch(e){body.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar.</p></div>';}
 }
 
 function poblarSelectResetPts(data){
-  const sel=document.getElementById('reset-pts-select');
-  if(!sel)return;
+  const sel=document.getElementById('reset-pts-select');if(!sel)return;
   sel.innerHTML='<option value="">— Selecciona personaje —</option>';
-  data.forEach(r=>{
-    const o=document.createElement('option');o.value=r.personaje;o.textContent=`${esc(r.personaje)} (⭐${r.estrellas} 🏆${r.trofeos})`;sel.appendChild(o);
-  });
+  data.forEach(r=>{const o=document.createElement('option');o.value=r.personaje;o.textContent=`${esc(r.personaje)} (⭐${r.estrellas} 🏆${r.trofeos})`;sel.appendChild(o);});
 }
 
 async function resetearPuntosPersonaje(){
-  const sel=document.getElementById('reset-pts-select');
-  const nombre=sel.value;
+  const sel=document.getElementById('reset-pts-select');const nombre=sel.value;
   const rb=document.getElementById('reset-pts-result');
   if(!nombre){rb.innerHTML='⚠️ Selecciona un personaje.';rb.style.display='block';return;}
-  if(!confirm(`¿Resetear a 0 las estrellas y trofeos de "${nombre}"? El personaje seguirá en el ranking.`))return;
+  if(!confirm(`¿Resetear a 0 las estrellas y trofeos de "${nombre}"?`))return;
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
       body:JSON.stringify({estrellas:0,trofeos:0})
     });
-    rb.innerHTML=`✅ Puntos de "${esc(nombre)}" reseteados a 0.`;rb.style.display='block';
-    await loadHistorial();
+    rb.innerHTML=`✅ Puntos de "${esc(nombre)}" reseteados a 0.`;rb.style.display='block';await loadHistorial();
   }catch(e){rb.innerHTML='❌ Error al resetear.';rb.style.display='block';}
 }
 
@@ -1726,95 +1521,57 @@ function verificarAdmin(){
   if(document.getElementById('admin-pass').value===ADMIN_PASS){
     document.getElementById('admin-locked').style.display='none';
     document.getElementById('admin-content').style.display='block';
-    loadBuzonAdmin();
-    loadHistorial();
-    renderListaPersonajes();
-    cargarEstadoCatNuevo();
+    loadBuzonAdmin();loadHistorial();renderListaPersonajes();cargarEstadoCatNuevo();
   }else{showMsg('admin-msg','Clave incorrecta.','error');}
 }
 
 async function cerrarGala(){
-  const btn=document.getElementById('btn-cerrar-gala');
-  btn.classList.add('loading');btn.disabled=true;
+  const btn=document.getElementById('btn-cerrar-gala');btn.classList.add('loading');btn.disabled=true;
   const resBox=document.getElementById('admin-result-box');resBox.style.display='none';
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const votos=await res.json();
-    if(!votos.length){
-      resBox.innerHTML='⚠️ No hay votos registrados.';resBox.style.display='block';
-      btn.classList.remove('loading');btn.disabled=false;return;
-    }
+    if(!votos.length){resBox.innerHTML='⚠️ No hay votos registrados.';resBox.style.display='block';btn.classList.remove('loading');btn.disabled=false;return;}
     const conteos={};
-    for(const v of votos){
-      if(!conteos[v.categoria])conteos[v.categoria]={};
-      for(const nom of v.nominados_votados)conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;
-    }
-    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    const historial=await hr.json();
-    const histMap={};for(const h of historial)histMap[h.personaje]=h;
+    for(const v of votos){if(!conteos[v.categoria])conteos[v.categoria]={};for(const nom of v.nominados_votados)conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;}
+    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const historial=await hr.json();const histMap={};for(const h of historial)histMap[h.personaje]=h;
     const resultados=[];
     for(const cat of getCategorias()){
-      if(cat.locked)continue;
-      const c=conteos[cat.id];if(!c||!Object.keys(c).length)continue;
+      if(cat.locked)continue;const c=conteos[cat.id];if(!c||!Object.keys(c).length)continue;
       const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
-      const topN=sorted.slice(0,cat.ganadores);
-      const esTrofeo=cat.id==='mejor_semana';
-      const ganadoresNombres=[];
+      const topN=sorted.slice(0,cat.ganadores);const esTrofeo=cat.id==='mejor_semana';const ganadoresNombres=[];
       for(const [g,v] of topN){
         ganadoresNombres.push(`${g} (${v} voto${v!==1?'s':''})`);
-        if(histMap[g]){
-          const upd=esTrofeo?{trofeos:histMap[g].trofeos+1}:{estrellas:histMap[g].estrellas+1};
-          await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(g)}`,
-            {method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify(upd)});
-        }else{
-          await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,
-            {method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({personaje:g,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})});
-        }
+        if(histMap[g]){const upd=esTrofeo?{trofeos:histMap[g].trofeos+1}:{estrellas:histMap[g].estrellas+1};await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(g)}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify(upd)});}
+        else{await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({personaje:g,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})});}
       }
       resultados.push(`${esTrofeo?'🏆':'⭐'} <strong>${esc(cat.nombre)}:</strong> ${ganadoresNombres.map(esc).join(' | ')}`);
     }
-    resBox.innerHTML='✅ ¡Gala cerrada! Ganadores:<br><br>'+resultados.join('<br>');
-    resBox.style.display='block';
-    btn.textContent='✅ GALA CERRADA';btn.classList.remove('loading');
-    await loadHistorial();await loadConteos();
+    resBox.innerHTML='✅ ¡Gala cerrada! Ganadores:<br><br>'+resultados.join('<br>');resBox.style.display='block';
+    btn.textContent='✅ GALA CERRADA';btn.classList.remove('loading');await loadHistorial();await loadConteos();
   }catch(e){
     resBox.innerHTML='❌ Error al cerrar la gala.';resBox.style.display='block';
-    btn.classList.remove('loading');btn.disabled=false;
-    btn.textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
+    btn.classList.remove('loading');btn.disabled=false;btn.textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
   }
 }
 
 async function resetearVotos(){
   if(!confirm('¿Borrar TODOS los votos para iniciar nueva gala?'))return;
-  const btn=document.getElementById('btn-reset');
-  btn.classList.add('loading');btn.disabled=true;
+  const btn=document.getElementById('btn-reset');btn.classList.add('loading');btn.disabled=true;
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?id=gte.0`,
-      {method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    document.getElementById('btn-cerrar-gala').disabled=false;
-    document.getElementById('btn-cerrar-gala').textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
-    const rb=document.getElementById('admin-result-box');
-    rb.innerHTML='✅ Votos borrados. ¡Nueva gala lista!';rb.style.display='block';
-    await loadConteos();
-  }catch(e){
-    const rb=document.getElementById('admin-result-box');
-    rb.innerHTML='❌ Error al borrar votos.';rb.style.display='block';
-  }
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?id=gte.0`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    document.getElementById('btn-cerrar-gala').disabled=false;document.getElementById('btn-cerrar-gala').textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
+    const rb=document.getElementById('admin-result-box');rb.innerHTML='✅ Votos borrados. ¡Nueva gala lista!';rb.style.display='block';await loadConteos();
+  }catch(e){const rb=document.getElementById('admin-result-box');rb.innerHTML='❌ Error al borrar votos.';rb.style.display='block';}
   btn.classList.remove('loading');btn.disabled=false;
 }
 
 async function loadConteos(){
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    const votos=await res.json();
-    const conteos={};
-    for(const v of votos){
-      if(!conteos[v.categoria])conteos[v.categoria]={};
-      for(const nom of v.nominados_votados)conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;
-    }
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const votos=await res.json();const conteos={};
+    for(const v of votos){if(!conteos[v.categoria])conteos[v.categoria]={};for(const nom of v.nominados_votados)conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;}
     const wrap=document.getElementById('conteos-body');wrap.innerHTML='';
     for(const cat of getCategorias()){
       if(cat.locked)continue;const c=conteos[cat.id];if(!c)continue;
@@ -1828,25 +1585,18 @@ async function loadConteos(){
 }
 
 function toggleConteos(){
-  conteosVisible=!conteosVisible;
-  document.getElementById('conteos-wrap').style.display=conteosVisible?'block':'none';
-  if(conteosVisible)loadConteos();
+  conteosVisible=!conteosVisible;document.getElementById('conteos-wrap').style.display=conteosVisible?'block':'none';if(conteosVisible)loadConteos();
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   ⚔️ DESEMPATE — con control de voto único por localStorage
+   ⚔️ DESEMPATE
 ═══════════════════════════════════════════════════════════════════════ */
-
-/** Clave de storage para votos de desempate */
 function desempKey(id){return `gala_desemp_${id}`;}
-
 function yaVotoEnDesempate(id){return!!localStorage.getItem(desempKey(id));}
-
 function marcarVotoDesempate(id){localStorage.setItem(desempKey(id),'1');}
 
 function poblarCatSelect(){
-  const sel=document.getElementById('adm-cat-select');
-  if(!sel||sel.options.length>1)return;
+  const sel=document.getElementById('adm-cat-select');if(!sel||sel.options.length>1)return;
   getCategorias().filter(c=>!c.locked).forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.nombre;sel.appendChild(o);});
 }
 
@@ -1862,12 +1612,10 @@ async function loadDesempates(){
   const wrap=document.getElementById('desempate-activos-wrap');if(!wrap)return;
   wrap.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div>';
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?select=*&order=id.desc`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?select=*&order=id.desc`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const data=await res.json();
     if(!Array.isArray(data)||!data.length){wrap.innerHTML='<div class="empty-state"><p>⚔️ No hay desempates activos.</p></div>';return;}
-    wrap.innerHTML='';
-    for(const d of data)wrap.appendChild(renderDesempateCard(d));
+    wrap.innerHTML='';for(const d of data)wrap.appendChild(renderDesempateCard(d));
   }catch(e){wrap.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar desempates.</p></div>';}
 }
 
@@ -1880,17 +1628,9 @@ function renderDesempateCard(d){
   const catNombre=getCategorias().find(c=>c.id===d.categoria_id)?.nombre||d.categoria_id;
   const yaVoto=yaVotoEnDesempate(d.id);
   let nomHTML='';
-  if(cerrado){
-    nomHTML=personajes.map(p=>{const v=votos[p]||0;const isG=p===d.ganador;return `<div class="desemp-btn ${isG?'sel-desemp':''}" style="cursor:default">${isG?'🏆 ':''}${esc(p)} <span style="font-size:.75rem;opacity:.7">(${v} voto${v!==1?'s':''})</span></div>`;}).join('');
-  }else if(yaVoto){
-    const miVoto=localStorage.getItem(desempKey(d.id));
-    nomHTML=personajes.map(p=>{
-      const sel=p===miVoto;
-      return `<div class="desemp-btn ${sel?'sel-desemp':''}" style="cursor:default">${sel?'⭐ ':''}${esc(p)}</div>`;
-    }).join('');
-  }else{
-    nomHTML=personajes.map(p=>`<button class="desemp-btn" onclick="votarDesempate(${d.id},'${p.replace(/'/g,"\\'")}',${JSON.stringify(personajes).replace(/"/g,"'")})">${esc(p)}</button>`).join('');
-  }
+  if(cerrado){nomHTML=personajes.map(p=>{const v=votos[p]||0;const isG=p===d.ganador;return `<div class="desemp-btn ${isG?'sel-desemp':''}" style="cursor:default">${isG?'🏆 ':''}${esc(p)} <span style="font-size:.75rem;opacity:.7">(${v} voto${v!==1?'s':''})</span></div>`;}).join('');}
+  else if(yaVoto){const miVoto=localStorage.getItem(desempKey(d.id));nomHTML=personajes.map(p=>{const sel=p===miVoto;return `<div class="desemp-btn ${sel?'sel-desemp':''}" style="cursor:default">${sel?'⭐ ':''}${esc(p)}</div>`;}).join('');}
+  else{nomHTML=personajes.map(p=>`<button class="desemp-btn" onclick="votarDesempate(${d.id},'${p.replace(/'/g,"\\'")}',${JSON.stringify(personajes).replace(/"/g,"'")})">${esc(p)}</button>`).join('');}
   div.innerHTML=`
     <div class="desemp-header"><div class="desemp-cat">⚔️ ${esc(catNombre)}</div><span class="desemp-estado ${cerrado?'cerrado':'abierto'}">${cerrado?'✅ Cerrado':'🔴 En votación'}</span></div>
     <div class="desemp-votos-info">${totalVotos} voto${totalVotos!==1?'s':''} registrado${totalVotos!==1?'s':''}</div>
@@ -1903,40 +1643,26 @@ function renderDesempateCard(d){
 async function votarDesempate(id,personaje,personajes){
   if(yaVotoEnDesempate(id)){alert('Ya votaste en este desempate.');return;}
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=votos`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=votos`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const data=await res.json();if(!data||!data[0])return;
     const votos=data[0].votos?JSON.parse(typeof data[0].votos==='string'?data[0].votos:JSON.stringify(data[0].votos)):{};
     votos[personaje]=(votos[personaje]||0)+1;
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({votos:JSON.stringify(votos)})
-    });
-    marcarVotoDesempate(id); // guardar en localStorage con el personaje elegido
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({votos:JSON.stringify(votos)})});
     localStorage.setItem(desempKey(id),personaje);
-    // Re-renderizar la card
-    const res2=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=*`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res2=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const [dActual]=await res2.json();
-    const cardVieja=document.getElementById(`dcard-${id}`);
-    if(cardVieja&&dActual)cardVieja.replaceWith(renderDesempateCard(dActual));
+    const cardVieja=document.getElementById(`dcard-${id}`);if(cardVieja&&dActual)cardVieja.replaceWith(renderDesempateCard(dActual));
   }catch(e){console.error(e);}
 }
 
 async function publicarDesempate(){
-  const catId=document.getElementById('adm-cat-select').value;
-  const raw=document.getElementById('adm-personajes-input').value;
+  const catId=document.getElementById('adm-cat-select').value;const raw=document.getElementById('adm-personajes-input').value;
   const rb=document.getElementById('adm-desemp-result');
   if(!catId){rb.innerHTML='⚠️ Selecciona una categoría.';rb.style.display='block';return;}
   const personajes=raw.split(',').map(p=>p.trim()).filter(Boolean);
   if(personajes.length<2){rb.innerHTML='⚠️ Ingresa al menos 2 personajes.';rb.style.display='block';return;}
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({categoria_id:catId,personajes:JSON.stringify(personajes),votos:'{}',estado:'abierto',ganador:null,azar:false})
-    });
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({categoria_id:catId,personajes:JSON.stringify(personajes),votos:'{}',estado:'abierto',ganador:null,azar:false})});
     rb.innerHTML='✅ Desempate publicado.';rb.style.display='block';
     document.getElementById('adm-cat-select').value='';document.getElementById('adm-personajes-input').value='';
     await loadDesempates();await cargarSelectCerrar();
@@ -1947,50 +1673,33 @@ async function cargarSelectCerrar(){
   const sel=document.getElementById('adm-cerrar-select');if(!sel)return;
   sel.innerHTML='<option value="">— Selecciona desempate —</option>';
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?estado=eq.abierto&select=*`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?estado=eq.abierto&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const data=await res.json();if(!Array.isArray(data))return;
     data.forEach(d=>{const cn=getCategorias().find(c=>c.id===d.categoria_id)?.nombre||d.categoria_id;const o=document.createElement('option');o.value=d.id;o.textContent=cn;sel.appendChild(o);});
   }catch(e){}
 }
 
 async function cerrarDesempate(){
-  const id=document.getElementById('adm-cerrar-select').value;
-  const rb=document.getElementById('adm-desemp-result');
+  const id=document.getElementById('adm-cerrar-select').value;const rb=document.getElementById('adm-desemp-result');
   if(!id){rb.innerHTML='⚠️ Selecciona un desempate activo.';rb.style.display='block';return;}
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=*`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    const data=await res.json();if(!data||!data[0])return;
-    const d=data[0];
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}&select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const data=await res.json();if(!data||!data[0])return;const d=data[0];
     const personajes=JSON.parse(typeof d.personajes==='string'?d.personajes:JSON.stringify(d.personajes));
     const votos=d.votos?JSON.parse(typeof d.votos==='string'?d.votos:JSON.stringify(d.votos)):{};
     let maxV=0;personajes.forEach(p=>{if((votos[p]||0)>maxV)maxV=votos[p]||0;});
     const empatados=personajes.filter(p=>(votos[p]||0)===maxV);
     let ganador,azar=false;
-    if(empatados.length===1)ganador=empatados[0];
-    else{ganador=empatados[Math.floor(Math.random()*empatados.length)];azar=true;}
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({estado:'cerrado',ganador,azar})
-    });
+    if(empatados.length===1)ganador=empatados[0];else{ganador=empatados[Math.floor(Math.random()*empatados.length)];azar=true;}
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({estado:'cerrado',ganador,azar})});
     const esTrofeo=d.categoria_id==='mejor_semana';
     const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const historial=await hr.json();const histMap={};for(const h of historial)histMap[h.personaje]=h;
-    if(histMap[ganador]){
-      const upd=esTrofeo?{trofeos:histMap[ganador].trofeos+1}:{estrellas:histMap[ganador].estrellas+1};
-      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify(upd)});
-    }else{
-      await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({personaje:ganador,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})});
-    }
-    rb.innerHTML=`✅ Ganador: <strong>${esc(ganador)}</strong>${azar?' (al azar)':''}. ${esTrofeo?'🏆 Trofeo':'⭐ Estrella'} sumado.`;
-    rb.style.display='block';
+    if(histMap[ganador]){const upd=esTrofeo?{trofeos:histMap[ganador].trofeos+1}:{estrellas:histMap[ganador].estrellas+1};await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(ganador)}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify(upd)});}
+    else{await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({personaje:ganador,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})});}
+    rb.innerHTML=`✅ Ganador: <strong>${esc(ganador)}</strong>${azar?' (al azar)':''}. ${esTrofeo?'🏆 Trofeo':'⭐ Estrella'} sumado.`;rb.style.display='block';
     await loadDesempates();await cargarSelectCerrar();await loadHistorial();
-  }catch(e){
-    document.getElementById('adm-desemp-result').innerHTML='❌ Error.';
-    document.getElementById('adm-desemp-result').style.display='block';
-  }
+  }catch(e){document.getElementById('adm-desemp-result').innerHTML='❌ Error.';document.getElementById('adm-desemp-result').style.display='block';}
 }
 
 async function limpiarDesempates(){
@@ -1998,13 +1707,12 @@ async function limpiarDesempates(){
   const rb=document.getElementById('adm-desemp-result');
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=gte.0`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    rb.innerHTML='✅ Todas las tablas borradas.';rb.style.display='block';
-    await loadDesempates();await cargarSelectCerrar();
+    rb.innerHTML='✅ Todas las tablas borradas.';rb.style.display='block';await loadDesempates();await cargarSelectCerrar();
   }catch(e){rb.innerHTML='❌ Error.';rb.style.display='block';}
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   👤 GESTIÓN PERSONAJES (dentro del panel admin)
+   👤 GESTIÓN PERSONAJES
 ═══════════════════════════════════════════════════════════════════════ */
 function selGenero(g){
   generoSeleccionado=g;
@@ -2012,10 +1720,7 @@ function selGenero(g){
   document.getElementById('radio-fem').classList.toggle('sel',g==='F');
 }
 
-function renderListaPersonajes(){
-  renderListaGrupo('lista-chicos',CHICOS,'M');
-  renderListaGrupo('lista-chicas',CHICAS,'F');
-}
+function renderListaPersonajes(){renderListaGrupo('lista-chicos',CHICOS,'M');renderListaGrupo('lista-chicas',CHICAS,'F');}
 
 function renderListaGrupo(cid,lista,genero){
   const c=document.getElementById(cid);c.innerHTML='';
@@ -2028,42 +1733,23 @@ function renderListaGrupo(cid,lista,genero){
 }
 
 async function agregarPersonaje(){
-  const nombreRaw=document.getElementById('nuevo-pj-nombre').value.trim();
-  const rb=document.getElementById('pj-result-box');
+  const nombreRaw=document.getElementById('nuevo-pj-nombre').value.trim();const rb=document.getElementById('pj-result-box');
   if(!nombreRaw){showMsg('nuevo-pj-msg','Escribe el nombre.','error');return;}
   if(!generoSeleccionado){showMsg('nuevo-pj-msg','Selecciona el género.','error');return;}
-
-  // Validación insensible a mayúsculas y tildes
-  const nombreNorm=normalizar(nombreRaw);
-  const duplicado=getTodos().find(p=>normalizar(p)===nombreNorm);
+  const nombreNorm=normalizar(nombreRaw);const duplicado=getTodos().find(p=>normalizar(p)===nombreNorm);
   if(duplicado){showMsg('nuevo-pj-msg',`Ya existe un personaje similar: "${esc(duplicado)}".`,'error');return;}
-
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
-      body:JSON.stringify({nombre:nombreRaw,genero:generoSeleccionado})
-    });
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({nombre:nombreRaw,genero:generoSeleccionado})});
     if(!res.ok)throw new Error();
   }catch(e){showMsg('nuevo-pj-msg','Error al guardar.','error');return;}
-
   if(generoSeleccionado==='M')CHICOS.push(nombreRaw);else CHICAS.push(nombreRaw);
-  invalidarCatCache();
-  rb.innerHTML=`✅ "${esc(nombreRaw)}" agregado.`;rb.style.display='block';
-  document.getElementById('nuevo-pj-nombre').value='';
-  generoSeleccionado='';
-  document.getElementById('radio-masc').classList.remove('sel');
-  document.getElementById('radio-fem').classList.remove('sel');
-  renderListaPersonajes();
-  cargarPersonajesSelect();
-  cargarPersonajesChatSelect();
-  verificarCambiosCategorias();
+  invalidarCatCache();rb.innerHTML=`✅ "${esc(nombreRaw)}" agregado.`;rb.style.display='block';
+  document.getElementById('nuevo-pj-nombre').value='';generoSeleccionado='';
+  document.getElementById('radio-masc').classList.remove('sel');document.getElementById('radio-fem').classList.remove('sel');
+  renderListaPersonajes();cargarPersonajesSelect();cargarPersonajesChatSelect();verificarCambiosCategorias();
 }
 
-async function confirmarEliminarPersonaje(nombre){
-  if(!confirm(`¿Eliminar a "${nombre}" de la gala? Sus logros en el ranking también se borrarán.`))return;
-  await eliminarPersonaje(nombre);
-}
+async function confirmarEliminarPersonaje(nombre){if(!confirm(`¿Eliminar a "${nombre}" de la gala?`))return;await eliminarPersonaje(nombre);}
 
 async function eliminarPersonaje(nombre){
   const rb=document.getElementById('pj-result-box');
@@ -2072,19 +1758,13 @@ async function eliminarPersonaje(nombre){
   try{await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});}catch(e){}
   try{await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?nombre=eq.${encodeURIComponent(nombre)}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});}catch(e){}
   invalidarCatCache();
-  const cambios=verificarCambiosCategorias();
-  let msg=`✅ "${esc(nombre)}" eliminado.`;
+  const cambios=verificarCambiosCategorias();let msg=`✅ "${esc(nombre)}" eliminado.`;
   if(cambios.length)msg+=`<br><br>⚠️ Cambios en categorías:<br>`+cambios.map(c=>`• ${esc(c)}`).join('<br>');
-  rb.innerHTML=msg;rb.style.display='block';
-  renderListaPersonajes();
-  cargarPersonajesSelect();
-  cargarPersonajesChatSelect();
-  loadHistorial();
+  rb.innerHTML=msg;rb.style.display='block';renderListaPersonajes();cargarPersonajesSelect();cargarPersonajesChatSelect();loadHistorial();
 }
 
 function verificarCambiosCategorias(){
-  const cambios=[];
-  const nP=contarVersiones('pomni'),nZ=contarVersiones('zooble'),nJ=contarVersiones('jax');
+  const cambios=[];const nP=contarVersiones('pomni'),nZ=contarVersiones('zooble'),nJ=contarVersiones('jax');
   if(nP<3)cambios.push(`"Mejor POMNI" bloqueada (${nP} versión${nP!==1?'es':''})`);else cambios.push(`"Mejor POMNI" activa ✅`);
   if(nZ<3)cambios.push(`"Mejor ZOOBLE" bloqueada (${nZ} versión${nZ!==1?'es':''})`);else cambios.push(`"Mejor ZOOBLE" activa ✅`);
   if(nJ<3)cambios.push(`"Mejor JAX" bloqueada (${nJ} versión${nJ!==1?'es':''})`);else cambios.push(`"Mejor JAX" activa ✅`);
@@ -2093,15 +1773,9 @@ function verificarCambiosCategorias(){
 
 async function cargarEstadoCatNuevo(){
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado&select=valor`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado&select=valor`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     const data=await res.json();
-    if(data&&data[0]){
-      const cfg=JSON.parse(data[0].valor);catNuevoDestacado=cfg;
-      actualizarUIEstadoNuevo();
-      if(cfg.nominados)document.getElementById('nuevo-dest-nominados').value=cfg.nominados.join(', ');
-      if(cfg.votos)document.getElementById('nuevo-dest-votos').value=cfg.votos;
-    }
+    if(data&&data[0]){const cfg=JSON.parse(data[0].valor);catNuevoDestacado=cfg;actualizarUIEstadoNuevo();if(cfg.nominados)document.getElementById('nuevo-dest-nominados').value=cfg.nominados.join(', ');if(cfg.votos)document.getElementById('nuevo-dest-votos').value=cfg.votos;}
   }catch(e){}
 }
 
@@ -2112,14 +1786,11 @@ function actualizarUIEstadoNuevo(){
 }
 
 async function activarCatNuevo(activar){
-  const rb=document.getElementById('nuevo-dest-result');
-  const raw=document.getElementById('nuevo-dest-nominados').value;
+  const rb=document.getElementById('nuevo-dest-result');const raw=document.getElementById('nuevo-dest-nominados').value;
   const vN=parseInt(document.getElementById('nuevo-dest-votos').value)||2;
   const nominados=raw.split(',').map(p=>p.trim()).filter(Boolean);
   if(activar&&nominados.length<2){rb.innerHTML='⚠️ Ingresa al menos 2 nominados.';rb.style.display='block';return;}
-  catNuevoDestacado={activa:activar,nominados:activar?nominados:[],votos:vN};
-  invalidarCatCache();
-  actualizarUIEstadoNuevo();
+  catNuevoDestacado={activa:activar,nominados:activar?nominados:[],votos:vN};invalidarCatCache();actualizarUIEstadoNuevo();
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
     await fetch(`${SUPABASE_URL}/rest/v1/gala_config`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({clave:'nuevo_destacado',valor:JSON.stringify(catNuevoDestacado)})});
@@ -2128,7 +1799,7 @@ async function activarCatNuevo(activar){
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   NAVEGACIÓN GENERAL
+   NAVEGACIÓN
 ═══════════════════════════════════════════════════════════════════════ */
 function volverInicio(){
   personajeActual='';catIndex=0;todosLosVotos={};CATS_CACHE=null;
@@ -2143,59 +1814,6 @@ function volverInicio(){
    ARRANQUE
 ═══════════════════════════════════════════════════════════════════════ */
 inicializarApp();
-
-/*
-══════════════════════════════════════════════════════════════════════
-  📋 GUÍA DE SEGURIDAD — SUPABASE RLS
-  
-  El mayor riesgo es que la ADMIN_PASS está en el código fuente.
-  Cualquiera que abra DevTools puede verla. Para arreglarlo:
-
-  PASO 1 — Ir a Supabase Dashboard → Authentication → Users
-    Crea un usuario: admin@gala.tadc / (contraseña fuerte)
-    Este usuario será el "Abel Admin" real.
-
-  PASO 2 — Habilitar RLS en las tablas sensibles
-    En el Dashboard → Table Editor → cada tabla → "Enable RLS"
-    Tablas a proteger: gala_votos, gala_historial, gala_desempates,
-    gala_config, gala_personajes, gala_buzon, gala_chat
-
-  PASO 3 — Crear políticas RLS
-    Para gala_votos:
-      INSERT: allow for all (anon puede insertar votos)
-      SELECT: allow for authenticated (solo admin puede leer)
-      DELETE: allow for authenticated (solo admin puede borrar)
-    
-    Para gala_historial:
-      SELECT: allow for all
-      INSERT/UPDATE/DELETE: allow for authenticated only
-    
-    Para gala_buzon:
-      INSERT: allow for all (cualquiera puede enviar)
-      SELECT/DELETE/UPDATE: allow for authenticated only
-    
-    Para gala_chat:
-      INSERT/SELECT: allow for all
-      DELETE: allow for authenticated only
-
-  PASO 4 — En el código, reemplazar verificarAdmin() para usar
-    Supabase Auth en lugar de comparar la contraseña localmente:
-    
-    const { supabase } = createClient(SUPABASE_URL, SUPABASE_KEY);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: 'admin@gala.tadc',
-      password: inputPassword
-    });
-    if (!error) { // admin verificado por el servidor }
-
-  PASO 5 — Importar el SDK de Supabase:
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-    Esto también habilita Realtime nativo (WebSockets reales sin polling).
-
-  La anon key pública (SUPABASE_KEY) es segura de exponer —
-  está diseñada para eso. Lo que protege RLS son las *operaciones*.
-══════════════════════════════════════════════════════════════════════
-*/
 </script>
 </body>
 </html>
