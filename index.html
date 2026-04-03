@@ -1425,9 +1425,13 @@ async function enviarMensajeBuzon(){
 }
 
 function resetBuzon(){
-  document.getElementById('buzon-mensaje').value='';document.getElementById('char-counter').textContent='0 / 500';
-  document.getElementById('buzon-msg').style.display='none';document.getElementById('buzon-ok-wrap').style.display='none';
-  checkBuzonCooldown();
+  document.getElementById('buzon-mensaje').value='';
+  document.getElementById('char-counter').textContent='0 / 500';
+  document.getElementById('buzon-msg').style.display='none';
+  document.getElementById('buzon-ok-wrap').style.display='none';
+  document.getElementById('buzon-form-wrap').style.display='block';
+  const btn=document.querySelector('#buzon-form-wrap .btn-gold');
+  if(btn){btn.disabled=false;btn.classList.remove('loading');}
 }
 
 async function loadBuzonAdmin(){
