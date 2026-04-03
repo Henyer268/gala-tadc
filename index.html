@@ -1402,7 +1402,6 @@ function updateCharCount(){
 async function enviarMensajeBuzon(){
   const msg=document.getElementById('buzon-mensaje').value.trim();
   if(!msg){showMsg('buzon-msg','Escribe tu mensaje antes de enviarlo.','error');return;}
-  if(msg.length<5){showMsg('buzon-msg','El mensaje es muy corto.','error');return;}
   const btn=document.querySelector('#buzon-form-wrap .btn-gold');btn.disabled=true;btn.classList.add('loading');
   try{
     const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon`,{
