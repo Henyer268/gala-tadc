@@ -807,7 +807,8 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 ═══════════════════════════════════════════════════════════════════════ */
 const SUPABASE_URL='https://goopxqkxuogqhlppsfyv.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvb3B4cWt4dW9ncWhscHBzZnl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MDYyMDgsImV4cCI6MjA5MDI4MjIwOH0.qbLwPNGDYXF920wsGsGIB-91TlI5j1nU51y5cS7udwg';
-const ADMIN_PASS='Henyeradmin';
+// ✅ SEGURO: No hay contraseña hardcodeada. El login usa Supabase Auth.
+let _supaAdminToken=null; // token de sesión admin (solo en memoria, nunca en disco)
 
 /* ═══════════════════════════════════════════════════════════════════════
    ESTADO GLOBAL
@@ -1125,9 +1126,18 @@ async function confirmarPersonajeChat(){
   const sel=document.getElementById('chat-sel-personaje');const val=sel.value;
   if(!val){showMsg('chat-pick-msg','Selecciona un personaje para continuar.','error');return;}
   if(val==='__admin__'){
-    const clave=prompt('🔐 Ingresa la clave de administrador para entrar como Abel:');
+    const clave=prompt('🔐 Ingresa tu contraseña de administrador:');
     if(!clave)return;
-    if(clave!==ADMIN_PASS){showMsg('chat-pick-msg','Clave incorrecta. No puedes entrar como Abel.','error');return;}
+    try{
+      const res=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},
+        body:JSON.stringify({email:'henyermelendezvirguez@inedimacg.edu.co',password:clave})
+      });
+      const data=await res.json();
+      if(!res.ok||!data.access_token){showMsg('chat-pick-msg','Contraseña incorrecta.','error');return;}
+      _supaAdminToken=data.access_token;
+    }catch(e){showMsg('chat-pick-msg','Error de conexión.','error');return;}
     chatPersonaje='Abel (Admin)';chatAdminVerificado=true;
   }else{chatPersonaje=val;chatAdminVerificado=false;}
   document.getElementById('chat-pick-msg').style.display='none';
@@ -1248,13 +1258,23 @@ async function enviarMensajeChat(){
   setTimeout(()=>{chatEnviando=false;btn.disabled=false;input.focus();},800);
 }
 
-function verificarAdminChat(){
-  if(document.getElementById('chat-admin-pass').value===ADMIN_PASS){
-    chatAdminVerificado=true;
+async function verificarAdminChat(){
+  const pass=document.getElementById('chat-admin-pass').value;
+  if(!pass){showMsg('chat-admin-msg','Ingresa tu contraseña.','error');return;}
+  try{
+    const res=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},
+      body:JSON.stringify({email:'henyermelendezvirguez@inedimacg.edu.co',password:pass})
+    });
+    const data=await res.json();
+    if(!res.ok||!data.access_token){showMsg('chat-admin-msg','Contraseña incorrecta.','error');return;}
+    _supaAdminToken=data.access_token;chatAdminVerificado=true;
+    document.getElementById('chat-admin-pass').value='';
     document.getElementById('chat-admin-locked-wrap').style.display='none';
     document.getElementById('chat-admin-content-wrap').style.display='block';
     poblarSelectResultadosChat();
-  }else{showMsg('chat-admin-msg','Clave incorrecta.','error');}
+  }catch(e){showMsg('chat-admin-msg','Error de conexión.','error');}
 }
 
 function poblarSelectResultadosChat(){
@@ -1517,12 +1537,31 @@ async function resetearPuntosPersonaje(){
 /* ═══════════════════════════════════════════════════════════════════════
    🔐 ADMIN GALA
 ═══════════════════════════════════════════════════════════════════════ */
-function verificarAdmin(){
-  if(document.getElementById('admin-pass').value===ADMIN_PASS){
+async function verificarAdmin(){
+  const pass=document.getElementById('admin-pass').value;
+  if(!pass){showMsg('admin-msg','Ingresa tu contraseña.','error');return;}
+  const btnEl=document.querySelector('#admin-locked .btn-gold');
+  if(btnEl){btnEl.classList.add('loading');btnEl.disabled=true;}
+  try{
+    const res=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},
+      body:JSON.stringify({email:'henyermelendezvirguez@inedimacg.edu.co',password:pass})
+    });
+    const data=await res.json();
+    if(!res.ok||!data.access_token){
+      showMsg('admin-msg','Contraseña incorrecta.','error');
+      if(btnEl){btnEl.classList.remove('loading');btnEl.disabled=false;}return;
+    }
+    _supaAdminToken=data.access_token;
+    document.getElementById('admin-pass').value='';
     document.getElementById('admin-locked').style.display='none';
     document.getElementById('admin-content').style.display='block';
     loadBuzonAdmin();loadHistorial();renderListaPersonajes();cargarEstadoCatNuevo();
-  }else{showMsg('admin-msg','Clave incorrecta.','error');}
+  }catch(e){
+    showMsg('admin-msg','Error de conexión. Intenta de nuevo.','error');
+    if(btnEl){btnEl.classList.remove('loading');btnEl.disabled=false;}
+  }
 }
 
 async function cerrarGala(){
@@ -1600,12 +1639,23 @@ function poblarCatSelect(){
   getCategorias().filter(c=>!c.locked).forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.nombre;sel.appendChild(o);});
 }
 
-function verificarAdminDesempate(){
-  if(document.getElementById('adm-desemp-pass').value===ADMIN_PASS){
+async function verificarAdminDesempate(){
+  const pass=document.getElementById('adm-desemp-pass').value;
+  if(!pass){showMsg('adm-desemp-msg','Ingresa tu contraseña.','error');return;}
+  try{
+    const res=await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY},
+      body:JSON.stringify({email:'henyermelendezvirguez@inedimacg.edu.co',password:pass})
+    });
+    const data=await res.json();
+    if(!res.ok||!data.access_token){showMsg('adm-desemp-msg','Contraseña incorrecta.','error');return;}
+    _supaAdminToken=data.access_token;
+    document.getElementById('adm-desemp-pass').value='';
     document.getElementById('adm-desemp-locked').style.display='none';
     document.getElementById('adm-desemp-content').style.display='block';
     poblarCatSelect();cargarSelectCerrar();
-  }else{showMsg('adm-desemp-msg','Clave incorrecta.','error');}
+  }catch(e){showMsg('adm-desemp-msg','Error de conexión.','error');}
 }
 
 async function loadDesempates(){
