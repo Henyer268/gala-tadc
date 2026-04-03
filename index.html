@@ -1409,12 +1409,17 @@ async function enviarMensajeBuzon(){
       headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
       body:JSON.stringify({mensaje:msg,leido:false})
     });
-    if(!res.ok)throw new Error('Error');
+    if(!res.ok){
+      const errData=await res.json().catch(()=>({}));
+      const errMsg=errData.message||errData.error||res.status;
+      showMsg('buzon-msg',`Error: ${errMsg}`,'error');
+      btn.disabled=false;btn.classList.remove('loading');return;
+    }
     localStorage.setItem('gala_buzon_ts',String(Date.now()));
     document.getElementById('buzon-form-wrap').style.display='none';
     document.getElementById('buzon-ok-wrap').style.display='block';
   }catch(e){
-    showMsg('buzon-msg','Error al enviar. Intenta de nuevo.','error');
+    showMsg('buzon-msg',`Error: ${e.message}`,'error');
     btn.disabled=false;btn.classList.remove('loading');
   }
 }
