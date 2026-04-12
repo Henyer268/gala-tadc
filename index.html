@@ -1587,15 +1587,35 @@ async function cerrarGala(){
     for(const cat of getCategorias()){
       if(cat.locked)continue;const c=conteos[cat.id];if(!c||!Object.keys(c).length)continue;
       const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
-      const topN=sorted.slice(0,cat.ganadores);const esTrofeo=cat.id==='mejor_semana';const ganadoresNombres=[];
-      for(const [g,v] of topN){
+      const esTrofeo=cat.id==='mejor_semana';
+
+      // Detectar empate en el último puesto
+      const topN=sorted.slice(0,cat.ganadores);
+      const votosUltimo=topN[topN.length-1]?.[1];
+      const empatadosFuera=sorted.slice(cat.ganadores).filter(([,v])=>v===votosUltimo);
+      const hayEmpateEnBorde=empatadosFuera.length>0;
+      const ganadoresReales=hayEmpateEnBorde?topN.filter(([,v])=>v>votosUltimo):topN;
+      const empatadosEnBorde=hayEmpateEnBorde?[...topN.filter(([,v])=>v===votosUltimo),...empatadosFuera]:[];
+
+      const ganadoresNombres=[];
+      for(const [g,v] of ganadoresReales){
         ganadoresNombres.push(`${g} (${v} voto${v!==1?'s':''})`);
-        if(histMap[g]){const upd=esTrofeo?{trofeos:histMap[g].trofeos+1}:{estrellas:histMap[g].estrellas+1};await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(g)}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify(upd)});}
-        else{await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({personaje:g,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})});}
+        if(histMap[g]){
+          const upd=esTrofeo?{trofeos:histMap[g].trofeos+1}:{estrellas:histMap[g].estrellas+1};
+          await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(g)}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify(upd)});
+        }else{
+          await fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({personaje:g,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})});
+        }
       }
-      resultados.push(`${esTrofeo?'🏆':'⭐'} <strong>${esc(cat.nombre)}:</strong> ${ganadoresNombres.map(esc).join(' | ')}`);
+
+      let lineaResultado=`${esTrofeo?'🏆':'⭐'} <strong>${esc(cat.nombre)}:</strong> ${ganadoresNombres.map(esc).join(' | ')}`;
+      if(empatadosEnBorde.length){
+        const nombresEmp=empatadosEnBorde.map(([n,v])=>`${esc(n)} (${v} votos)`).join(' y ');
+        lineaResultado+=` <span style="color:#fca5a5">⚔️ Empate en puesto ${ganadoresReales.length+1}: ${nombresEmp} — requiere desempate</span>`;
+      }
+      resultados.push(lineaResultado);
     }
-    resBox.innerHTML='✅ ¡Gala cerrada! Ganadores:<br><br>'+resultados.join('<br>');resBox.style.display='block';
+    resBox.innerHTML='✅ ¡Gala cerrada! Resultados:<br><br>'+resultados.join('<br>');resBox.style.display='block';
     btn.textContent='✅ GALA CERRADA';btn.classList.remove('loading');await loadHistorial();await loadConteos();
   }catch(e){
     resBox.innerHTML='❌ Error al cerrar la gala.';resBox.style.display='block';
