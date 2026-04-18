@@ -823,6 +823,7 @@ let buzonFiltroActual='todos', buzonMensajes=[];
 let chatPersonaje='', chatUltimoId=0, chatMensajes=[];
 let chatRealtimeChannel=null, chatAdminVerificado=false;
 let chatEnviando=false;
+let appLista = false;
 
 /* ═══════════════════════════════════════════════════════════════════════
    UTILIDADES
@@ -847,7 +848,7 @@ function contarVersiones(g){return getTodos().filter(p=>normalizar(p).includes(g
    CATEGORÍAS
 ═══════════════════════════════════════════════════════════════════════ */
 function getCategorias(forzar=false){
-  if(CATS_CACHE&&!forzar)return CATS_CACHE;
+  if(CATS_CACHE&&!forzar&&appLista)return CATS_CACHE;
   const todos=getTodos();
   const nP=contarVersiones('pomni'),nZ=contarVersiones('zooble'),nJ=contarVersiones('jax');
   const cats=[
@@ -925,7 +926,9 @@ async function inicializarApp(){
     document.getElementById('init-warn').style.display='block';
     await new Promise(r=>setTimeout(r,1500));
   }
-  ov.style.transition='opacity .4s ease';
+  appLista = true;
+CATS_CACHE = null;
+ov.style.transition='opacity .4s ease';
   ov.style.opacity='0';
   setTimeout(()=>{
     ov.style.display='none';
