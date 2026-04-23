@@ -153,7 +153,10 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
 .personaje-tag button:hover{opacity:1;}
 
 /* CHAT */
-.chat-wrap{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:20px;display:flex;flex-direction:column;height:420px;}
+.chat-select-bar{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.chat-select-label{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:1px;color:var(--gold2);white-space:nowrap;}
+.chat-select-bar select{flex:1;min-width:140px;padding:9px 14px;font-size:.88rem;}
+.chat-wrap{background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:14px;display:flex;flex-direction:column;height:420px;}
 .chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;}
 .chat-messages::-webkit-scrollbar{width:4px;}
 .chat-messages::-webkit-scrollbar-track{background:transparent;}
@@ -162,6 +165,14 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
 .chat-bubble.usuario{align-self:flex-end;background:rgba(245,200,66,.15);border:1px solid var(--border2);}
 .chat-bubble.sistema{align-self:center;background:rgba(245,200,66,.06);border:1px solid var(--border);font-size:.78rem;color:var(--muted);font-style:italic;}
 .chat-bubble.admin-msg-style{align-self:flex-end;background:rgba(245,200,66,.25);border:1px solid var(--gold2);}
+/* ANUNCIO MINITOP */
+.chat-bubble.anuncio{align-self:center;max-width:96%;background:linear-gradient(135deg,rgba(245,200,66,.18),rgba(245,200,66,.06));border:1.5px solid var(--gold2);border-radius:16px;padding:16px 18px;}
+.anuncio-title{font-family:'Cinzel Decorative',cursive;font-size:.85rem;color:var(--gold);margin-bottom:10px;text-align:center;letter-spacing:1px;}
+.anuncio-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid rgba(245,200,66,.1);font-size:.85rem;}
+.anuncio-row:last-child{border-bottom:none;}
+.anuncio-pos{font-size:1.1rem;min-width:26px;text-align:center;}
+.anuncio-name{font-weight:800;flex:1;}
+.anuncio-votes{font-family:'Cinzel',serif;color:var(--gold3);font-size:.78rem;}
 .chat-bubble .cb-autor{font-family:'Cinzel',serif;font-size:.72rem;color:var(--gold2);margin-bottom:3px;letter-spacing:1px;}
 .chat-bubble .cb-autor.admin-label{color:var(--gold);font-weight:700;}
 .chat-bubble .cb-hora{font-size:.68rem;color:var(--muted);margin-top:4px;text-align:right;}
@@ -173,6 +184,15 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
 .chat-online{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted);}
 .chat-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.chat-actions{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+
+/* MINITOP PANEL (admin) */
+.minitop-panel{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+.minitop-cat-list{display:flex;flex-direction:column;gap:8px;margin-top:12px;max-height:320px;overflow-y:auto;}
+.minitop-cat-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--card2);border:1px solid var(--border);border-radius:10px;gap:10px;}
+.minitop-cat-name{font-size:.85rem;font-weight:700;flex:1;}
+.minitop-preview{font-size:.75rem;color:var(--muted);flex:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.minitop-publish-btn{width:auto;padding:8px 14px;font-size:.75rem;letter-spacing:1px;flex-shrink:0;}
 
 /* MODAL ABEL */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
@@ -237,7 +257,7 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
     <button class="tab-btn" onclick="switchTab('buzon')">📬 Buzón</button>
   </div>
 
-  <!-- SELECCIONAR PERSONAJE -->
+  <!-- ══════════════ VOTAR ══════════════ -->
   <div class="screen active" id="screen-select">
     <div class="card">
       <div class="card-title">🎭 ¿Con qué personaje ingresas?</div>
@@ -253,7 +273,6 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
     </div>
   </div>
 
-  <!-- BIENVENIDA -->
   <div class="screen" id="screen-welcome">
     <div class="card">
       <div class="card-title">🌟 Bienvenida a la Gala</div>
@@ -276,7 +295,6 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
     </div>
   </div>
 
-  <!-- VOTACIÓN -->
   <div class="screen" id="screen-voting">
     <div class="progress-wrap">
       <div class="progress-info">
@@ -290,7 +308,6 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
     <button class="btn btn-gold" id="btn-next" onclick="nextCategoria()">SIGUIENTE ➜</button>
   </div>
 
-  <!-- GRACIAS -->
   <div class="screen" id="screen-thanks">
     <div class="thankyou-card">
       <div class="thankyou-icon">🏆</div>
@@ -304,7 +321,7 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
     </div>
   </div>
 
-  <!-- TABLA -->
+  <!-- ══════════════ TABLA ══════════════ -->
   <div class="screen" id="screen-tabla">
     <div class="hist-title">🏆 Tabla de Campeones</div>
     <div class="hist-table">
@@ -317,7 +334,6 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
       <div id="hist-body"><div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div></div>
     </div>
 
-    <!-- PANEL ADMIN -->
     <div class="admin-panel">
       <div class="admin-title">🔐 Panel de Administración</div>
       <div id="admin-locked">
@@ -383,6 +399,15 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
           <div id="buzon-admin-list" style="margin-top:12px"></div>
         </div>
 
+        <!-- ADMIN MINITOP ANUNCIOS -->
+        <div class="minitop-panel">
+          <div class="admin-title" style="font-size:.9rem;margin-bottom:4px">📢 Anuncios Minitop</div>
+          <div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Publica un ranking de resultados en el chat. Abel elige qué categoría anunciar.</div>
+          <button class="btn btn-outline admin-btn-sm" onclick="loadMiniTopCats()" style="margin-bottom:10px">🔄 Cargar resultados actuales</button>
+          <div class="msg" id="minitop-admin-msg"></div>
+          <div class="minitop-cat-list" id="minitop-cat-list"></div>
+        </div>
+
         <div id="conteos-wrap" style="margin-top:24px;display:none">
           <div class="card-title" style="margin-bottom:14px">📊 Conteo actual de votos</div>
           <div id="conteos-body"></div>
@@ -392,9 +417,20 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
     </div>
   </div>
 
-  <!-- CHAT -->
+  <!-- ══════════════ CHAT ══════════════ -->
   <div class="screen" id="screen-chat">
-    <div class="card-title" style="margin-bottom:16px">💬 Chat de la Gala</div>
+    <div class="card-title" style="margin-bottom:12px">💬 Chat de la Gala</div>
+
+    <!-- SELECTOR DE PERSONAJE PROPIO DEL CHAT -->
+    <div class="chat-select-bar">
+      <span class="chat-select-label">Chatear como:</span>
+      <div class="select-wrap" style="flex:1;min-width:140px">
+        <select id="chat-sel-personaje" onchange="onChatPersonajeChange()">
+          <option value="">— Elige tu personaje —</option>
+        </select>
+      </div>
+    </div>
+
     <div class="chat-wrap">
       <div class="chat-header">
         <span class="chat-header-title">SALA DE LA GALA</span>
@@ -409,10 +445,14 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
       </div>
     </div>
     <div class="msg" id="chat-msg"></div>
-    <p style="font-size:.78rem;color:var(--muted);text-align:center">Chateando como: <strong id="chat-personaje-label" style="color:var(--gold3)">—</strong></p>
+    <!-- Botón vaciar chat (solo si es Abel verificado) -->
+    <div id="chat-admin-tools" style="display:none;margin-top:8px">
+      <button class="btn btn-red btn-sm" onclick="vaciarChat()">🗑️ Vaciar Chat</button>
+    </div>
+    <p style="font-size:.78rem;color:var(--muted);text-align:center;margin-top:8px">Chateando como: <strong id="chat-personaje-label" style="color:var(--gold3)">—</strong></p>
   </div>
 
-  <!-- DESEMPATES -->
+  <!-- ══════════════ DESEMPATES ══════════════ -->
   <div class="screen" id="screen-desempates">
     <div class="card-title" style="margin-bottom:6px">⚔️ Desempates</div>
     <div class="card-sub" style="margin-bottom:20px">Vota en los desempates activos de esta semana.</div>
@@ -421,7 +461,7 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
     </div>
   </div>
 
-  <!-- BUZÓN -->
+  <!-- ══════════════ BUZÓN ══════════════ -->
   <div class="screen" id="screen-buzon">
     <div class="card">
       <div class="card-title">📬 Buzón de Sugerencias</div>
@@ -459,13 +499,13 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
 
 <script>
 // ═══════════════════════════════════════════════
-//  CONFIG
+//  CONFIG  — API KEY actualizada (anon public)
 // ═══════════════════════════════════════════════
 const SUPABASE_URL = 'https://goopxqkxuogqhlppsfyv.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_P1uFKhOCi6Yr9ie0mokF9A_uxTJk2Bf';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdvb3B4cWt4dW9ncWhscHBzZnl2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MDYyMDgsImV4cCI6MjA5MDI4MjIwOH0.qbLwPNGDYXF920wsGsGIB-91TlI5j1nU51y5cS7udwg';
 const ADMIN_PASS   = 'Henyeradmin';
 
-// Fallback hardcodeado por si falla Supabase
+// Fallback hardcodeado
 const CHICOS_FB = ['Abel','Kinger','Caine','Caine Humano','Jax Evil','Jax Fight Club','Ming','Zooble Masculino','Jax Skating','Jax'];
 const CHICAS_FB = ['Ribbit','Zooble','Gangle','Queenie','Zooble Skating','Bubble','Bubble Evil','Ragatha','Pomni Skating','Npc','Ragatha Skating','Pomni Fight Club','Ribbit Skating'];
 
@@ -473,29 +513,28 @@ let CHICOS = [...CHICOS_FB];
 let CHICAS = [...CHICAS_FB];
 let TODOS  = [];
 
-// Categorías fijas (las dinámicas se calculan después)
 const CATS_FIJAS = [
-  {id:'masc_fav',    nombre:'Personaje masculino favorito',         emoji:'⭐', votos:2, tipo:'masc'},
-  {id:'fem_fav',     nombre:'Personaje femenino favorito',          emoji:'⭐', votos:5, tipo:'fem'},
-  {id:'agradable',   nombre:'Personaje más agradable',              emoji:'⭐', votos:5, tipo:'todos'},
-  {id:'talentoso',   nombre:'Personaje más talentoso',              emoji:'⭐', votos:5, tipo:'todos'},
-  {id:'activo',      nombre:'Personaje más activo',                 emoji:'⭐', votos:4, tipo:'todos'},
-  {id:'nuevo',       nombre:'Personaje nuevo destacado',            emoji:'⭐', votos:2, tipo:'todos'},
-  {id:'participativo',nombre:'Personaje más participativo',         emoji:'⭐', votos:4, tipo:'todos'},
-  {id:'divertido',   nombre:'Personaje más divertido',              emoji:'⭐', votos:5, tipo:'todos'},
-  {id:'interactivo', nombre:'Personaje más interactivo',            emoji:'⭐', votos:4, tipo:'todos'},
-  {id:'mejor_admin', nombre:'Mejor Admin',                         emoji:'👑', votos:1, tipo:'fijo',
+  {id:'masc_fav',    nombre:'Personaje masculino favorito',          emoji:'⭐', votos:2, tipo:'masc'},
+  {id:'fem_fav',     nombre:'Personaje femenino favorito',           emoji:'⭐', votos:5, tipo:'fem'},
+  {id:'agradable',   nombre:'Personaje más agradable',               emoji:'⭐', votos:5, tipo:'todos'},
+  {id:'talentoso',   nombre:'Personaje más talentoso',               emoji:'⭐', votos:5, tipo:'todos'},
+  {id:'activo',      nombre:'Personaje más activo',                  emoji:'⭐', votos:4, tipo:'todos'},
+  {id:'nuevo',       nombre:'Personaje nuevo destacado',             emoji:'⭐', votos:2, tipo:'todos'},
+  {id:'participativo',nombre:'Personaje más participativo',          emoji:'⭐', votos:4, tipo:'todos'},
+  {id:'divertido',   nombre:'Personaje más divertido',               emoji:'⭐', votos:5, tipo:'todos'},
+  {id:'interactivo', nombre:'Personaje más interactivo',             emoji:'⭐', votos:4, tipo:'todos'},
+  {id:'mejor_admin', nombre:'Mejor Admin',                          emoji:'👑', votos:1, tipo:'fijo',
    nominadosFijos:['Abel','Ribbit','Queenie','Ragatha']},
-  {id:'mejor_semana',nombre:'El MEJOR personaje de toda la semana', emoji:'🏆', votos:3, tipo:'todos'},
+  {id:'mejor_semana',nombre:'El MEJOR personaje de toda la semana',  emoji:'🏆', votos:3, tipo:'todos'},
 ];
 
-// Categorías dinámicas de grupo: se activan si hay ≥3 del mismo nombre base
 const GRUPOS_DINAMICOS = ['JAX','POMNI','ZOOBLE'];
+let CATEGORIAS = [];
 
-let CATEGORIAS = []; // Se construye con buildCategorias()
-
-let personajeActual = '';
-let abelVerificado  = false; // Se activa si Abel pasó la clave
+// Estado
+let personajeActual = '';       // Para votos
+let chatPersonaje   = '';       // Para chat (independiente)
+let abelVerificado  = false;
 let catIndex = 0, votosActuales = [], todosLosVotos = {}, conteosVisible = false;
 let chatInterval = null, lastChatId = 0;
 
@@ -518,25 +557,19 @@ function hideMsg(id){const el=document.getElementById(id);if(el)el.style.display
 function fmtHora(ts){const d=new Date(ts);return d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});}
 
 // ═══════════════════════════════════════════════
-//  CONSTRUCCIÓN DINÁMICA DE CATEGORÍAS
+//  CATEGORÍAS DINÁMICAS
 // ═══════════════════════════════════════════════
 function buildCategorias(){
   TODOS = [...CHICOS, ...CHICAS];
   CATEGORIAS = [];
-
-  // 1. Insertar categorías fijas con nominados dinámicos
   for(const cat of CATS_FIJAS){
     let nominados;
-    if(cat.tipo==='masc')        nominados = [...CHICOS];
-    else if(cat.tipo==='fem')    nominados = [...CHICAS];
-    else if(cat.tipo==='todos')  nominados = [...TODOS];
-    else if(cat.tipo==='fijo')   nominados = [...cat.nominadosFijos];
-
+    if(cat.tipo==='masc')       nominados = [...CHICOS];
+    else if(cat.tipo==='fem')   nominados = [...CHICAS];
+    else if(cat.tipo==='todos') nominados = [...TODOS];
+    else if(cat.tipo==='fijo')  nominados = [...cat.nominadosFijos];
     CATEGORIAS.push({...cat, nominados, locked:false});
   }
-
-  // 2. Insertar categorías dinámicas de grupo (JAX, POMNI, ZOOBLE) antes de "mejor_semana"
-  // Las insertamos antes del último elemento (mejor_semana)
   const grupoCats = [];
   for(const grupo of GRUPOS_DINAMICOS){
     const integrantes = TODOS.filter(p => p.toUpperCase().startsWith(grupo));
@@ -544,17 +577,12 @@ function buildCategorias(){
     grupoCats.push({
       id: `mejor_${grupo.toLowerCase()}`,
       nombre: `Mejor ${grupo}`,
-      emoji: '⭐',
-      votos: 1,
-      tipo: 'grupo',
-      nominados: integrantes,
-      locked,
-      mensajeLocked: `No hay suficientes personajes ${grupo} activos para esta categoría (se necesitan al menos 3).`
+      emoji: '⭐', votos: 1, tipo: 'grupo',
+      nominados: integrantes, locked,
+      mensajeLocked: `No hay suficientes personajes ${grupo} activos (se necesitan al menos 3).`
     });
   }
-
-  // Insertar los grupos antes de "mejor_semana" (último)
-  const ultimo = CATEGORIAS.pop(); // mejor_semana
+  const ultimo = CATEGORIAS.pop();
   CATEGORIAS.push(...grupoCats);
   CATEGORIAS.push(ultimo);
 }
@@ -595,10 +623,9 @@ function showScreen(id){
 }
 
 // ═══════════════════════════════════════════════
-//  CARGAR PERSONAJES DESDE SUPABASE
+//  CARGAR PERSONAJES
 // ═══════════════════════════════════════════════
 async function cargarPersonajes(){
-  const sel=document.getElementById('sel-personaje');
   try{
     const res = await sb('gala_personajes?select=nombre,genero&order=nombre.asc');
     const data = await res.json();
@@ -606,12 +633,18 @@ async function cargarPersonajes(){
       CHICOS = data.filter(p=>p.genero==='M').map(p=>p.nombre);
       CHICAS = data.filter(p=>p.genero==='F').map(p=>p.nombre);
     }
-  }catch(e){
-    console.warn('gala_personajes falló, usando fallback hardcodeado');
-  }
+  }catch(e){ console.warn('gala_personajes falló, usando fallback'); }
   buildCategorias();
+
+  // Selector de votos
+  const sel=document.getElementById('sel-personaje');
   sel.innerHTML='<option value="">— Selecciona tu personaje —</option>';
   TODOS.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;sel.appendChild(o);});
+
+  // Selector del chat (independiente)
+  const csel=document.getElementById('chat-sel-personaje');
+  csel.innerHTML='<option value="">— Elige tu personaje —</option>';
+  TODOS.forEach(p=>{const o=document.createElement('option');o.value=p;o.textContent=p;csel.appendChild(o);});
 }
 
 // ═══════════════════════════════════════════════
@@ -644,18 +677,12 @@ function renderCategoria(){
   votosActuales=todosLosVotos[cat.id]||[];
 
   if(cat.locked){
-    card.innerHTML=`
-      <div class="locked-cat">
-        <div class="locked-icon">🔒</div>
-        <div class="locked-title">${cat.nombre}</div>
-        <div class="locked-msg">${cat.mensajeLocked||'Esta categoría no está disponible por el momento.'}<br><br>¡Continúa votando en las demás categorías!</div>
-      </div>`;
+    card.innerHTML=`<div class="locked-cat"><div class="locked-icon">🔒</div><div class="locked-title">${cat.nombre}</div><div class="locked-msg">${cat.mensajeLocked||'Esta categoría no está disponible.'}<br><br>¡Continúa votando!</div></div>`;
     document.getElementById('btn-next').textContent=catIndex<CATEGORIAS.length-1?'AVANZAR ➜':'✅ FINALIZAR Y ENVIAR';
     return;
   }
 
   const pips=Array.from({length:cat.votos},(_,i)=>`<div class="votes-pip ${i<votosActuales.length?'filled':''}"></div>`).join('');
-  // Excluir al personaje actual de votar por sí mismo
   const nominados=(cat.nominados||[]).filter(n=>n!==personajeActual);
   const nominadosHTML=nominados.map(n=>{
     const sel=votosActuales.includes(n);
@@ -757,14 +784,12 @@ function renderListaPersonajesAdmin(){
   const lf=document.getElementById('lista-femeninos');
   lm.innerHTML='';lf.innerHTML='';
   CHICOS.forEach(p=>{
-    const tag=document.createElement('div');
-    tag.className='personaje-tag masc';
+    const tag=document.createElement('div');tag.className='personaje-tag masc';
     tag.innerHTML=`${esc(p)} <button onclick="eliminarPersonaje('${p.replace(/'/g,"\\'")}','M')" title="Eliminar">✕</button>`;
     lm.appendChild(tag);
   });
   CHICAS.forEach(p=>{
-    const tag=document.createElement('div');
-    tag.className='personaje-tag fem';
+    const tag=document.createElement('div');tag.className='personaje-tag fem';
     tag.innerHTML=`${esc(p)} <button onclick="eliminarPersonaje('${p.replace(/'/g,"\\'")}','F')" title="Eliminar">✕</button>`;
     lf.appendChild(tag);
   });
@@ -773,58 +798,50 @@ function renderListaPersonajesAdmin(){
 async function agregarPersonaje(){
   const nombre=document.getElementById('nuevo-personaje-nombre').value.trim();
   const genero=document.getElementById('nuevo-personaje-genero').value;
-  if(!nombre){showMsg('personajes-admin-msg','Escribe el nombre del personaje.','error');return;}
-  if(TODOS.includes(nombre)){showMsg('personajes-admin-msg','Ese personaje ya existe.','warn');return;}
+  if(!nombre){showMsg('personajes-admin-msg','Escribe el nombre.','error');return;}
+  if(TODOS.includes(nombre)){showMsg('personajes-admin-msg','Ya existe.','warn');return;}
   try{
-    await sb('gala_personajes',{
-      method:'POST',
-      headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({nombre,genero})
-    });
-    if(genero==='M') CHICOS.push(nombre);
-    else CHICAS.push(nombre);
+    await sb('gala_personajes',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({nombre,genero})});
+    if(genero==='M') CHICOS.push(nombre); else CHICAS.push(nombre);
     buildCategorias();
-    // Actualizar select principal
-    const sel=document.getElementById('sel-personaje');
-    const opt=document.createElement('option');opt.value=nombre;opt.textContent=nombre;
-    sel.appendChild(opt);
+    // Actualizar ambos selects
+    [document.getElementById('sel-personaje'),document.getElementById('chat-sel-personaje')].forEach(sel=>{
+      const opt=document.createElement('option');opt.value=nombre;opt.textContent=nombre;sel.appendChild(opt);
+    });
     document.getElementById('nuevo-personaje-nombre').value='';
     renderListaPersonajesAdmin();
-    showMsg('personajes-admin-msg',`✅ ${nombre} agregado. Las categorías se actualizaron.`,'success');
-  }catch(e){showMsg('personajes-admin-msg','Error al agregar personaje.','error');}
+    showMsg('personajes-admin-msg',`✅ ${nombre} agregado.`,'success');
+  }catch(e){showMsg('personajes-admin-msg','Error al agregar.','error');}
 }
 
 async function eliminarPersonaje(nombre, genero){
-  if(!confirm(`¿Eliminar a ${nombre} de la lista?`)) return;
+  if(!confirm(`¿Eliminar a ${nombre}?`)) return;
   try{
     await sb(`gala_personajes?nombre=eq.${encodeURIComponent(nombre)}`,{method:'DELETE'});
-    if(genero==='M') CHICOS=CHICOS.filter(p=>p!==nombre);
-    else CHICAS=CHICAS.filter(p=>p!==nombre);
+    if(genero==='M') CHICOS=CHICOS.filter(p=>p!==nombre); else CHICAS=CHICAS.filter(p=>p!==nombre);
     buildCategorias();
-    // Actualizar select principal
-    const sel=document.getElementById('sel-personaje');
-    for(const opt of sel.options){if(opt.value===nombre){sel.removeChild(opt);break;}}
+    [document.getElementById('sel-personaje'),document.getElementById('chat-sel-personaje')].forEach(sel=>{
+      for(const opt of sel.options){if(opt.value===nombre){sel.removeChild(opt);break;}}
+    });
     renderListaPersonajesAdmin();
-    showMsg('personajes-admin-msg',`✅ ${nombre} eliminado. Las categorías se actualizaron.`,'success');
-  }catch(e){showMsg('personajes-admin-msg','Error al eliminar personaje.','error');}
+    showMsg('personajes-admin-msg',`✅ ${nombre} eliminado.`,'success');
+  }catch(e){showMsg('personajes-admin-msg','Error al eliminar.','error');}
 }
 
 // ═══════════════════════════════════════════════
-//  ADMIN — GALA
+//  ADMIN — GALA CERRAR / RESET
 // ═══════════════════════════════════════════════
 async function cerrarGala(){
   const btn=document.getElementById('btn-cerrar-gala');
   btn.disabled=true;btn.textContent='Procesando...';
-  const resBox=document.getElementById('admin-result-box');
-  resBox.style.display='none';
+  const resBox=document.getElementById('admin-result-box');resBox.style.display='none';
   try{
     const res=await sb('gala_votos?select=categoria,nominados_votados');
     const votos=await res.json();
     if(!votos.length){
       resBox.innerHTML='⚠️ No hay votos registrados aún.';
       resBox.style.cssText='display:block;background:rgba(245,200,66,.1);border-color:rgba(245,200,66,.3);color:var(--gold3)';
-      btn.disabled=false;btn.textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
-      return;
+      btn.disabled=false;btn.textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';return;
     }
     const conteos={};
     for(const v of votos){
@@ -835,12 +852,10 @@ async function cerrarGala(){
     const historial=await hr.json();
     const histMap={};
     for(const h of historial) histMap[h.personaje]=h;
-
     const ganadores=[];
     for(const cat of CATEGORIAS){
       if(cat.locked) continue;
-      const c=conteos[cat.id];
-      if(!c||!Object.keys(c).length) continue;
+      const c=conteos[cat.id];if(!c||!Object.keys(c).length) continue;
       const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
       const [ganador,votsG]=sorted[0];
       const esTrofeo=cat.id==='mejor_semana';
@@ -856,8 +871,7 @@ async function cerrarGala(){
     resBox.innerHTML='✅ ¡Gala cerrada! Ganadores:<br><br>'+resHTML;
     resBox.style.display='block';
     btn.textContent='✅ GALA CERRADA';
-    await loadHistorial();
-    await loadConteos();
+    await loadHistorial();await loadConteos();
   }catch(e){
     resBox.innerHTML='❌ Error al cerrar la gala.';
     resBox.style.cssText='display:block;background:rgba(239,68,68,.12);color:#fca5a5';
@@ -867,19 +881,15 @@ async function cerrarGala(){
 
 async function resetearVotos(){
   if(!confirm('¿Borrar TODOS los votos para iniciar nueva gala?')) return;
-  const btn=document.getElementById('btn-reset');
-  btn.disabled=true;btn.textContent='Borrando...';
+  const btn=document.getElementById('btn-reset');btn.disabled=true;btn.textContent='Borrando...';
   const rb=document.getElementById('admin-result-box');
   try{
     await sb('gala_votos?id=gte.0',{method:'DELETE'});
     document.getElementById('btn-cerrar-gala').disabled=false;
     document.getElementById('btn-cerrar-gala').textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
-    rb.innerHTML='✅ Votos borrados. ¡Nueva gala lista!';
-    rb.style.display='block';
+    rb.innerHTML='✅ Votos borrados. ¡Nueva gala lista!';rb.style.display='block';
     await loadConteos();
-  }catch(e){
-    rb.innerHTML='❌ Error al borrar votos.';rb.style.display='block';
-  }
+  }catch(e){rb.innerHTML='❌ Error al borrar votos.';rb.style.display='block';}
   btn.disabled=false;btn.textContent='🗑️ BORRAR VOTOS (iniciar nueva gala)';
 }
 
@@ -892,16 +902,12 @@ async function loadConteos(){
       if(!conteos[v.categoria]) conteos[v.categoria]={};
       for(const nom of v.nominados_votados) conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;
     }
-    const wrap=document.getElementById('conteos-body');
-    wrap.innerHTML='';
+    const wrap=document.getElementById('conteos-body');wrap.innerHTML='';
     for(const cat of CATEGORIAS){
-      if(cat.locked) continue;
-      const c=conteos[cat.id];
-      if(!c) continue;
+      if(cat.locked) continue;const c=conteos[cat.id];if(!c) continue;
       const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);
       const maxV=sorted[0]?.[1]||0;
-      const sec=document.createElement('div');
-      sec.className='conteo-section';
+      const sec=document.createElement('div');sec.className='conteo-section';
       sec.innerHTML=`<div class="conteo-title">${cat.emoji} ${cat.nombre}</div>`+sorted.map(([n,v])=>`<div class="conteo-row ${v===maxV?'winner':''}"><span class="conteo-name">${esc(n)}${v===maxV?' 👑':''}</span><span class="conteo-val">${v}</span></div>`).join('');
       wrap.appendChild(sec);
     }
@@ -912,6 +918,100 @@ function toggleConteos(){
   conteosVisible=!conteosVisible;
   document.getElementById('conteos-wrap').style.display=conteosVisible?'block':'none';
   if(conteosVisible) loadConteos();
+}
+
+// ═══════════════════════════════════════════════
+//  ADMIN — MINITOP ANUNCIOS
+// ═══════════════════════════════════════════════
+let minitopConteos = {}; // cache de conteos para minitop
+
+async function loadMiniTopCats(){
+  const list=document.getElementById('minitop-cat-list');
+  list.innerHTML='<div class="loading-state" style="padding:16px"><div class="spinner"></div></div>';
+  hideMsg('minitop-admin-msg');
+  try{
+    const res=await sb('gala_votos?select=categoria,nominados_votados');
+    const votos=await res.json();
+    minitopConteos={};
+    for(const v of votos){
+      if(!minitopConteos[v.categoria]) minitopConteos[v.categoria]={};
+      for(const nom of v.nominados_votados) minitopConteos[v.categoria][nom]=(minitopConteos[v.categoria][nom]||0)+1;
+    }
+    list.innerHTML='';
+    let hayAlgo=false;
+    for(const cat of CATEGORIAS){
+      if(cat.locked) continue;
+      const c=minitopConteos[cat.id];
+      if(!c||!Object.keys(c).length) continue;
+      hayAlgo=true;
+      const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);
+      const preview=sorted.slice(0,3).map(([n,v],i)=>`${['🥇','🥈','🥉'][i]}${n}(${v})`).join(' ');
+      const row=document.createElement('div');row.className='minitop-cat-row';
+      row.innerHTML=`
+        <div class="minitop-cat-name">${cat.emoji} ${esc(cat.nombre)}</div>
+        <div class="minitop-preview">${preview}</div>
+        <button class="btn btn-gold minitop-publish-btn" onclick="publicarMiniTop('${cat.id.replace(/'/g,"\\'")}')">📢 PUBLICAR</button>`;
+      list.appendChild(row);
+    }
+    if(!hayAlgo){
+      list.innerHTML='<p style="font-size:.85rem;color:var(--muted);padding:8px 0">No hay votos registrados aún.</p>';
+    }
+  }catch(e){
+    list.innerHTML='<p style="font-size:.85rem;color:#fca5a5;padding:8px 0">Error al cargar conteos.</p>';
+  }
+}
+
+async function publicarMiniTop(catId){
+  const cat=CATEGORIAS.find(c=>c.id===catId);
+  if(!cat){showMsg('minitop-admin-msg','Categoría no encontrada.','error');return;}
+  const c=minitopConteos[catId];
+  if(!c||!Object.keys(c).length){showMsg('minitop-admin-msg','Sin votos en esta categoría.','warn');return;}
+
+  const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);
+  // Tomar hasta 4 posiciones
+  const top=sorted.slice(0,4);
+  const medalEmojis=['🥇','🥈','🥉','4️⃣'];
+  // Construir el JSON del anuncio como mensaje especial en el chat
+  // Lo guardamos como tipo 'anuncio' con el JSON en mensaje
+  const anuncioData={
+    categoria: cat.nombre,
+    emoji: cat.emoji,
+    resultados: top.map(([nombre,votos],i)=>({pos:i+1,medal:medalEmojis[i]||`${i+1}º`,nombre,votos}))
+  };
+
+  try{
+    await sb('gala_chat',{
+      method:'POST',
+      headers:{'Prefer':'return=minimal'},
+      body:JSON.stringify({
+        personaje:'Abel',
+        mensaje: JSON.stringify(anuncioData),
+        tipo:'anuncio'
+      })
+    });
+    showMsg('minitop-admin-msg',`✅ Minitop de "${cat.nombre}" publicado en el chat.`,'success');
+    // Si el chat está visible, refrescar
+    if(document.getElementById('screen-chat').classList.contains('active')){
+      await fetchMensajes(true);
+    }
+  }catch(e){showMsg('minitop-admin-msg','Error al publicar.','error');}
+}
+
+// ═══════════════════════════════════════════════
+//  CHAT — selector independiente
+// ═══════════════════════════════════════════════
+function onChatPersonajeChange(){
+  const sel=document.getElementById('chat-sel-personaje');
+  chatPersonaje = sel.value;
+  document.getElementById('chat-personaje-label').textContent = chatPersonaje || '—';
+
+  // Si elige Abel, pedir clave
+  if(chatPersonaje === 'Abel' && !abelVerificado){
+    abrirModalAbel();
+  }
+  // Mostrar/ocultar botón vaciar chat
+  document.getElementById('chat-admin-tools').style.display =
+    (chatPersonaje==='Abel' && abelVerificado) ? 'block' : 'none';
 }
 
 // ═══════════════════════════════════════════════
@@ -926,6 +1026,12 @@ function abrirModalAbel(){
 
 function cerrarModalAbel(){
   document.getElementById('modal-abel').style.display='none';
+  // Si cancela sin verificar, deseleccionar Abel en el chat
+  if(!abelVerificado){
+    document.getElementById('chat-sel-personaje').value='';
+    chatPersonaje='';
+    document.getElementById('chat-personaje-label').textContent='—';
+  }
 }
 
 function verificarAbelPass(){
@@ -933,6 +1039,7 @@ function verificarAbelPass(){
   if(pass===ADMIN_PASS){
     abelVerificado=true;
     cerrarModalAbel();
+    document.getElementById('chat-admin-tools').style.display='block';
     showMsg('chat-msg','✅ Modo Abel activado. Puedes chatear como administrador.','success');
     setTimeout(()=>hideMsg('chat-msg'),3000);
   }else{
@@ -941,17 +1048,29 @@ function verificarAbelPass(){
 }
 
 // ═══════════════════════════════════════════════
-//  CHAT — gala_chat
+//  CHAT — Vaciar
+// ═══════════════════════════════════════════════
+async function vaciarChat(){
+  if(!confirm('¿Borrar TODOS los mensajes del chat?')) return;
+  try{
+    await sb('gala_chat?id=gte.0',{method:'DELETE'});
+    lastChatId=0;
+    await fetchMensajes(true);
+    showMsg('chat-msg','✅ Chat vaciado.','success');
+    setTimeout(()=>hideMsg('chat-msg'),2500);
+  }catch(e){
+    showMsg('chat-msg','Error al vaciar el chat.','error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  CHAT — Mensajes
 // ═══════════════════════════════════════════════
 async function initChat(){
   showScreen('screen-chat');
-  document.getElementById('chat-personaje-label').textContent = personajeActual || '(sin personaje seleccionado)';
-
-  // Si el personaje es Abel y no está verificado, pedir clave
-  if(personajeActual === 'Abel' && !abelVerificado){
-    abrirModalAbel();
-  }
-
+  // Sincronizar label con el selector
+  document.getElementById('chat-personaje-label').textContent = chatPersonaje || '—';
+  if(chatPersonaje) document.getElementById('chat-sel-personaje').value = chatPersonaje;
   await fetchMensajes(true);
   if(!chatInterval) chatInterval=setInterval(()=>fetchMensajes(false),4000);
 }
@@ -973,11 +1092,32 @@ async function fetchMensajes(scroll){
         const div=document.createElement('div');
         const tipo=m.tipo||'usuario';
         const esAdmin=m.personaje==='Abel';
-        div.className=`chat-bubble ${tipo==='sistema'?'sistema':(esAdmin?'admin-msg-style':'usuario')}`;
+
         if(tipo==='sistema'){
+          div.className='chat-bubble sistema';
           div.textContent=m.mensaje;
-        }else{
-          div.innerHTML=`<div class="cb-autor ${esAdmin?'admin-label':''}">${esAdmin?'👑 ':''} ${esc(m.personaje||'?')}</div>${esc(m.mensaje)}<div class="cb-hora">${fmtHora(m.created_at)}</div>`;
+        } else if(tipo==='anuncio'){
+          // Renderizar anuncio minitop
+          div.className='chat-bubble anuncio';
+          try{
+            const d=JSON.parse(m.mensaje);
+            let html=`<div class="anuncio-title">${d.emoji} ${esc(d.categoria)}</div>`;
+            for(const r of d.resultados){
+              html+=`<div class="anuncio-row">
+                <span class="anuncio-pos">${r.medal}</span>
+                <span class="anuncio-name">${esc(r.nombre)}</span>
+                <span class="anuncio-votes">${r.votos} voto${r.votos!==1?'s':''}</span>
+              </div>`;
+            }
+            html+=`<div class="cb-hora" style="margin-top:8px">${fmtHora(m.created_at)} · 👑 Abel</div>`;
+            div.innerHTML=html;
+          }catch(e){
+            div.className='chat-bubble admin-msg-style';
+            div.innerHTML=`<div class="cb-autor admin-label">👑 Abel</div>${esc(m.mensaje)}<div class="cb-hora">${fmtHora(m.created_at)}</div>`;
+          }
+        } else {
+          div.className=`chat-bubble ${esAdmin?'admin-msg-style':'usuario'}`;
+          div.innerHTML=`<div class="cb-autor ${esAdmin?'admin-label':''}">${esAdmin?'👑 ':''}${esc(m.personaje||'?')}</div>${esc(m.mensaje)}<div class="cb-hora">${fmtHora(m.created_at)}</div>`;
         }
         box.appendChild(div);
       });
@@ -991,19 +1131,15 @@ async function enviarMensaje(){
   const input=document.getElementById('chat-input');
   const texto=input.value.trim();
   if(!texto) return;
-  if(!personajeActual){showMsg('chat-msg','Selecciona tu personaje primero en la pestaña Votar.','warn');return;}
-  // Si es Abel y no está verificado, pedir clave
-  if(personajeActual==='Abel' && !abelVerificado){
-    abrirModalAbel();
-    return;
-  }
+  if(!chatPersonaje){showMsg('chat-msg','Selecciona tu personaje arriba para chatear.','warn');return;}
+  if(chatPersonaje==='Abel' && !abelVerificado){abrirModalAbel();return;}
   hideMsg('chat-msg');
   input.value='';
   try{
     await sb('gala_chat',{
       method:'POST',
       headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({personaje:personajeActual,mensaje:texto,tipo:'usuario'})
+      body:JSON.stringify({personaje:chatPersonaje,mensaje:texto,tipo:'usuario'})
     });
     await fetchMensajes(true);
   }catch(e){
@@ -1012,23 +1148,20 @@ async function enviarMensaje(){
 }
 
 // ═══════════════════════════════════════════════
-//  DESEMPATES — gala_desempates
+//  DESEMPATES
 // ═══════════════════════════════════════════════
 async function loadDesempates(){
   const body=document.getElementById('desempates-body');
-  body.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando desempates...</p></div>';
+  body.innerHTML='<div class="loading-state"><div class="spinner"></div><p>Cargando...</p></div>';
   try{
     const res=await sb('gala_desempates?select=*&order=created_at.desc');
     const data=await res.json();
     if(!Array.isArray(data)||!data.length){
-      body.innerHTML='<div class="empty-state"><p>⚔️ No hay desempates activos por ahora.</p></div>';
-      return;
+      body.innerHTML='<div class="empty-state"><p>⚔️ No hay desempates activos.</p></div>';return;
     }
     body.innerHTML='';
     for(const d of data) body.appendChild(renderDesempate(d));
-  }catch(e){
-    body.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar desempates.</p></div>';
-  }
+  }catch(e){body.innerHTML='<div class="empty-state"><p>⚠️ Error al cargar.</p></div>';}
 }
 
 function renderDesempate(d){
@@ -1038,30 +1171,24 @@ function renderDesempate(d){
   const totalVotos=Object.keys(votos).filter(k=>!k.endsWith('__voters')).reduce((a,k)=>a+(votos[k]||0),0);
   const cuantosGanan=d.cuantos_ganan||1;
   const estaAbierto=d.estado==='abierto';
+  const card=document.createElement('div');card.className='desemp-card';card.dataset.id=d.id;
 
-  const card=document.createElement('div');
-  card.className='desemp-card';
-  card.dataset.id=d.id;
-
-  let html=`
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <div class="desemp-cat">⚔️ ${esc(d.categoria_id)}</div>
-      <span class="desemp-status ${estaAbierto?'abierto':'cerrado'}">${estaAbierto?'🟢 Abierto':'🔴 Cerrado'}</span>
-    </div>
-    <div style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Ganan los <strong style="color:var(--gold3)">${cuantosGanan}</strong> más votados</div>
-    <div class="desemp-candidatos">`;
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <div class="desemp-cat">⚔️ ${esc(d.categoria_id)}</div>
+    <span class="desemp-status ${estaAbierto?'abierto':'cerrado'}">${estaAbierto?'🟢 Abierto':'🔴 Cerrado'}</span>
+  </div>
+  <div style="font-size:.8rem;color:var(--muted);margin-bottom:10px">Ganan los <strong style="color:var(--gold3)">${cuantosGanan}</strong> más votados</div>
+  <div class="desemp-candidatos">`;
 
   candidatos.forEach(nombre=>{
     const votersKey=nombre+'__voters';
     const voters=votos[votersKey]||[];
-    const yaVote=personajeActual&&voters.includes(personajeActual);
-    const disabled=!estaAbierto||!personajeActual||yaVote;
+    // Para desempates se usa el personaje de VOTOS (personajeActual) o el del chat
+    const votanteId = personajeActual || chatPersonaje;
+    const yaVote=votanteId&&voters.includes(votanteId);
+    const disabled=!estaAbierto||!votanteId||yaVote;
     const vCount=votos[nombre]||0;
-    html+=`<button class="desemp-voto-btn ${yaVote?'voted':''} ${disabled&&!yaVote?'disabled':''}" 
-      onclick="votarDesempate(${d.id},'${nombre.replace(/'/g,"\\'")}',this)" 
-      ${disabled?'disabled':''}>
-      ${esc(nombre)}${vCount?` <span style="color:var(--gold);margin-left:4px">(${vCount})</span>`:''}
-    </button>`;
+    html+=`<button class="desemp-voto-btn ${yaVote?'voted':''} ${disabled&&!yaVote?'disabled':''}" onclick="votarDesempate(${d.id},'${nombre.replace(/'/g,"\\'")}',this)" ${disabled?'disabled':''}>${esc(nombre)}${vCount?` <span style="color:var(--gold);margin-left:4px">(${vCount})</span>`:''}</button>`;
   });
 
   html+=`</div><div class="desemp-bar-wrap">`;
@@ -1071,17 +1198,13 @@ function renderDesempate(d){
     html+=`<div class="desemp-bar-row"><span style="min-width:110px;font-size:.82rem">${esc(nombre)}</span><div class="desemp-bar"><div class="desemp-bar-fill" style="width:${pct}%"></div></div><span style="min-width:38px;text-align:right;font-size:.78rem;color:var(--gold3)">${pct}%</span></div>`;
   });
   html+=`</div>`;
-
-  if(!estaAbierto && d.ganador){
-    html+=`<div class="desemp-ganador-badge">🏆 Ganador: <strong>${esc(d.ganador)}</strong></div>`;
-  }
-
-  card.innerHTML=html;
-  return card;
+  if(!estaAbierto && d.ganador) html+=`<div class="desemp-ganador-badge">🏆 Ganador: <strong>${esc(d.ganador)}</strong></div>`;
+  card.innerHTML=html;return card;
 }
 
 async function votarDesempate(desempateId,nombreVotado,btnEl){
-  if(!personajeActual){showMsg('chat-msg','Selecciona tu personaje primero.','warn');return;}
+  const votanteId = personajeActual || chatPersonaje;
+  if(!votanteId){showMsg('chat-msg','Selecciona tu personaje primero.','warn');return;}
   try{
     const res=await sb(`gala_desempates?id=eq.${desempateId}&select=votos,estado`);
     const [d]=await res.json();
@@ -1090,17 +1213,14 @@ async function votarDesempate(desempateId,nombreVotado,btnEl){
     try{votos=typeof d.votos==='string'?JSON.parse(d.votos):d.votos||{};}catch(e){}
     const votersKey=nombreVotado+'__voters';
     const voters=votos[votersKey]||[];
-    if(voters.includes(personajeActual)){alert('Ya votaste en este desempate.');return;}
-    voters.push(personajeActual);
+    if(voters.includes(votanteId)){alert('Ya votaste en este desempate.');return;}
+    voters.push(votanteId);
     votos[nombreVotado]=(votos[nombreVotado]||0)+1;
     votos[votersKey]=voters;
     await sb(`gala_desempates?id=eq.${desempateId}`,{
-      method:'PATCH',
-      headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({votos:JSON.stringify(votos)})
+      method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({votos:JSON.stringify(votos)})
     });
-    btnEl.classList.add('voted');
-    btnEl.disabled=true;
+    btnEl.classList.add('voted');btnEl.disabled=true;
     await loadDesempates();
   }catch(e){console.error('error votando desempate',e);}
 }
@@ -1111,11 +1231,7 @@ async function crearDesempate(){
   const cuantos=parseInt(document.getElementById('desemp-cuantos').value)||1;
   if(!catId||!personajesStr){showMsg('desemp-admin-msg','Completa todos los campos.','error');return;}
   try{
-    await sb('gala_desempates',{
-      method:'POST',
-      headers:{'Prefer':'return=minimal'},
-      body:JSON.stringify({categoria_id:catId,personajes:personajesStr,cuantos_ganan:cuantos,votos:'{}',estado:'abierto'})
-    });
+    await sb('gala_desempates',{method:'POST',headers:{'Prefer':'return=minimal'},body:JSON.stringify({categoria_id:catId,personajes:personajesStr,cuantos_ganan:cuantos,votos:'{}',estado:'abierto'})});
     showMsg('desemp-admin-msg','✅ Desempate creado.','success');
     document.getElementById('desemp-cat-id').value='';
     document.getElementById('desemp-personajes').value='';
@@ -1124,35 +1240,26 @@ async function crearDesempate(){
 }
 
 // ═══════════════════════════════════════════════
-//  BUZÓN — gala_buzon
+//  BUZÓN
 // ═══════════════════════════════════════════════
 async function enviarBuzon(){
   const texto=document.getElementById('buzon-texto').value.trim();
-  if(!texto){showMsg('buzon-msg','Escribe un mensaje antes de enviar.','error');return;}
+  if(!texto){showMsg('buzon-msg','Escribe un mensaje.','error');return;}
   hideMsg('buzon-msg');
   try{
     const res=await sb('gala_buzon',{
       method:'POST',
-      headers:{
-        'Prefer':'return=representation',
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json'
-      },
+      headers:{'Prefer':'return=representation'},
       body:JSON.stringify({mensaje:texto,leido:false})
     });
     if(res.ok){
       document.getElementById('buzon-texto').value='';
       showMsg('buzon-msg','✅ ¡Mensaje enviado al buzón del administrador!','success');
     }else{
-      const err=await res.text();
-      console.error('buzon error',err);
+      const err=await res.text();console.error('buzon error',err);
       showMsg('buzon-msg','Error al enviar. Intenta de nuevo.','error');
     }
-  }catch(e){
-    console.error(e);
-    showMsg('buzon-msg','Error al enviar. Intenta de nuevo.','error');
-  }
+  }catch(e){showMsg('buzon-msg','Error al enviar.','error');}
 }
 
 async function loadBuzonAdmin(){
@@ -1162,8 +1269,7 @@ async function loadBuzonAdmin(){
     const res=await sb('gala_buzon?select=*&order=created_at.desc');
     const data=await res.json();
     if(!Array.isArray(data)||!data.length){
-      list.innerHTML='<p style="font-size:.85rem;color:var(--muted);padding:8px 0">No hay mensajes aún.</p>';
-      return;
+      list.innerHTML='<p style="font-size:.85rem;color:var(--muted);padding:8px 0">No hay mensajes aún.</p>';return;
     }
     list.innerHTML='';
     data.forEach(m=>{
@@ -1171,26 +1277,23 @@ async function loadBuzonAdmin(){
       div.className=`buzon-item ${!m.leido?'no-leido':''}`;
       div.innerHTML=`${!m.leido?'<span class="no-leido-dot">●</span>':''}${esc(m.mensaje)}<div class="bi-hora">${new Date(m.created_at).toLocaleString('es-CO')} ${!m.leido?'· <strong style="color:var(--gold)">No leído</strong>':''}</div>`;
       if(!m.leido){
-        div.onclick=async ()=>{
+        div.onclick=async()=>{
           await sb(`gala_buzon?id=eq.${m.id}`,{method:'PATCH',headers:{'Prefer':'return=minimal'},body:JSON.stringify({leido:true})});
-          m.leido=true;
-          div.classList.remove('no-leido');
+          m.leido=true;div.classList.remove('no-leido');
           const dot=div.querySelector('.no-leido-dot');if(dot)dot.remove();
           const strong=div.querySelector('strong');if(strong)strong.remove();
         };
       }
       list.appendChild(div);
     });
-  }catch(e){
-    list.innerHTML='<p style="font-size:.85rem;color:#fca5a5;padding:8px 0">Error al cargar mensajes.</p>';
-  }
+  }catch(e){list.innerHTML='<p style="font-size:.85rem;color:#fca5a5;padding:8px 0">Error al cargar.</p>';}
 }
 
 // ═══════════════════════════════════════════════
-//  NAV GENERAL
+//  NAV
 // ═══════════════════════════════════════════════
 function volverInicio(){
-  personajeActual='';catIndex=0;todosLosVotos={};votosActuales=[];abelVerificado=false;
+  personajeActual='';catIndex=0;todosLosVotos={};votosActuales=[];
   const chk=document.getElementById('chk-terms');if(chk)chk.checked=false;
   const btn=document.getElementById('btn-start');if(btn)btn.disabled=true;
   document.getElementById('sel-personaje').value='';
