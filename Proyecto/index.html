@@ -33,8 +33,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .gala-sub{font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:4px;color:var(--muted);margin-top:8px;text-transform:uppercase;}
 
 /* TABS */
-.tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:28px;flex-wrap:wrap;}
-.tab-btn{flex:1;min-width:70px;padding:10px 5px;border:none;border-radius:10px;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.5px;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted);text-align:center;}
+.tabs{display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:5px;margin-bottom:28px;}
+.tab-row1{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;}
+.tab-row2{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;}
+.tab-btn{width:100%;padding:10px 5px;border:none;border-radius:10px;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.5px;cursor:pointer;transition:all .2s;background:transparent;color:var(--muted);text-align:center;}
 .tab-btn.active{background:linear-gradient(135deg,var(--gold-dark),var(--gold2));color:#0a0800;font-weight:700;box-shadow:0 4px 15px rgba(245,200,66,.3);}
 .tab-btn:hover:not(.active){color:var(--gold);}
 
@@ -250,12 +252,16 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
   </div>
 
   <div class="tabs">
+  <div class="tab-row1">
     <button class="tab-btn active" onclick="switchTab('votar')">⭐ Votar</button>
     <button class="tab-btn" onclick="switchTab('tabla');loadHistorial()">🏆 Tabla</button>
     <button class="tab-btn" onclick="switchTab('chat');initChat()">💬 Chat</button>
+  </div>
+  <div class="tab-row2">
     <button class="tab-btn" onclick="switchTab('desempates');loadDesempates()">⚔️ Desempates</button>
     <button class="tab-btn" onclick="switchTab('buzon')">📬 Buzón</button>
   </div>
+</div>
 
   <!-- ══════════════ VOTAR ══════════════ -->
   <div class="screen active" id="screen-select">
