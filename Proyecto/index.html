@@ -396,6 +396,7 @@ textarea{resize:vertical;min-height:90px;font-weight:400;}
         <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
           <div class="admin-title" style="font-size:.9rem;margin-bottom:12px">📬 Mensajes del Buzón</div>
           <button class="btn btn-outline admin-btn-sm" onclick="loadBuzonAdmin()">📬 Ver Mensajes</button>
+          <button class="btn btn-red admin-btn-sm" style="margin-left:8px" onclick="borrarTodosBuzon()">🗑️ Borrar Todo</button>
           <div id="buzon-admin-list" style="margin-top:12px"></div>
         </div>
 
@@ -1290,6 +1291,17 @@ async function loadBuzonAdmin(){
       list.appendChild(div);
     });
   }catch(e){list.innerHTML='<p style="font-size:.85rem;color:#fca5a5;padding:8px 0">Error al cargar.</p>';}
+}                                          // ← cierra loadBuzonAdmin
+
+async function borrarTodosBuzon(){         // ← AQUÍ, afuera, al mismo nivel
+  if(!confirm('¿Borrar TODOS los mensajes del buzón?')) return;
+  try{
+    await sb('gala_buzon?id=gte.0',{method:'DELETE'});
+    document.getElementById('buzon-admin-list').innerHTML=
+      '<p style="font-size:.85rem;color:#6ee7b7;padding:8px 0">✅ Buzón vaciado.</p>';
+  }catch(e){
+    alert('Error al borrar los mensajes.');
+  }
 }
 
 // ═══════════════════════════════════════════════
