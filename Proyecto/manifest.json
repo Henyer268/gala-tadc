@@ -1,11 +1,11 @@
 {
-  "name": "DrawVS",
-  "short_name": "DrawVS",
-  "description": "El arte se juzga entre todos",
-  "start_url": "/",
+  "name": "Gala TADC — Personaje Favorito",
+  "short_name": "Gala TADC",
+  "description": "Vota por tu personaje favorito de The Amazing Digital Circus",
+  "start_url": "/Proyecto/index.html",
   "display": "standalone",
-  "background_color": "#080810",
-  "theme_color": "#e8350a",
+  "background_color": "#0a0800",
+  "theme_color": "#f5c842",
   "orientation": "portrait",
   "icons": [
     {

@@ -1,5 +1,8 @@
-const CACHE = 'drawvs-v1';
-const ARCHIVOS = ['/', '/index.html'];
+const CACHE = 'gala-tadc-v1';
+const ARCHIVOS = [
+  '/Proyecto/index.html',
+  'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap'
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(
