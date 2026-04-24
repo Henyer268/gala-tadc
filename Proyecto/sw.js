@@ -1,52 +1,80 @@
+// ═══════════════════════════════════════════════════════════
+//  SERVICE WORKER — GALA TADC PWA
+//  Cambia CACHE_NAME cuando actualices la app para forzar
+//  que los usuarios reciban la versión nueva.
+// ═══════════════════════════════════════════════════════════
+
 const CACHE_NAME = 'gala-tadc-v1';
 
-const ASSETS = [
-  './',
-  './index.html',
-  './icons/gala tadc.png',
-  './icons/icon-72.png',
-  './icons/icon-96.png',
-  './icons/icon-128.png',
-  './icons/icon-144.png',
-  './icons/icon-152.png',
-  './icons/icon-192.png',
-  './icons/icon-384.png',
-  './icons/icon-512.png'
+// Archivos que se guardan en caché al instalar (shell de la app)
+const PRECACHE_URLS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png'
 ];
 
-// Instalar y cachear assets
-self.addEventListener('install', event => {
+// ── INSTALL: guarda el shell en caché ──────────────────────
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(PRECACHE_URLS);
+    })
   );
+  // Activa el nuevo SW de inmediato sin esperar a que se cierren las pestañas
   self.skipWaiting();
 });
 
-// Activar y limpiar caches viejas
-self.addEventListener('activate', event => {
+// ── ACTIVATE: limpia cachés viejas ────────────────────────
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      )
     )
   );
   self.clients.claim();
 });
 
-// Fetch: network first, fallback a cache
-self.addEventListener('fetch', event => {
-  // No interceptar peticiones a Supabase (siempre deben ir a la red)
-  if (event.request.url.includes('supabase.co')) return;
+// ── FETCH: Network-first para Supabase, Cache-first para assets ──
+self.addEventListener('fetch', (event) => {
+  const url = new URL(event.request.url);
 
+  // Peticiones a Supabase → siempre red (datos en vivo)
+  if (url.hostname.includes('supabase.co') || url.hostname.includes('googleapis.com')) {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
+  // Assets (fuentes, íconos, HTML, manifest) → Cache-first con fallback a red
   event.respondWith(
-    fetch(event.request)
-      .then(res => {
-        // Guardar copia en cache si es GET exitoso
-        if (event.request.method === 'GET' && res.status === 200) {
-          const copy = res.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy));
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(event.request).then((response) => {
+        // Solo guardamos en caché respuestas válidas y de mismo origen o CDN conocidos
+        if (
+          response.ok &&
+          (url.origin === self.location.origin ||
+            url.hostname === 'fonts.googleapis.com' ||
+            url.hostname === 'fonts.gstatic.com')
+        ) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
         }
-        return res;
-      })
-      .catch(() => caches.match(event.request))
+        return response;
+      }).catch(() => {
+        // Sin red y sin caché → devuelve la página principal como fallback
+        if (event.request.mode === 'navigate') {
+          return caches.match('/');
+        }
+      });
+    })
   );
 });
