@@ -525,6 +525,38 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
             🗑️ BORRAR VOTOS (iniciar nueva gala)<span class="btn-spinner"></span>
           </button>
           <button class="btn btn-outline" onclick="toggleConteos()">📊 Ver / Ocultar Conteos</button>
+<hr class="sep">
+<button class="btn btn-outline" onclick="toggleAsistencia()" style="margin-bottom:12px">👥 Ver / Ocultar Asistencia</button>
+<div id="asistencia-wrap" style="display:none;margin-top:8px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px">
+    <span style="font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase">Estado de participación</span>
+    <button class="btn btn-outline" style="width:auto;padding:6px 14px;font-size:.72rem" onclick="loadAsistencia()">🔄 Actualizar</button>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+    <div class="buzon-stat" style="border-color:rgba(16,185,129,.3)">
+      <div class="buzon-stat-num" id="asist-votaron" style="color:#6ee7b7">—</div>
+      <div class="buzon-stat-label">Ya votaron</div>
+    </div>
+    <div class="buzon-stat" style="border-color:rgba(239,68,68,.3)">
+      <div class="buzon-stat-num" id="asist-faltan" style="color:#fca5a5">—</div>
+      <div class="buzon-stat-label">Faltan</div>
+    </div>
+    <div class="buzon-stat">
+      <div class="buzon-stat-num" id="asist-total" style="color:var(--gold)">—</div>
+      <div class="buzon-stat-label">Total</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div>
+      <div style="font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:1px;color:#6ee7b7;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(16,185,129,.2)">✅ Ya votaron</div>
+      <div id="asist-lista-si" style="display:flex;flex-direction:column;gap:5px"></div>
+    </div>
+    <div>
+      <div style="font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:1px;color:#fca5a5;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(239,68,68,.2)">⏳ Faltan</div>
+      <div id="asist-lista-no" style="display:flex;flex-direction:column;gap:5px"></div>
+    </div>
+  </div>
+</div>
           <div id="conteos-wrap" style="margin-top:16px;display:none">
             <div id="conteos-body"></div>
           </div>
@@ -602,21 +634,6 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
   </div>
   <div class="admin-result-box" id="nuevo-dest-result"></div>
 </div>
-          <div class="field">
-            <label>Personajes nominados (separados por coma)</label>
-            <input type="text" id="nuevo-dest-nominados" placeholder="ej: Kinger, Caine, Zooble Skating">
-          </div>
-          <div class="field">
-            <label>Votos por persona</label>
-            <input type="text" id="nuevo-dest-votos" placeholder="2" value="2">
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-green" style="flex:1;min-width:140px;padding:13px" onclick="activarCatNuevo(true)">✅ ACTIVAR Y GUARDAR</button>
-            <button class="btn btn-red" style="flex:1;min-width:140px;padding:13px" onclick="activarCatNuevo(false)">⛔ DESACTIVAR</button>
-          </div>
-          <div class="admin-result-box" id="nuevo-dest-result"></div>
-        </div>
-
         <div class="admin-section">
           <div class="admin-section-title">✉️ Buzón de Mensajes Anónimos</div>
           <div class="buzon-stats" id="buzon-stats-admin">
@@ -1420,7 +1437,7 @@ async function vaciarChat(){
   if(!confirm('¿Borrar TODOS los mensajes del chat?'))return;
   const rb=document.getElementById('chat-admin-result-box');
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?id=gte.0`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?id=gte.0`,{method:'DELETE',headers:authHeaders(true)});
     chatMensajes=[];chatUltimoId=0;document.getElementById('chat-box').innerHTML='<div class="chat-empty">💬 El chat ha sido vaciado.</div>';
     rb.innerHTML='✅ Chat vaciado correctamente.';rb.style.display='block';
   }catch(e){rb.innerHTML='❌ Error al vaciar el chat.';rb.style.display='block';}
@@ -1540,7 +1557,7 @@ function renderBuzonAdmin(){
 
 async function marcarLeido(id){
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?id=eq.${id}`,{method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({leido:true})});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?id=eq.${id}`,{method:'PATCH',headers:{...authHeaders(true),'Prefer':'return=minimal'},body:JSON.stringify({leido:true})});
     const m=buzonMensajes.find(x=>x.id===id);if(m)m.leido=true;actualizarStatsBuzon();renderBuzonAdmin();
   }catch(e){alert('Error al marcar como leído.');}
 }
@@ -1548,7 +1565,7 @@ async function marcarLeido(id){
 async function eliminarMensaje(id){
   if(!confirm('¿Eliminar este mensaje?'))return;
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?id=eq.${id}`,{method:'DELETE',headers:authHeaders(true)});
     buzonMensajes=buzonMensajes.filter(m=>m.id!==id);actualizarStatsBuzon();renderBuzonAdmin();
   }catch(e){alert('Error al eliminar el mensaje.');}
 }
@@ -1557,7 +1574,7 @@ async function borrarTodosBuzon(){
   const leidos=buzonMensajes.filter(m=>m.leido);if(!leidos.length){alert('No hay mensajes leídos para borrar.');return;}
   if(!confirm(`¿Borrar los ${leidos.length} mensajes marcados como leídos?`))return;
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?leido=eq.true`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_buzon?leido=eq.true`,{method:'DELETE',headers:authHeaders(true)});
     buzonMensajes=buzonMensajes.filter(m=>!m.leido);actualizarStatsBuzon();renderBuzonAdmin();
   }catch(e){alert('Error al borrar mensajes.');}
 }
@@ -1601,7 +1618,7 @@ async function resetearPuntosPersonaje(){
   if(!confirm(`¿Resetear a 0 las estrellas y trofeos de "${nombre}"?`))return;
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`,{
-      method:'PATCH',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      method:'PATCH',headers:{...authHeaders(true),'Prefer':'return=minimal'},
       body:JSON.stringify({estrellas:0,trofeos:0})
     });
     rb.innerHTML=`✅ Puntos de "${esc(nombre)}" reseteados a 0.`;rb.style.display='block';await loadHistorial();
@@ -1642,7 +1659,7 @@ async function cerrarGala(){
   const btn=document.getElementById('btn-cerrar-gala');btn.classList.add('loading');btn.disabled=true;
   const resBox=document.getElementById('admin-result-box');resBox.style.display='none';
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,{headers:authHeaders(true)});
     const votos=await res.json();
     if(!votos.length){resBox.innerHTML='⚠️ No hay votos registrados.';resBox.style.display='block';btn.classList.remove('loading');btn.disabled=false;return;}
 
@@ -1652,7 +1669,7 @@ async function cerrarGala(){
       for(const nom of v.nominados_votados)conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;
     }
 
-    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+  const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{headers:authHeaders(true)});
     const historial=await hr.json();
     const histMap={};
     for(const h of historial)histMap[h.personaje]={estrellas:h.estrellas,trofeos:h.trofeos};
@@ -1694,13 +1711,13 @@ async function cerrarGala(){
       if(actual){
         return fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`,{
           method:'PATCH',
-          headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+          headers:{...authHeaders(true),'Prefer':'return=minimal'},
           body:JSON.stringify({estrellas:actual.estrellas+puntos.estrellas,trofeos:actual.trofeos+puntos.trofeos})
         });
       }else{
         return fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{
           method:'POST',
-          headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+          headers:{...authHeaders(true),'Prefer':'return=minimal'},
           body:JSON.stringify({personaje:nombre,estrellas:puntos.estrellas,trofeos:puntos.trofeos})
         });
       }
@@ -1726,7 +1743,7 @@ async function resetearVotos(){
   if(!confirm('¿Borrar TODOS los votos para iniciar nueva gala?'))return;
   const btn=document.getElementById('btn-reset');btn.classList.add('loading');btn.disabled=true;
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?id=gte.0`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_votos?id=gte.0`,{method:'DELETE',headers:authHeaders(true)});
     document.getElementById('btn-cerrar-gala').disabled=false;document.getElementById('btn-cerrar-gala').textContent='🏆 CERRAR GALA Y PROCLAMAR GANADORES';
     const rb=document.getElementById('admin-result-box');rb.innerHTML='✅ Votos borrados. ¡Nueva gala lista!';rb.style.display='block';await loadConteos();
   }catch(e){const rb=document.getElementById('admin-result-box');rb.innerHTML='❌ Error al borrar votos.';rb.style.display='block';}
@@ -1866,7 +1883,7 @@ async function publicarDesempate(){
   try{
     await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates`,{
       method:'POST',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      headers:{...authHeaders(true),'Prefer':'return=minimal'},
       body:JSON.stringify({categoria_id:catId,personajes:JSON.stringify(personajes),votos:'{}',estado:'abierto',ganador:null,ganadores:null,cuantos_ganan:cuantosGanan,azar:false})
     });
     rb.innerHTML=`✅ Desempate publicado. Ganan los top <strong>${cuantosGanan}</strong>.`;rb.style.display='block';
@@ -1921,7 +1938,7 @@ async function cerrarDesempate(){
     const esTrofeo=d.categoria_id==='mejor_semana';
 
     // Cargar historial y sumar puntos
-    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    const hr=await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?select=*`,{headers:authHeaders(true)});
     const historial=await hr.json();
     const histMap={};for(const h of historial)histMap[h.personaje]=h;
 
@@ -1930,13 +1947,13 @@ async function cerrarDesempate(){
         const upd=esTrofeo?{trofeos:histMap[g].trofeos+1}:{estrellas:histMap[g].estrellas+1};
         return fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(g)}`,{
           method:'PATCH',
-          headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+          headers:{...authHeaders(true),'Prefer':'return=minimal'},
           body:JSON.stringify(upd)
         });
       }else{
         return fetch(`${SUPABASE_URL}/rest/v1/gala_historial`,{
           method:'POST',
-          headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+          headers:{...authHeaders(true),'Prefer':'return=minimal'},
           body:JSON.stringify({personaje:g,estrellas:esTrofeo?0:1,trofeos:esTrofeo?1:0})
         });
       }
@@ -1947,7 +1964,7 @@ async function cerrarDesempate(){
     // Guardar en Supabase el resultado
     await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=eq.${id}`,{
       method:'PATCH',
-      headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+      headers:{...authHeaders(true),'Prefer':'return=minimal'},
       body:JSON.stringify({estado:'cerrado',ganador:nombresGanadores[0],ganadores:JSON.stringify(nombresGanadores),azar})
     });
 
@@ -1965,7 +1982,7 @@ async function limpiarDesempates(){
   if(!confirm('¿Borrar TODAS las tablas de desempate?'))return;
   const rb=document.getElementById('adm-desemp-result');
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=gte.0`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?id=gte.0`,{method:'DELETE',headers:authHeaders(true)});
     rb.innerHTML='✅ Todas las tablas borradas.';rb.style.display='block';await loadDesempates();await cargarSelectCerrar();
   }catch(e){rb.innerHTML='❌ Error.';rb.style.display='block';}
 }
@@ -1998,7 +2015,7 @@ async function agregarPersonaje(){
   const nombreNorm=normalizar(nombreRaw);const duplicado=getTodos().find(p=>normalizar(p)===nombreNorm);
   if(duplicado){showMsg('nuevo-pj-msg',`Ya existe un personaje similar: "${esc(duplicado)}".`,'error');return;}
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({nombre:nombreRaw,genero:generoSeleccionado})});
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes`,{method:'POST',headers:{...authHeaders(true),'Prefer':'return=minimal'},body:JSON.stringify({nombre:nombreRaw,genero:generoSeleccionado})});
     if(!res.ok)throw new Error();
   }catch(e){showMsg('nuevo-pj-msg','Error al guardar.','error');return;}
   if(generoSeleccionado==='M')CHICOS.push(nombreRaw);else CHICAS.push(nombreRaw);
@@ -2014,8 +2031,8 @@ async function eliminarPersonaje(nombre){
   const rb=document.getElementById('pj-result-box');
   const iC=CHICOS.indexOf(nombre);const iCh=CHICAS.indexOf(nombre);
   if(iC>-1)CHICOS.splice(iC,1);if(iCh>-1)CHICAS.splice(iCh,1);
-  try{await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});}catch(e){}
-  try{await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?nombre=eq.${encodeURIComponent(nombre)}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});}catch(e){}
+  try{await fetch(`${SUPABASE_URL}/rest/v1/gala_historial?personaje=eq.${encodeURIComponent(nombre)}`,{method:'DELETE',headers:authHeaders(true)});}catch(e){}
+  try{await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?nombre=eq.${encodeURIComponent(nombre)}`,{method:'DELETE',headers:authHeaders(true)});}catch(e){}
   invalidarCatCache();
   const cambios=verificarCambiosCategorias();let msg=`✅ "${esc(nombre)}" eliminado.`;
   if(cambios.length)msg+=`<br><br>⚠️ Cambios en categorías:<br>`+cambios.map(c=>`• ${esc(c)}`).join('<br>');
@@ -2063,8 +2080,8 @@ async function activarCatNuevo(activar){
   catNuevoDestacado={activa:activar,nombre:nombreCat,nominados:activar?nominados:[],votos:vN,ganan:gN};
   invalidarCatCache();actualizarUIEstadoNuevo();
   try{
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
-    await fetch(`${SUPABASE_URL}/rest/v1/gala_config`,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},body:JSON.stringify({clave:'nuevo_destacado',valor:JSON.stringify(catNuevoDestacado)})});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_config?clave=eq.nuevo_destacado`,{method:'DELETE',headers:authHeaders(true)});
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_config`,{method:'POST',headers:{...authHeaders(true),'Prefer':'return=minimal'},body:JSON.stringify({clave:'nuevo_destacado',valor:JSON.stringify(catNuevoDestacado)})});
   }catch(e){}
   rb.innerHTML=activar?`✅ Categoría "${nombreCat}" activada con ${nominados.length} nominados.`:'⛔ Categoría especial desactivada.';
   rb.style.display='block';
@@ -2080,6 +2097,13 @@ function volverInicio(){
   document.getElementById('sel-personaje').value='';
   showScreen('screen-select');
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+}
+function authHeaders(esAdmin=false){
+  return {
+    'Content-Type':'application/json',
+    'apikey':SUPABASE_KEY,
+    'Authorization':`Bearer ${esAdmin&&_supaAdminToken?_supaAdminToken:SUPABASE_KEY}`
+  };
 }
 let minitopConteos={};
 
@@ -2138,6 +2162,57 @@ async function publicarMiniTop(catId){
     });
     showMsg('minitop-admin-msg',`✅ Minitop de "${cat.nombre}" publicado en el chat.`,'success');
   }catch(e){showMsg('minitop-admin-msg','Error al publicar.','error');}
+}
+let asistenciaVisible=false;
+
+function toggleAsistencia(){
+  asistenciaVisible=!asistenciaVisible;
+  document.getElementById('asistencia-wrap').style.display=asistenciaVisible?'block':'none';
+  if(asistenciaVisible)loadAsistencia();
+}
+
+async function loadAsistencia(){
+  const listaSi=document.getElementById('asist-lista-si');
+  const listaNo=document.getElementById('asist-lista-no');
+  listaSi.innerHTML='<div style="color:var(--muted);font-size:.8rem">Cargando...</div>';
+  listaNo.innerHTML='';
+  try{
+    const res=await fetch(
+      `${SUPABASE_URL}/rest/v1/gala_votos?select=personaje_votante`,
+      {headers:authHeaders(true)}
+    );
+    const data=await res.json();
+    const yaVotaron=[...new Set(data.map(v=>v.personaje_votante))].sort();
+    const todos=getTodos().sort();
+    const faltan=todos.filter(p=>!yaVotaron.includes(p));
+    document.getElementById('asist-votaron').textContent=yaVotaron.length;
+    document.getElementById('asist-faltan').textContent=faltan.length;
+    document.getElementById('asist-total').textContent=todos.length;
+    listaSi.innerHTML='';
+    if(!yaVotaron.length){
+      listaSi.innerHTML='<div style="color:var(--muted);font-size:.8rem;font-style:italic">Nadie aún</div>';
+    }else{
+      yaVotaron.forEach(p=>{
+        const div=document.createElement('div');
+        div.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:8px;font-size:.82rem;font-weight:700';
+        div.innerHTML=`<span style="color:#6ee7b7">✅</span> ${esc(p)}`;
+        listaSi.appendChild(div);
+      });
+    }
+    listaNo.innerHTML='';
+    if(!faltan.length){
+      listaNo.innerHTML='<div style="color:#6ee7b7;font-size:.8rem;font-style:italic">¡Todos votaron! 🎉</div>';
+    }else{
+      faltan.forEach(p=>{
+        const div=document.createElement('div');
+        div.style.cssText='display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.15);border-radius:8px;font-size:.82rem;font-weight:700';
+        div.innerHTML=`<span style="color:#fca5a5">⏳</span> ${esc(p)}`;
+        listaNo.appendChild(div);
+      });
+    }
+  }catch(e){
+    listaSi.innerHTML='<div style="color:#fca5a5;font-size:.8rem">Error al cargar.</div>';
+  }
 }
 /* ═══════════════════════════════════════════════════════════════════════
    ARRANQUE
