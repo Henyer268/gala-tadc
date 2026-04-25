@@ -304,6 +304,32 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
 .buzon-stat-num{font-family:'Cinzel',serif;font-size:1.4rem;color:var(--gold);font-weight:700;}
 .buzon-stat-label{font-size:.72rem;color:var(--muted);margin-top:2px;}
 
+/* ── STICKERS ── */
+.sticker-bar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:10px;margin-bottom:10px;display:none;}
+.sticker-bar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;}
+.sticker-bar-title{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:1px;color:var(--gold2);text-transform:uppercase;}
+.sticker-tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.sticker-tab{padding:5px 12px;border-radius:20px;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--muted);transition:all .2s;text-transform:uppercase;}
+.sticker-tab.active{background:rgba(245,200,66,.15);border-color:var(--border2);color:var(--gold3);}
+.sticker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:8px;max-height:200px;overflow-y:auto;}
+.sticker-item{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all .2s;aspect-ratio:1;}
+.sticker-item:hover{border-color:var(--gold2);transform:scale(1.05);}
+.sticker-item img{width:100%;height:100%;object-fit:cover;}
+.sticker-item .sticker-del{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.7);border:none;border-radius:50%;width:18px;height:18px;cursor:pointer;color:#fca5a5;font-size:.6rem;display:none;align-items:center;justify-content:center;}
+.sticker-item:hover .sticker-del{display:flex;}
+.sticker-upload-btn{border:2px dashed var(--border2);border-radius:12px;background:transparent;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--muted);font-size:.65rem;font-family:'Cinzel',serif;letter-spacing:1px;aspect-ratio:1;transition:all .2s;}
+.sticker-upload-btn:hover{border-color:var(--gold);color:var(--gold);}
+.sticker-upload-btn .up-icon{font-size:1.4rem;}
+.sticker-preview-wrap{display:none;flex-direction:column;align-items:center;gap:10px;padding:10px;}
+.sticker-preview-canvas{border-radius:16px;border:2px solid var(--border2);max-width:160px;}
+.sticker-preview-controls{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;}
+.sticker-shape-btn{padding:6px 12px;border-radius:20px;font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:1px;cursor:pointer;border:1px solid var(--border);background:var(--card2);color:var(--muted);transition:all .2s;}
+.sticker-shape-btn.active{background:rgba(245,200,66,.15);border-color:var(--border2);color:var(--gold3);}
+.sticker-msg-preview{border-radius:14px;padding:6px;background:var(--card2);border:1px solid var(--border);display:inline-block;}
+.sticker-msg-preview img{width:80px;height:80px;object-fit:cover;border-radius:10px;display:block;}
+.chat-sticker-btn{width:auto;padding:10px 14px;font-size:1.1rem;flex-shrink:0;background:var(--card2);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;color:var(--gold);}
+.chat-sticker-btn:hover{border-color:var(--gold2);background:rgba(245,200,66,.08);}
+
 /* ── CHAT ── */
 .chat-select-card{background:linear-gradient(135deg,rgba(245,200,66,.07),rgba(245,200,66,.02));border:1px solid var(--border2);border-radius:20px;padding:24px;margin-bottom:18px;text-align:center;}
 .chat-select-title{font-family:'Cinzel Decorative',cursive;font-size:1.1rem;color:var(--gold);margin-bottom:6px;}
@@ -525,6 +551,15 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
             🗑️ BORRAR VOTOS (iniciar nueva gala)<span class="btn-spinner"></span>
           </button>
           <button class="btn btn-outline" onclick="toggleConteos()">📊 Ver / Ocultar Conteos</button>
+<button class="btn btn-outline" onclick="exportarResultados()" style="margin-top:8px">📋 EXPORTAR RESULTADOS</button>
+<div id="export-wrap" style="display:none;margin-top:12px">
+  <textarea id="export-texto" style="min-height:220px;font-size:.8rem;font-family:monospace;letter-spacing:0;resize:vertical" readonly></textarea>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button class="btn btn-gold" style="flex:1;padding:12px;font-size:.82rem" onclick="copiarExport()">📋 COPIAR AL PORTAPAPELES</button>
+    <button class="btn btn-outline" style="flex:1;padding:12px;font-size:.82rem" onclick="cerrarExport()">✕ CERRAR</button>
+  </div>
+  <div class="msg" id="export-msg" style="margin-top:8px"></div>
+</div>
 <hr class="sep">
 <button class="btn btn-outline" onclick="toggleAsistencia()" style="margin-bottom:12px">👥 Ver / Ocultar Asistencia</button>
 <div id="asistencia-wrap" style="display:none;margin-top:8px">
@@ -742,13 +777,68 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
       <div class="chat-box" id="chat-box">
         <div class="chat-empty">💬 Cargando mensajes...</div>
       </div>
+      <!-- BARRA DE STICKERS -->
+<div class="sticker-bar" id="sticker-bar">
+  <div class="sticker-bar-header">
+    <span class="sticker-bar-title">🎭 Mis Stickers</span>
+    <button class="btn btn-outline" style="width:auto;padding:4px 12px;font-size:.7rem" onclick="cerrarStickerBar()">✕</button>
+  </div>
+  <div class="sticker-tabs">
+    <button class="sticker-tab active" onclick="verTabSticker('mis',this)">Mis stickers</button>
+    <button class="sticker-tab" onclick="verTabSticker('subir',this)">➕ Agregar</button>
+  </div>
 
-      <div class="chat-input-bar" style="margin-bottom:20px">
-        <input type="text" id="chat-input-texto" placeholder="Escribe tu mensaje..." maxlength="200"
-               onkeydown="if(event.key==='Enter')enviarMensajeChat()"
-               oninput="document.getElementById('chat-char-count').textContent=this.value.length+'/200'">
-        <button class="btn btn-gold chat-send-btn" id="chat-send-btn" onclick="enviarMensajeChat()">➤</button>
+  <!-- TAB: mis stickers -->
+  <div id="sticker-tab-mis">
+    <div class="sticker-grid" id="sticker-grid-mis">
+      <div style="color:var(--muted);font-size:.8rem;grid-column:1/-1;text-align:center;padding:16px">Cargando...</div>
+    </div>
+  </div>
+
+  <!-- TAB: subir nuevo -->
+  <div id="sticker-tab-subir" style="display:none">
+    <div id="sticker-upload-area">
+      <div class="sticker-grid">
+        <label class="sticker-upload-btn">
+          <span class="up-icon">📁</span>
+          <span>Elegir foto</span>
+          <input type="file" accept="image/*" style="display:none" onchange="previsualizarSticker(this)">
+        </label>
       </div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:8px;font-family:'Cinzel',serif;text-align:center">
+        PNG, JPG o WEBP · Máx 2MB
+      </div>
+    </div>
+
+    <!-- Vista previa + editor -->
+    <div class="sticker-preview-wrap" id="sticker-preview-wrap">
+      <canvas id="sticker-canvas" class="sticker-preview-canvas" width="200" height="200"></canvas>
+      <div style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase">Forma del sticker</div>
+      <div class="sticker-preview-controls">
+        <button class="sticker-shape-btn active" onclick="cambiarFormaSticker('circulo',this)">⭕ Círculo</button>
+        <button class="sticker-shape-btn" onclick="cambiarFormaSticker('cuadrado',this)">⬛ Cuadrado</button>
+        <button class="sticker-shape-btn" onclick="cambiarFormaSticker('estrella',this)">⭐ Estrella</button>
+        <button class="sticker-shape-btn" onclick="cambiarFormaSticker('hexagono',this)">⬡ Hexágono</button>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:100%">
+        <button class="btn btn-gold" style="flex:1;min-width:120px;padding:11px;font-size:.8rem" onclick="guardarSticker()">
+          ✅ GUARDAR STICKER<span class="btn-spinner"></span>
+        </button>
+        <button class="btn btn-outline" style="flex:1;min-width:100px;padding:11px;font-size:.8rem" onclick="cancelarPreviewSticker()">✕ Cancelar</button>
+      </div>
+      <div class="msg" id="sticker-upload-msg"></div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="sticker-file-hidden" accept="image/*" style="display:none">
+      <div class="chat-input-bar" style="margin-bottom:20px">
+  <button class="chat-sticker-btn" onclick="toggleStickerBar()" title="Stickers">🎭</button>
+  <input type="text" id="chat-input-texto" placeholder="Escribe tu mensaje..." maxlength="200"
+         onkeydown="if(event.key==='Enter')enviarMensajeChat()"
+         oninput="document.getElementById('chat-char-count').textContent=this.value.length+'/200'">
+  <button class="btn btn-gold chat-send-btn" id="chat-send-btn" onclick="enviarMensajeChat()">➤</button>
+</div>
       <div style="text-align:right;font-size:.72rem;color:var(--muted);margin-top:-16px;margin-bottom:18px;font-family:'Cinzel',serif" id="chat-char-count">0/200</div>
 
       <div class="admin-panel" id="chat-admin-panel" style="display:none">
@@ -1315,11 +1405,22 @@ function crearBurbuja(m){
   const iniciales=(m.personaje||'?').substring(0,2).toUpperCase();
   const avatarText=tipo==='sistema'?'⚙':iniciales;
   const avatarClass=tipo==='sistema'?'sistema':tipo==='admin'?'admin':'user';
+
+  // Detectar si es sticker
+  const stickerMatch=m.mensaje.match(/^\[sticker\](.*?)\[\/sticker\]$/);
+  let contenido='';
+  if(stickerMatch){
+    const url=stickerMatch[1];
+    contenido=`<div class="sticker-msg-preview"><img src="${esc(url)}" alt="sticker" loading="lazy" onerror="this.style.display='none'"></div>`;
+  }else{
+    contenido=`<div class="chat-text ${avatarClass}">${esc(m.mensaje)}</div>`;
+  }
+
   wrap.innerHTML=`
     <div class="chat-avatar ${avatarClass}">${avatarText}</div>
     <div class="chat-content">
       <div class="chat-name ${avatarClass}">${esc(m.personaje)}${tipo==='admin'?' 👑':''}</div>
-      <div class="chat-text ${avatarClass}">${esc(m.mensaje)}</div>
+      ${contenido}
       <div class="chat-hora">${hora}</div>
     </div>`;
   return wrap;
@@ -2162,6 +2263,327 @@ async function publicarMiniTop(catId){
     });
     showMsg('minitop-admin-msg',`✅ Minitop de "${cat.nombre}" publicado en el chat.`,'success');
   }catch(e){showMsg('minitop-admin-msg','Error al publicar.','error');}
+}
+let exportVisible=false;
+
+async function exportarResultados(){
+  exportVisible=!exportVisible;
+  const wrap=document.getElementById('export-wrap');
+  if(!exportVisible){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  const ta=document.getElementById('export-texto');
+  ta.value='⏳ Cargando resultados...';
+  try{
+    const [votosRes,desempRes]=await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/gala_votos?select=categoria,nominados_votados`,{headers:authHeaders(true)}),
+      fetch(`${SUPABASE_URL}/rest/v1/gala_desempates?estado=eq.cerrado&select=*`,{headers:authHeaders(true)})
+    ]);
+    const votos=await votosRes.json();
+    const desempates=await desempRes.json();
+
+    // Conteos por categoría
+    const conteos={};
+    for(const v of votos){
+      if(!conteos[v.categoria])conteos[v.categoria]={};
+      for(const nom of v.nominados_votados)conteos[v.categoria][nom]=(conteos[v.categoria][nom]||0)+1;
+    }
+
+    const hoy=new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    const medals=['🥇','🥈','🥉','4°','5°'];
+    let txt='';
+    txt+='🏆✨🌟 GALA DEL PERSONAJE FAVORITO 🌟✨🏆\n';
+    txt+='⭐ The Amazing Digital Circus ⭐\n';
+    txt+=`📅 ${hoy}\n`;
+    txt+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+
+    for(const cat of getCategorias()){
+      if(cat.locked)continue;
+      const c=conteos[cat.id];
+      if(!c||!Object.keys(c).length)continue;
+
+      const sorted=Object.entries(c).sort((a,b)=>b[1]-a[1]);
+      const top=sorted.slice(0,cat.ganadores);
+      const esTrofeo=cat.id==='mejor_semana';
+
+      txt+=`${esTrofeo?'🏆':'⭐'} ${cat.nombre.toUpperCase()}\n`;
+
+      // Verificar si hay desempate cerrado para esta categoría
+      const desemp=desempates.find(d=>d.categoria_id===cat.id);
+      if(desemp){
+        const ganadores=typeof desemp.ganadores==='string'?JSON.parse(desemp.ganadores):[desemp.ganador];
+        top.forEach(([n,v],i)=>{
+          const esGanDesempate=ganadores.includes(n);
+          txt+=`${medals[i]||'·'} ${n} — ${v} voto${v!==1?'s':''}${esGanDesempate?' ⚔️':''}\n`;
+        });
+        txt+=`   ⚔️ Desempate resuelto: ${ganadores.join(', ')}${desemp.azar?' (al azar)':''}\n`;
+      }else{
+        top.forEach(([n,v],i)=>{
+          txt+=`${medals[i]||'·'} ${n} — ${v} voto${v!==1?'s':''}\n`;
+        });
+      }
+      txt+='\n';
+    }
+
+    // Total de participantes
+    const participantes=new Set(votos.map(v=>v.personaje_votante)).size;
+    txt+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    txt+=`👥 Participantes: ${participantes}\n`;
+    txt+='━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    txt+='🎪 Organizado por Abel — TADC Gala';
+
+    ta.value=txt;
+  }catch(e){
+    document.getElementById('export-texto').value='❌ Error al cargar los resultados.';
+  }
+}
+
+async function copiarExport(){
+  const ta=document.getElementById('export-texto');
+  try{
+    await navigator.clipboard.writeText(ta.value);
+    showMsg('export-msg','✅ ¡Copiado al portapapeles! Pégalo donde quieras.','success');
+  }catch(e){
+    ta.select();document.execCommand('copy');
+    showMsg('export-msg','✅ Copiado (método alternativo).','success');
+  }
+}
+
+function cerrarExport(){
+  exportVisible=false;
+  document.getElementById('export-wrap').style.display='none';
+}
+/* ═══════════════════════════════════════
+   🎭 STICKERS
+═══════════════════════════════════════ */
+let stickerImgSrc=null;
+let stickerFormaActual='circulo';
+let stickerBarVisible=false;
+let stickerTabActual='mis';
+
+function toggleStickerBar(){
+  stickerBarVisible=!stickerBarVisible;
+  const bar=document.getElementById('sticker-bar');
+  bar.style.display=stickerBarVisible?'block':'none';
+  if(stickerBarVisible&&stickerTabActual==='mis')cargarMisStickers();
+}
+
+function cerrarStickerBar(){
+  stickerBarVisible=false;
+  document.getElementById('sticker-bar').style.display='none';
+}
+
+function verTabSticker(tab,btn){
+  stickerTabActual=tab;
+  document.querySelectorAll('.sticker-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('sticker-tab-mis').style.display=tab==='mis'?'block':'none';
+  document.getElementById('sticker-tab-subir').style.display=tab==='subir'?'block':'none';
+  if(tab==='mis')cargarMisStickers();
+}
+
+async function cargarMisStickers(){
+  if(!chatPersonaje)return;
+  const grid=document.getElementById('sticker-grid-mis');
+  grid.innerHTML='<div style="color:var(--muted);font-size:.8rem;grid-column:1/-1;text-align:center;padding:16px">Cargando...</div>';
+  try{
+    const res=await fetch(
+      `${SUPABASE_URL}/rest/v1/gala_stickers?personaje=eq.${encodeURIComponent(chatPersonaje)}&order=created_at.desc`,
+      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}
+    );
+    const data=await res.json();
+    grid.innerHTML='';
+    if(!data.length){
+      grid.innerHTML='<div style="color:var(--muted);font-size:.78rem;grid-column:1/-1;text-align:center;padding:16px;font-style:italic">Aún no tienes stickers.<br>¡Crea el primero!</div>';
+      return;
+    }
+    data.forEach(s=>{
+      const div=document.createElement('div');div.className='sticker-item';
+      const sUrl=s.url.replace(/'/g,"\\'");
+      div.innerHTML=`
+        <img src="${esc(s.url)}" alt="sticker" loading="lazy">
+        <button class="sticker-del" onclick="eliminarSticker(${s.id},'${sUrl}',event)" title="Eliminar">✕</button>`;
+      div.addEventListener('click',()=>enviarSticker(s.url));
+      grid.appendChild(div);
+    });
+  }catch(e){
+    grid.innerHTML='<div style="color:#fca5a5;font-size:.8rem;grid-column:1/-1;text-align:center;padding:12px">Error al cargar.</div>';
+  }
+}
+
+function previsualizarSticker(input){
+  const file=input.files[0];if(!file)return;
+  if(file.size>2*1024*1024){
+    showMsg('sticker-upload-msg','La imagen supera 2MB.','error');return;
+  }
+  const reader=new FileReader();
+  reader.onload=e=>{
+    stickerImgSrc=e.target.result;
+    document.getElementById('sticker-upload-area').style.display='none';
+    const wrap=document.getElementById('sticker-preview-wrap');
+    wrap.style.display='flex';
+    dibujarStickerCanvas();
+  };
+  reader.readAsDataURL(file);
+  input.value=''; // reset para poder subir la misma imagen de nuevo
+}
+
+function dibujarStickerCanvas(){
+  const canvas=document.getElementById('sticker-canvas');
+  const ctx=canvas.getContext('2d');
+  const img=new Image();
+  img.onload=()=>{
+    ctx.clearRect(0,0,200,200);
+    ctx.save();
+    // Fondo transparente — aplicar forma
+    aplicarFormaCanvas(ctx,200,200,stickerFormaActual);
+    ctx.clip();
+    // Dibujar imagen centrada y recortada
+    const size=Math.min(img.width,img.height);
+    const sx=(img.width-size)/2,sy=(img.height-size)/2;
+    ctx.drawImage(img,sx,sy,size,size,0,0,200,200);
+    ctx.restore();
+    // Borde dorado
+    ctx.save();
+    aplicarFormaCanvas(ctx,200,200,stickerFormaActual);
+    ctx.strokeStyle='rgba(245,200,66,0.6)';
+    ctx.lineWidth=4;
+    ctx.stroke();
+    ctx.restore();
+  };
+  img.src=stickerImgSrc;
+}
+
+function aplicarFormaCanvas(ctx,w,h,forma){
+  ctx.beginPath();
+  if(forma==='circulo'){
+    ctx.arc(w/2,h/2,w/2-2,0,Math.PI*2);
+  }else if(forma==='cuadrado'){
+    const r=20;
+    ctx.moveTo(r,0);ctx.lineTo(w-r,0);ctx.quadraticCurveTo(w,0,w,r);
+    ctx.lineTo(w,h-r);ctx.quadraticCurveTo(w,h,w-r,h);
+    ctx.lineTo(r,h);ctx.quadraticCurveTo(0,h,0,h-r);
+    ctx.lineTo(0,r);ctx.quadraticCurveTo(0,0,r,0);ctx.closePath();
+  }else if(forma==='estrella'){
+    const cx=w/2,cy=h/2,spikes=5,outerR=w/2-4,innerR=w/4;
+    let rot=Math.PI/2*3,step=Math.PI/spikes;
+    ctx.moveTo(cx,cy-outerR);
+    for(let i=0;i<spikes;i++){
+      ctx.lineTo(cx+Math.cos(rot)*outerR,cy+Math.sin(rot)*outerR);rot+=step;
+      ctx.lineTo(cx+Math.cos(rot)*innerR,cy+Math.sin(rot)*innerR);rot+=step;
+    }
+    ctx.lineTo(cx,cy-outerR);ctx.closePath();
+  }else if(forma==='hexagono'){
+    const cx=w/2,cy=h/2,r=w/2-4;
+    for(let i=0;i<6;i++){
+      const angle=Math.PI/180*(60*i-30);
+      if(i===0)ctx.moveTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle));
+      else ctx.lineTo(cx+r*Math.cos(angle),cy+r*Math.sin(angle));
+    }
+    ctx.closePath();
+  }
+}
+
+function cambiarFormaSticker(forma,btn){
+  stickerFormaActual=forma;
+  document.querySelectorAll('.sticker-shape-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  dibujarStickerCanvas();
+}
+
+function cancelarPreviewSticker(){
+  stickerImgSrc=null;
+  document.getElementById('sticker-preview-wrap').style.display='none';
+  document.getElementById('sticker-upload-area').style.display='block';
+  document.getElementById('sticker-upload-msg').style.display='none';
+}
+
+async function guardarSticker(){
+  if(!stickerImgSrc||!chatPersonaje)return;
+  const btn=document.querySelector('#sticker-preview-wrap .btn-gold');
+  btn.classList.add('loading');btn.disabled=true;
+  try{
+    // Convertir canvas a blob
+    const canvas=document.getElementById('sticker-canvas');
+    const blob=await new Promise(res=>canvas.toBlob(res,'image/png',0.9));
+    const fileName=`${chatPersonaje.replace(/\s+/g,'_')}_${Date.now()}.png`;
+
+    // Subir a Supabase Storage
+    const uploadRes=await fetch(
+      `${SUPABASE_URL}/storage/v1/object/stickers/${encodeURIComponent(fileName)}`,
+      {
+        method:'POST',
+        headers:{
+          'apikey':SUPABASE_KEY,
+          'Authorization':`Bearer ${SUPABASE_KEY}`,
+          'Content-Type':'image/png',
+          'x-upsert':'false'
+        },
+        body:blob
+      }
+    );
+    if(!uploadRes.ok){
+      const err=await uploadRes.json().catch(()=>({}));
+      throw new Error(err.message||uploadRes.status);
+    }
+
+    // URL pública
+    const publicUrl=`${SUPABASE_URL}/storage/v1/object/public/stickers/${encodeURIComponent(fileName)}`;
+
+    // Guardar en tabla
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_stickers`,{
+      method:'POST',
+      headers:{...authHeaders(false),'Prefer':'return=minimal'},
+      body:JSON.stringify({personaje:chatPersonaje,url:publicUrl})
+    });
+
+    showMsg('sticker-upload-msg','✅ ¡Sticker guardado!','success');
+    setTimeout(()=>{
+      cancelarPreviewSticker();
+      verTabSticker('mis',document.querySelector('.sticker-tab'));
+      document.querySelectorAll('.sticker-tab')[0].click();
+    },1000);
+  }catch(e){
+    showMsg('sticker-upload-msg',`❌ Error: ${e.message}`,'error');
+  }
+  btn.classList.remove('loading');btn.disabled=false;
+}
+
+async function eliminarSticker(id,url,event){
+  event.stopPropagation();
+  if(!confirm('¿Eliminar este sticker?'))return;
+  try{
+    // Borrar de Storage
+    const fileName=url.split('/stickers/')[1];
+    await fetch(`${SUPABASE_URL}/storage/v1/object/stickers/${fileName}`,{
+      method:'DELETE',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}
+    });
+    // Borrar de tabla
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_stickers?id=eq.${id}`,{
+      method:'DELETE',
+      headers:authHeaders(false)
+    });
+    cargarMisStickers();
+  }catch(e){alert('Error al eliminar.');}
+}
+
+async function enviarSticker(url){
+  if(!chatPersonaje||chatEnviando)return;
+  cerrarStickerBar();
+  chatEnviando=true;
+  const btn=document.getElementById('chat-send-btn');btn.disabled=true;
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_chat`,{
+      method:'POST',
+      headers:{...authHeaders(false),'Prefer':'return=minimal'},
+      body:JSON.stringify({
+        personaje:chatPersonaje,
+        mensaje:`[sticker]${url}[/sticker]`,
+        tipo:chatAdminVerificado?'admin':'usuario'
+      })
+    });
+  }catch(e){alert('Error al enviar sticker.');}
+  setTimeout(()=>{chatEnviando=false;btn.disabled=false;},800);
 }
 let asistenciaVisible=false;
 
