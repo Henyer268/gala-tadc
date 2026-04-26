@@ -1438,9 +1438,7 @@ async function cargarChatInicial(){
     box.innerHTML='';
     if(chatHayMas){const btn=document.createElement('div');btn.className='chat-load-more';btn.textContent='⬆ Cargar mensajes anteriores';btn.onclick=cargarMasMensajes;box.appendChild(btn);}
     if(!chatMensajes.length){box.innerHTML='<div class="chat-empty">💬 ¡Sé el primero en escribir en el chat!</div>';return;}
-    chatMensajes.forEach(m=>box.appendChild(crearBurbuja(m)));
     chatUltimoId=chatMensajes[chatMensajes.length-1]?.id||0;
-    // Cargar avatares de todos los personajes en el chat
     const pjsEnChat=[...new Set(chatMensajes.map(m=>m.personaje))];
     if(pjsEnChat.length){
       try{
@@ -1452,6 +1450,7 @@ async function cargarChatInicial(){
         if(Array.isArray(avData))avData.forEach(p=>{if(p.avatar_url){avatarCache[p.nombre]=p.avatar_url;sessionStorage.setItem('av_'+p.nombre,p.avatar_url);}});
       }catch(e){}
     }
+    chatMensajes.forEach(m=>box.appendChild(crearBurbuja(m)));
     box.scrollTop=box.scrollHeight;
   }catch(e){box.innerHTML='<div class="chat-empty">⚠️ Error al cargar el chat.</div>';}
 }
