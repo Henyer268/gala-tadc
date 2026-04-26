@@ -1413,14 +1413,13 @@ async function refrescarTodosAvatares(){
     );
     const avData=await avRes.json();
     if(!Array.isArray(avData))return;
-    let cambios=false;
     avData.forEach(p=>{
-      if(p.avatar_url && avatarCache[p.nombre]!==p.avatar_url){
+      if(p.avatar_url){
         avatarCache[p.nombre]=p.avatar_url;
         sessionStorage.setItem('av_'+p.nombre,p.avatar_url);
-        cambios=true;
       }
     });
+    const cambios=true;
     if(cambios){
       const box=document.getElementById('chat-box');
       const atBottom=box.scrollHeight-box.scrollTop<=box.clientHeight+80;
@@ -1436,8 +1435,8 @@ function mostrarChatActivo(){
   document.getElementById('chat-activo-wrap').style.display='block';
   document.getElementById('chat-who-nombre').textContent=chatPersonaje;
   document.getElementById('chat-admin-panel').style.display=chatAdminVerificado?'block':'none';
-  refrescarTodosAvatares(); // ejecutar de inmediato
-setInterval(refrescarTodosAvatares, 30000);
+  refrescarTodosAvatares();
+  setInterval(refrescarTodosAvatares, 30000);
 }
 
 function salirChat(){
