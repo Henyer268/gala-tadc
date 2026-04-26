@@ -1404,30 +1404,48 @@ async function confirmarPersonajeChat(){
 async function refrescarTodosAvatares(){
   if(!chatPersonaje)return;
   try{
-    // Limpiar cache viejo para forzar recarga
     Object.keys(sessionStorage).filter(k=>k.startsWith('av_')).forEach(k=>sessionStorage.removeItem(k));
     avatarCache={};
-    const avRes=await fetch(
-      `${SUPABASE_URL}/rest/v1/gala_personajes?select=nombre,avatar_url`,
-      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}
-    );
-    const avData=await avRes.json();
-    if(!Array.isArray(avData))return;
-    avData.forEach(p=>{
-      if(p.avatar_url){
-        avatarCache[p.nombre]=p.avatar_url;
-        sessionStorage.setItem('av_'+p.nombre,p.avatar_url);
-      }
-    });
-    const cambios=true;
-    if(cambios){
-      const box=document.getElementById('chat-box');
-      const atBottom=box.scrollHeight-box.scrollTop<=box.clientHeight+80;
-      box.innerHTML='';
-      if(chatHayMas){const btn=document.createElement('div');btn.className='chat-load-more';btn.textContent='⬆ Cargar mensajes anteriores';btn.onclick=cargarMasMensajes;box.appendChild(btn);}
-      chatMensajes.forEach(m=>box.appendChild(crearBurbuja(m)));
-      if(atBottom)box.scrollTop=box.scrollHeight;
+
+    // ✅ Consultar AMBAS tablas y combinar
+    const [avRes1, avRes2] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?select=nombre,avatar_url`,
+        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}),
+      fetch(`${SUPABASE_URL}/rest/v1/gala_avatares_chat?select=personaje,avatar_url`,
+        {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}})
+    ]);
+
+    const avData1 = await avRes1.json();
+    const avData2 = await avRes2.json();
+
+    // Primero los de gala_personajes
+    if(Array.isArray(avData1)){
+      avData1.forEach(p=>{
+        if(p.avatar_url){
+          avatarCache[p.nombre]=p.avatar_url;
+          sessionStorage.setItem('av_'+p.nombre,p.avatar_url);
+        }
+      });
     }
+
+    // Luego los de gala_avatares_chat (sobreescribe si hay más reciente)
+    if(Array.isArray(avData2)){
+      avData2.forEach(p=>{
+        if(p.avatar_url){
+          avatarCache[p.personaje]=p.avatar_url;
+          sessionStorage.setItem('av_'+p.personaje,p.avatar_url);
+        }
+      });
+    }
+
+    // Re-renderizar burbujas
+    const box=document.getElementById('chat-box');
+    if(!box)return;
+    const atBottom=box.scrollHeight-box.scrollTop<=box.clientHeight+80;
+    box.innerHTML='';
+    if(chatHayMas){const btn=document.createElement('div');btn.className='chat-load-more';btn.textContent='⬆ Cargar mensajes anteriores';btn.onclick=cargarMasMensajes;box.appendChild(btn);}
+    chatMensajes.forEach(m=>box.appendChild(crearBurbuja(m)));
+    if(atBottom)box.scrollTop=box.scrollHeight;
   }catch(e){}
 }
 function mostrarChatActivo(){
@@ -2786,9 +2804,24 @@ async function subirYGuardarAvatar(personaje, dataUrl) {
     );
     if (!uploadRes.ok) return;
     const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/avatars/${encodeURIComponent(fileName)}`;
+
+    // ✅ NUEVO: guardar en gala_avatares_chat con el nombre EXACTO del chat
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_avatares_chat`,
+      {
+        method: 'POST',
+        headers: {
+          ...authHeaders(false),
+          'Prefer': 'resolution=merge-duplicates,return=minimal'
+        },
+        body: JSON.stringify({ personaje: personaje, avatar_url: publicUrl })
+      }
+    );
+
+    // También intentar actualizar gala_personajes por si el nombre coincide
     await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?nombre=eq.${encodeURIComponent(personaje)}`,
       { method:'PATCH', headers:{...authHeaders(false),'Prefer':'return=minimal'}, body:JSON.stringify({avatar_url:publicUrl}) }
     );
+
     avatarCache[personaje] = publicUrl;
     sessionStorage.setItem('av_'+personaje, publicUrl);
   } catch(e) { console.error('Error subiendo avatar:',e); }
