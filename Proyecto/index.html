@@ -1000,6 +1000,7 @@ let personajeActual='', catIndex=0, todosLosVotos={}, conteosVisible=false;
 let generoSeleccionado='';
 let buzonFiltroActual='todos', buzonMensajes=[];
 let chatPersonaje='', chatUltimoId=0, chatMensajes=[];
+let avatarCache={};
 let chatRealtimeChannel=null, chatAdminVerificado=false;
 let chatEnviando=false;
 let appLista = false;
@@ -1383,12 +1384,12 @@ async function confirmarPersonajeChat(){
       _supaAdminToken=data.access_token;
     }catch(e){showMsg('chat-pick-msg','Error de conexión.','error');return;}
     chatPersonaje='Abel (Admin)';chatAdminVerificado=true;
-    if(chatAvatarDataUrl) sessionStorage.setItem('av_Abel (Admin)', chatAvatarDataUrl);
+    if(chatAvatarDataUrl) await subirYGuardarAvatar('Abel (Admin)', chatAvatarDataUrl);
     chatAvatarDataUrl=null;
   }else{
   chatPersonaje=val;
   chatAdminVerificado=false;
-  if(chatAvatarDataUrl) sessionStorage.setItem('av_'+val, chatAvatarDataUrl);
+  if(chatAvatarDataUrl) await subirYGuardarAvatar(val, chatAvatarDataUrl);
   chatAvatarDataUrl=null;
   saltarFoto();
 }
@@ -1439,6 +1440,18 @@ async function cargarChatInicial(){
     if(!chatMensajes.length){box.innerHTML='<div class="chat-empty">💬 ¡Sé el primero en escribir en el chat!</div>';return;}
     chatMensajes.forEach(m=>box.appendChild(crearBurbuja(m)));
     chatUltimoId=chatMensajes[chatMensajes.length-1]?.id||0;
+    // Cargar avatares de todos los personajes en el chat
+    const pjsEnChat=[...new Set(chatMensajes.map(m=>m.personaje))];
+    if(pjsEnChat.length){
+      try{
+        const avRes=await fetch(
+          `${SUPABASE_URL}/rest/v1/gala_personajes?nombre=in.(${pjsEnChat.map(p=>`"${p}"`).join(',')})&select=nombre,avatar_url`,
+          {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}
+        );
+        const avData=await avRes.json();
+        if(Array.isArray(avData))avData.forEach(p=>{if(p.avatar_url){avatarCache[p.nombre]=p.avatar_url;sessionStorage.setItem('av_'+p.nombre,p.avatar_url);}});
+      }catch(e){}
+    }
     box.scrollTop=box.scrollHeight;
   }catch(e){box.innerHTML='<div class="chat-empty">⚠️ Error al cargar el chat.</div>';}
 }
@@ -1482,7 +1495,7 @@ function crearBurbuja(m){
   const tipo=m.tipo||'usuario';
   const hora=new Date(m.created_at).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
   const iniciales=(m.personaje||'?').substring(0,2).toUpperCase();
-  const fotoGuardada=sessionStorage.getItem('av_'+m.personaje);
+  const fotoGuardada=avatarCache[m.personaje]||sessionStorage.getItem('av_'+m.personaje)||null;
   const avatarInner=tipo==='sistema'?'⚙':fotoGuardada?`<img src="${fotoGuardada}" alt="">`:iniciales;
   const avatarClass=tipo==='sistema'?'sistema':tipo==='admin'?'admin':'user';
 
@@ -2715,6 +2728,23 @@ async function loadAsistencia(){
   }catch(e){
     listaSi.innerHTML='<div style="color:#fca5a5;font-size:.8rem">Error al cargar.</div>';
   }
+}
+async function subirYGuardarAvatar(personaje, dataUrl) {
+  try {
+    const blob = await (await fetch(dataUrl)).blob();
+    const fileName = `avatar_${personaje.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'')}_${Date.now()}.jpg`;
+    const uploadRes = await fetch(
+      `${SUPABASE_URL}/storage/v1/object/avatars/${encodeURIComponent(fileName)}`,
+      { method:'POST', headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Content-Type':'image/jpeg','x-upsert':'true'}, body:blob }
+    );
+    if (!uploadRes.ok) return;
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/avatars/${encodeURIComponent(fileName)}`;
+    await fetch(`${SUPABASE_URL}/rest/v1/gala_personajes?nombre=eq.${encodeURIComponent(personaje)}`,
+      { method:'PATCH', headers:{...authHeaders(false),'Prefer':'return=minimal'}, body:JSON.stringify({avatar_url:publicUrl}) }
+    );
+    avatarCache[personaje] = publicUrl;
+    sessionStorage.setItem('av_'+personaje, publicUrl);
+  } catch(e) { console.error('Error subiendo avatar:',e); }
 }
 /* ═══════════════════════════════════════════════════════════════════════
    ARRANQUE
