@@ -390,6 +390,22 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
   .hist-thead,.hist-row{grid-template-columns:36px 1fr 100px 80px;}
   .personajes-grid{grid-template-columns:1fr 1fr;}
 }
+/* ── AVATAR FOTO PERFIL ── */
+.avatar-step{text-align:center;padding:20px 0 10px;}
+.avatar-ring{width:90px;height:90px;border-radius:50%;border:2.5px dashed var(--border2);
+  background:var(--card2);display:flex;align-items:center;justify-content:center;
+  overflow:hidden;cursor:pointer;margin:0 auto 12px;transition:border-color .25s;position:relative;}
+.avatar-ring:hover{border-color:var(--gold);}
+.avatar-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.avatar-ring .av-icon{font-size:2.2rem;}
+.avatar-ring .av-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s;
+  font-size:.65rem;font-family:'Cinzel',serif;color:var(--gold3);letter-spacing:1px;text-transform:uppercase;}
+.avatar-ring:hover .av-overlay{opacity:1;}
+.av-hint{font-size:.75rem;color:var(--muted);font-family:'Cinzel',serif;letter-spacing:1px;text-transform:uppercase;}
+.av-skip{font-size:.75rem;color:var(--muted);margin-top:10px;cursor:pointer;text-decoration:underline;display:block;}
+/* Avatar con foto en burbuja */
+.chat-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
 </style>
 </head>
 <body>
@@ -744,20 +760,32 @@ textarea{resize:vertical;min-height:110px;font-size:.92rem;line-height:1.6;}
   <!-- ══ 💬 CHAT ══ -->
   <div class="screen" id="screen-chat">
     <div id="chat-pick-wrap">
-      <div class="chat-select-card">
-        <div style="font-size:2.5rem;margin-bottom:10px">💬</div>
-        <div class="chat-select-title">Chat en Vivo — TADC Gala</div>
-        <div class="chat-select-sub">Elige tu personaje para hablar en el chat durante la gala.</div>
-        <div class="field" style="text-align:left;margin-bottom:14px">
-          <label>¿Con qué personaje entras al chat?</label>
-          <div class="select-wrap">
-            <select id="chat-sel-personaje"><option value="">— Selecciona tu personaje —</option></select>
-          </div>
-        </div>
-        <div class="msg" id="chat-pick-msg"></div>
-        <button class="btn btn-gold" onclick="confirmarPersonajeChat()">💬 ENTRAR AL CHAT</button>
+  <div class="chat-select-card">
+    <div style="font-size:2.5rem;margin-bottom:10px">💬</div>
+    <div class="chat-select-title">Chat en Vivo — TADC Gala</div>
+    <div class="chat-select-sub">Elige tu personaje y sube una foto de perfil.</div>
+
+    <!-- PASO AVATAR -->
+    <div class="avatar-step">
+      <div class="avatar-ring" id="av-ring" onclick="document.getElementById('av-file').click()">
+        <div class="av-icon" id="av-icon">📷</div>
+        <div class="av-overlay" id="av-overlay">Cambiar</div>
+      </div>
+      <span class="av-hint">Toca para subir foto de tu personaje</span>
+      <span class="av-skip" onclick="saltarFoto()">Omitir — usar iniciales</span>
+      <input type="file" id="av-file" accept="image/*" style="display:none" onchange="cargarFotoAvatar(this)">
+    </div>
+
+    <div class="field" style="text-align:left;margin-bottom:14px;margin-top:8px">
+      <label>¿Con qué personaje entras al chat?</label>
+      <div class="select-wrap">
+        <select id="chat-sel-personaje"><option value="">— Selecciona tu personaje —</option></select>
       </div>
     </div>
+    <div class="msg" id="chat-pick-msg"></div>
+    <button class="btn btn-gold" onclick="confirmarPersonajeChat()">💬 ENTRAR AL CHAT</button>
+  </div>
+</div>
 
     <div id="chat-activo-wrap" style="display:none">
       <div class="chat-who-bar">
@@ -1047,7 +1075,50 @@ function getCategorias(forzar=false){
   return cats;
 }
 function invalidarCatCache(){CATS_CACHE=null;}
+/* ═══════════════════════════════════════
+   📷 AVATAR DE PERFIL
+═══════════════════════════════════════ */
+let chatAvatarDataUrl = null;
 
+function cargarFotoAvatar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) { alert('La imagen no debe superar 3MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const SIZE = 160;
+      canvas.width = SIZE; canvas.height = SIZE;
+      const ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.arc(SIZE/2, SIZE/2, SIZE/2, 0, Math.PI*2);
+      ctx.clip();
+      const minDim = Math.min(img.width, img.height);
+      const sx = (img.width - minDim) / 2;
+      const sy = (img.height - minDim) / 2;
+      ctx.drawImage(img, sx, sy, minDim, minDim, 0, 0, SIZE, SIZE);
+      chatAvatarDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+      // Mostrar preview en el círculo
+      const ring = document.getElementById('av-ring');
+      ring.innerHTML = `<img src="${chatAvatarDataUrl}" alt="avatar"><div class="av-overlay">Cambiar</div>`;
+      ring.style.borderStyle = 'solid';
+      ring.style.borderColor = 'var(--gold)';
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  input.value = '';
+}
+
+function saltarFoto() {
+  chatAvatarDataUrl = null;
+  const ring = document.getElementById('av-ring');
+  ring.innerHTML = '<div class="av-icon">📷</div><div class="av-overlay">Cambiar</div>';
+  ring.style.borderStyle = 'dashed';
+  ring.style.borderColor = '';
+}
 /* ═══════════════════════════════════════════════════════════════════════
    INICIALIZACIÓN — BUG FIX: código de finalización SIEMPRE se ejecuta
 ═══════════════════════════════════════════════════════════════════════ */
@@ -1312,7 +1383,15 @@ async function confirmarPersonajeChat(){
       _supaAdminToken=data.access_token;
     }catch(e){showMsg('chat-pick-msg','Error de conexión.','error');return;}
     chatPersonaje='Abel (Admin)';chatAdminVerificado=true;
-  }else{chatPersonaje=val;chatAdminVerificado=false;}
+    if(chatAvatarDataUrl) sessionStorage.setItem('av_Abel (Admin)', chatAvatarDataUrl);
+    chatAvatarDataUrl=null;
+  }else{
+  chatPersonaje=val;
+  chatAdminVerificado=false;
+  if(chatAvatarDataUrl) sessionStorage.setItem('av_'+val, chatAvatarDataUrl);
+  chatAvatarDataUrl=null;
+  saltarFoto();
+}
   document.getElementById('chat-pick-msg').style.display='none';
   mostrarChatActivo();await cargarChatInicial();suscribirRealtime();
   if(chatAdminVerificado){
@@ -1403,7 +1482,8 @@ function crearBurbuja(m){
   const tipo=m.tipo||'usuario';
   const hora=new Date(m.created_at).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
   const iniciales=(m.personaje||'?').substring(0,2).toUpperCase();
-  const avatarText=tipo==='sistema'?'⚙':iniciales;
+  const fotoGuardada=sessionStorage.getItem('av_'+m.personaje);
+  const avatarInner=tipo==='sistema'?'⚙':fotoGuardada?`<img src="${fotoGuardada}" alt="">`:iniciales;
   const avatarClass=tipo==='sistema'?'sistema':tipo==='admin'?'admin':'user';
 
   // Detectar si es sticker
@@ -1417,7 +1497,7 @@ function crearBurbuja(m){
   }
 
   wrap.innerHTML=`
-    <div class="chat-avatar ${avatarClass}">${avatarText}</div>
+    <div class="chat-avatar ${avatarClass}">${avatarInner}</div>
     <div class="chat-content">
       <div class="chat-name ${avatarClass}">${esc(m.personaje)}${tipo==='admin'?' 👑':''}</div>
       ${contenido}
