@@ -1401,12 +1401,43 @@ async function confirmarPersonajeChat(){
     poblarSelectResultadosChat();
   }
 }
-
+async function refrescarTodosAvatares(){
+  if(!chatPersonaje)return;
+  try{
+    // Limpiar cache viejo para forzar recarga
+    Object.keys(sessionStorage).filter(k=>k.startsWith('av_')).forEach(k=>sessionStorage.removeItem(k));
+    avatarCache={};
+    const avRes=await fetch(
+      `${SUPABASE_URL}/rest/v1/gala_personajes?select=nombre,avatar_url`,
+      {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}
+    );
+    const avData=await avRes.json();
+    if(!Array.isArray(avData))return;
+    let cambios=false;
+    avData.forEach(p=>{
+      if(p.avatar_url && avatarCache[p.nombre]!==p.avatar_url){
+        avatarCache[p.nombre]=p.avatar_url;
+        sessionStorage.setItem('av_'+p.nombre,p.avatar_url);
+        cambios=true;
+      }
+    });
+    if(cambios){
+      const box=document.getElementById('chat-box');
+      const atBottom=box.scrollHeight-box.scrollTop<=box.clientHeight+80;
+      box.innerHTML='';
+      if(chatHayMas){const btn=document.createElement('div');btn.className='chat-load-more';btn.textContent='⬆ Cargar mensajes anteriores';btn.onclick=cargarMasMensajes;box.appendChild(btn);}
+      chatMensajes.forEach(m=>box.appendChild(crearBurbuja(m)));
+      if(atBottom)box.scrollTop=box.scrollHeight;
+    }
+  }catch(e){}
+}
 function mostrarChatActivo(){
   document.getElementById('chat-pick-wrap').style.display='none';
   document.getElementById('chat-activo-wrap').style.display='block';
   document.getElementById('chat-who-nombre').textContent=chatPersonaje;
   document.getElementById('chat-admin-panel').style.display=chatAdminVerificado?'block':'none';
+  refrescarTodosAvatares(); // ejecutar de inmediato
+setInterval(refrescarTodosAvatares, 30000);
 }
 
 function salirChat(){
@@ -1479,6 +1510,24 @@ function suscribirRealtime(){
       const res=await fetch(`${SUPABASE_URL}/rest/v1/gala_chat?id=gt.${chatUltimoId}&order=id.asc`,
         {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});
       const nuevos=await res.json();if(!nuevos.length)return;
+
+      const pjsNuevos=[...new Set(nuevos.map(m=>m.personaje))].filter(p=>!avatarCache[p]);
+      if(pjsNuevos.length){
+        try{
+          const avRes=await fetch(
+            `${SUPABASE_URL}/rest/v1/gala_personajes?nombre=in.(${pjsNuevos.map(p=>`"${p}"`).join(',')})&select=nombre,avatar_url`,
+            {headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}}
+          );
+          const avData=await avRes.json();
+          if(Array.isArray(avData))avData.forEach(p=>{
+            if(p.avatar_url){
+              avatarCache[p.nombre]=p.avatar_url;
+              sessionStorage.setItem('av_'+p.nombre,p.avatar_url);
+            }
+          });
+        }catch(e){}
+      }
+
       const box=document.getElementById('chat-box');
       const emptyEl=box.querySelector('.chat-empty');if(emptyEl)box.innerHTML='';
       const atBottom=box.scrollHeight-box.scrollTop<=box.clientHeight+80;
